@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {Linking, Pressable, ScrollView, View} from 'react-native';
+import {Pressable, ScrollView, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
@@ -10,6 +10,7 @@ import {notify} from '../../utils/notify';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import Icon from '../../components/Icon/Icon';
+import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {
   createStyles,
   createDynamicStyles,
@@ -20,17 +21,15 @@ import {
 /**
  * ANNUAL REPORTS — one row per year.
  *
- * Tapping a year hands its PDF to the phone, which opens it in the browser
- * or a PDF app. That keeps downloading, zooming and sharing in the hands of
- * the tool the person already uses, and adds no library to the app.
+ * Tapping a year opens its PDF inside the app (PdfViewer screen): scroll,
+ * pinch-zoom and a page counter, with the file kept on the phone after the
+ * first open so it reopens instantly, even offline.
  *
  * A year with no link yet is shown as unavailable rather than failing.
  *
  * LAYOUT NOTE — every row lays itself out inside its OWN <View>, not on the
  * GlassSurface. GlassSurface puts its children in an inner content view, so
- * flexDirection passed through its `style` prop lands on the wrong element
- * and the badge / text / chevron stack vertically. The inner row View owns
- * the direction, so the card can never break that way again.
+ * flexDirection passed through its `style` prop lands on the wrong element.
  */
 const AnnualReportsScreen = ({navigation}) => {
   const {theme} = useTheme();
@@ -39,7 +38,7 @@ const AnnualReportsScreen = ({navigation}) => {
   const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
   const {t, isRTL} = useLanguage();
 
-  const openReport = async report => {
+  const openReport = report => {
     if (!report.url) {
       notify.dialog({
         type: 'warning',
@@ -49,16 +48,16 @@ const AnnualReportsScreen = ({navigation}) => {
       });
       return;
     }
-    try {
-      await Linking.openURL(report.url);
-    } catch {
-      notify.error(t('reports.openFailed'), t('reports.openFailedMsg'));
-    }
+    navigation.navigate('PdfViewer', {
+      url: report.url,
+      title: `${t('reports.report')} ${report.year}`,
+      cacheName: `annual-report-${report.year}`,
+    });
   };
 
   return (
     <AppBackground>
-      <View style={[styles.topBar, isRTL && styles.topBarRTL, dyn.topBarPad]}>
+      <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={10}>
           <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
             <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
@@ -72,6 +71,7 @@ const AnnualReportsScreen = ({navigation}) => {
             {t('reports.subtitle')}
           </Text>
         </View>
+        <LanguageToggle />
       </View>
 
       <ScrollView

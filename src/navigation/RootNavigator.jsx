@@ -11,6 +11,7 @@ import { placeholderScreenOptions } from './RootNavigator.styles';
 import AboutUsScreen from '../screens/AboutUsScreen/AboutUsScreen';
 import AnnualReportsScreen from '../screens/AnnualReportsScreen/AnnualReportsScreen';
 import AboutSectionScreen from '../screens/AboutSectionScreen/AboutSectionScreen';
+import PdfViewerScreen from '../screens/PdfViewerScreen/PdfViewerScreen';
 import {
   resolveBaseColor,
   createNavTheme,
@@ -91,6 +92,11 @@ const RootNavigator = () => {
         <Stack.Screen
           name="AboutSection"
           component={AboutSectionScreen}
+          options={placeholderScreenOptions}
+        />
+        <Stack.Screen
+          name="PdfViewer"
+          component={PdfViewerScreen}
           options={placeholderScreenOptions}
         />
         {/* Future module screens go here */}

@@ -19,6 +19,8 @@
  */
 
 export const modules = [
+   {key: 'annualReports', label: 'Annual Reports', icon: 'chart', route: 'AnnualReports', enabled: true, roles: ['admin', 'user', 'guest']},
+  {key: 'about', label: 'About Us', icon: 'doc', route: 'AboutUs', enabled: true, roles: ['admin', 'user', 'guest']},
   {key: 'dashboard', label: 'Dashboard', icon: 'grid', route: 'AdminDashboard', enabled: true, roles: ['admin']},
   {key: 'complaints', label: 'Register Complaint', icon: 'inbox', route: 'RegisterComplaint', enabled: true, roles: ['admin', 'user', 'guest']},
   {key: 'dms', label: 'Document Management', icon: 'doc', route: 'DmsList', enabled: false, roles: ['admin', 'user']},
@@ -29,8 +31,7 @@ export const modules = [
   {key: 'search', label: 'Search', icon: 'search', route: 'Search', enabled: false, roles: ['admin', 'user', 'guest']},
   {key: 'notices', label: 'Notices', icon: 'bell', route: 'Notices', enabled: false, roles: ['admin', 'user', 'guest']},
   {key: 'settings', label: 'Settings', icon: 'settings', route: 'Settings', enabled: false, roles: ['admin'] },
- {key: 'annualReports', label: 'Annual Reports', icon: 'chart', route: 'AnnualReports', enabled: true, roles: ['admin', 'user', 'guest']},
-  {key: 'about', label: 'About Us', icon: 'doc', route: 'AboutUs', enabled: true, roles: ['admin', 'user', 'guest']},
+
 ];
 
 /** Only the modules this role may see. */

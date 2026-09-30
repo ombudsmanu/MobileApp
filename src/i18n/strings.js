@@ -137,6 +137,20 @@ export const strings = {
     'reports.notReadyMsg': 'This report has not been published to the app yet.',
     'reports.openFailed': 'Could not open the report',
     'reports.openFailedMsg': 'The report could not be opened. Please check your connection and try again.',
+    
+    // Photo viewer (About Us)
+    'photo.view': 'View photo',
+    'photo.close': 'Close',
+    'photo.hint': 'Tap anywhere to close',
+    
+    // PDF viewer
+    'pdf.loading': 'Loading report…',
+    'pdf.loadingHint': 'The first time takes a moment. After that it opens instantly, even offline.',
+    'pdf.page': 'Page',
+    'pdf.errorTitle': "Couldn't open this report",
+    'pdf.errorMsg': 'Check your internet connection and try again, or open it in the browser.',
+    'pdf.retry': 'TRY AGAIN',
+    'pdf.openBrowser': 'OPEN IN BROWSER',
   },
 
   ur: {
@@ -271,5 +285,18 @@ export const strings = {
     'reports.notReadyMsg': 'یہ رپورٹ ابھی ایپ میں شامل نہیں کی گئی۔',
     'reports.openFailed': 'رپورٹ نہیں کھل سکی',
     'reports.openFailedMsg': 'رپورٹ نہیں کھل سکی۔ براہ کرم اپنا انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔',
+    
+    // PDF viewer
+    'pdf.loading': 'رپورٹ لوڈ ہو رہی ہے…',
+    'pdf.loadingHint': 'پہلی بار کچھ وقت لگتا ہے، اس کے بعد یہ فوراً کھلے گی، آف لائن بھی۔',
+    'pdf.page': 'صفحہ',
+    'pdf.errorTitle': 'یہ رپورٹ نہیں کھل سکی',
+    'pdf.errorMsg': 'اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں، یا اسے براؤزر میں کھولیں۔',
+    'pdf.retry': 'دوبارہ کوشش کریں',
+    'pdf.openBrowser': 'براؤزر میں کھولیں',
+    // Photo viewer (About Us)
+    'photo.view': 'تصویر دیکھیں',
+    'photo.close': 'بند کریں',
+    'photo.hint': 'بند کرنے کے لیے کہیں بھی ٹیپ کریں',
   },
 };

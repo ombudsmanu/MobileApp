@@ -9,6 +9,7 @@ import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import ModuleTile from '../../components/ModuleTile/ModuleTile';
 import Icon from '../../components/Icon/Icon';
+import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {createStyles, createDynamicStyles, BACK_RADIUS} from './AboutUsScreen.styles';
 
 /** The About Us sections as cards — the same cards as the Dashboard modules. */
@@ -28,9 +29,14 @@ const AboutUsScreen = ({navigation}) => {
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
-          <Text style={styles.topTitle}>{t('about.title')}</Text>
-          <Text style={styles.topSub}>{t('officeName')}</Text>
+          <Text style={[styles.topTitle, isRTL && styles.textRTL]} numberOfLines={1}>
+            {t('about.title')}
+          </Text>
+          <Text style={[styles.topSub, isRTL && styles.textRTL]} numberOfLines={2}>
+            {t('officeName')}
+          </Text>
         </View>
+        <LanguageToggle />
       </View>
 
       <ScrollView

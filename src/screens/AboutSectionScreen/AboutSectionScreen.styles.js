@@ -15,16 +15,18 @@ export const PERSON_PHOTO_SIZE = 60;
 
 export const createStyles = theme =>
   StyleSheet.create({
+       // Top bar: [back] [title — takes the free space] [EN / اردو]
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
+      columnGap: spacing.md,
       paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
     backBtn: {width: 52, height: 52},
-    topTitle: {...theme.type.titleLarge, flex: 1, marginLeft: spacing.md},
-    topSub: {...theme.type.bodySmall, marginLeft: spacing.md},
     topTextWrap: {flex: 1},
+    topTitle: {...theme.type.titleLarge},
+    topSub: {...theme.type.bodySmall},
 
     scroll: {paddingHorizontal: spacing.lg},
 

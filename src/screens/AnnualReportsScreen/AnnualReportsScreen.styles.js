@@ -28,7 +28,6 @@ export const createStyles = theme =>
       paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
-    topBarRTL: {flexDirection: 'row-reverse'},
     backBtn: {width: 48, height: 48},
     topTextWrap: {flex: 1},
     topTitle: {...theme.type.titleLarge},

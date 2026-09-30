@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Image, Linking, Pressable, ScrollView, View } from 'react-native';
+import { Linking, Pressable, ScrollView, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
@@ -11,6 +11,8 @@ import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import Icon from '../../components/Icon/Icon';
 import ModuleTile from '../../components/ModuleTile/ModuleTile';
+import PhotoTap from '../../components/PhotoTap/PhotoTap';
+import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {
   createStyles,
   createDynamicStyles,
@@ -47,8 +49,13 @@ const groupBlocks = blocks => {
   return groups;
 };
 
-/** A round photo, or a person icon until the photo is supplied. */
-const Photo = ({ source, size, accent, styles, theme }) => {
+/**
+ * A round photo, or a person icon until the photo is supplied.
+ * Every photo in About Us is drawn here, so making it tappable here makes
+ * every profile and every person card open the full-screen viewer.
+ * `name` and `caption` are shown under the enlarged photo.
+ */
+const Photo = ({ source, size, accent, styles, theme, name, caption }) => {
   const shape = {
     width: size,
     height: size,
@@ -56,7 +63,12 @@ const Photo = ({ source, size, accent, styles, theme }) => {
     borderColor: accent,
   };
   return source ? (
-    <Image source={source} style={[styles.photo, shape]} resizeMode="cover" />
+    <PhotoTap
+      source={source}
+      style={[styles.photo, shape]}
+      name={name}
+      caption={caption}
+    />
   ) : (
     <View style={[styles.photoPlaceholder, shape]}>
       <Icon
@@ -136,6 +148,8 @@ const ProfileCard = ({ block, accent, styles, theme }) => (
         accent={accent}
         styles={styles}
         theme={theme}
+        name={block.name}
+        caption={block.role}
       />
       <Text style={styles.profileName}>{block.name}</Text>
       <Text style={styles.profileRole}>{block.role}</Text>
@@ -157,22 +171,22 @@ const PersonCard = ({ person, accent, rtl, t, styles, theme }) => {
           accent={accent}
           styles={styles}
           theme={theme}
+          name={person.name}
+          caption={person.role || person.tenure}
         />
         <View style={[styles.personText, rtl && styles.personTextRTL]}>
-          <View style={[styles.personText, rtl && styles.personTextRTL]}>
-            <Text style={[styles.personName, rtl && styles.textRTL]}>
-              {person.name}
+          <Text style={[styles.personName, rtl && styles.textRTL]}>
+            {person.name}
+          </Text>
+          {person.role ? (
+            <Text style={[styles.personRole, rtl && styles.textRTL]}>
+              {person.role}
             </Text>
-            {person.role ? (
-              <Text style={[styles.personRole, rtl && styles.textRTL]}>
-                {person.role}
-              </Text>
-            ) : (
-              <View style={styles.tenurePill}>
-                <Text style={styles.tenureText}>{person.tenure}</Text>
-              </View>
-            )}
-          </View>
+          ) : (
+            <View style={styles.tenurePill}>
+              <Text style={styles.tenureText}>{person.tenure}</Text>
+            </View>
+          )}
         </View>
       </View>
 
@@ -210,7 +224,7 @@ const PersonCard = ({ person, accent, rtl, t, styles, theme }) => {
  * Contact details. Email and phone rows are tappable — they open the
  * mail app or start a call, so nobody has to copy them by hand.
  */
-const ContactCard = ({ block, accent, styles, theme }) => {
+const ContactCard = ({ block, accent, styles, theme, rtl }) => {
   const open = row => {
     if (row.action === 'mail') {
       Linking.openURL(`mailto:${row.value}`);
@@ -227,7 +241,7 @@ const ContactCard = ({ block, accent, styles, theme }) => {
           <Pressable
             disabled={!row.action}
             onPress={() => open(row)}
-            style={styles.contactRow}
+            style={[styles.contactRow, rtl && styles.rowRTL]}
           >
             <View
               style={[styles.contactIcon, { backgroundColor: `${accent}1A` }]}
@@ -235,18 +249,25 @@ const ContactCard = ({ block, accent, styles, theme }) => {
               <Icon name={row.icon} size={18} color={accent} />
             </View>
             <View style={styles.contactText}>
-              <Text style={styles.contactLabel}>{row.label.toUpperCase()}</Text>
+              <Text style={[styles.contactLabel, rtl && styles.textRTL]}>
+                {row.label.toUpperCase()}
+              </Text>
               <Text
                 style={[
                   styles.contactValue,
                   row.action && styles.contactValueAction,
+                  rtl && styles.textRTL,
                 ]}
               >
                 {row.value}
               </Text>
             </View>
             {!!row.action && (
-              <Icon name="chevronRight" size={16} color={theme.icon.muted} />
+              <Icon
+                name={rtl ? 'chevronLeft' : 'chevronRight'}
+                size={16}
+                color={theme.icon.muted}
+              />
             )}
           </Pressable>
         </View>
@@ -261,7 +282,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
   const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
-  const {lang, t, isRTL} = useLanguage();
+  const { lang, t, isRTL } = useLanguage();
   const section = findAboutSection(route.params?.key);
   const content = section ? aboutContent[section.key] : null;
 
@@ -282,18 +303,37 @@ const AboutSectionScreen = ({ navigation, route }) => {
 
   return (
     <AppBackground>
-        <View style={[styles.topBar, dyn.topBarPad]}>
+      <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={10}>
-          <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
-            <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
+          <GlassSurface
+            strong
+            center
+            radius={BACK_RADIUS}
+            style={styles.backBtn}
+          >
+            <Icon
+              name="chevronLeft"
+              size={30}
+              color={theme.icon.heading}
+              weight={3}
+            />
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
-          <Text style={styles.topTitle} numberOfLines={1}>
+          <Text
+            style={[styles.topTitle, isRTL && styles.textRTL]}
+            numberOfLines={1}
+          >
             {cardName}
           </Text>
-          <Text style={styles.topSub}>{t('about.title')}</Text>
+          <Text
+            style={[styles.topSub, isRTL && styles.textRTL]}
+            numberOfLines={1}
+          >
+            {t('about.title')}
+          </Text>
         </View>
+        <LanguageToggle />
       </View>
 
       <ScrollView
@@ -370,6 +410,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
                   key={i}
                   block={g.block}
                   accent={accent}
+                  rtl={rtl}
                   styles={styles}
                   theme={theme}
                 />

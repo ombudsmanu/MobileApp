@@ -18,20 +18,18 @@
  * the app from building.
  */
 
-const heading = text => ({ type: 'heading', text });
-const paragraph = text => ({ type: 'paragraph', text });
-const profile = ({ name, role, photo = null }) => ({
-  type: 'profile',
-  name,
-  role,
-  photo,
-});
-const signature = ({ name, role }) => ({ type: 'signature', name, role });
-const people = items => ({ type: 'people', items });
-const bullets = items => ({ type: 'bullets', items });
-const contact = ({ rows }) => ({ type: 'contact', rows });
-const link = ({ label, url }) => ({ type: 'link', label, url });
-const sections = items => ({ type: 'sections', items });
+import {
+  heading,
+  paragraph,
+  profile,
+  signature,
+  people,
+  bullets,
+  contact,
+  link,
+  sections,
+} from './blocks';
+import {aboutContentUr} from './aboutContent.ur';
 export const aboutContent = {
   // -------------------------------------------------------------------------
   introduction: {
@@ -609,7 +607,18 @@ export const aboutContent = {
           role: 'Advisor (RO Faisalabad-II)',
           photo: require('../assets/people/m-nawaz.jpg'),
         },
+        
       ]),
     ],
   },
+  
 };
+
+// Attach the Urdu version of each section (aboutContent.ur.js) as its `ur`
+// list. A section missing from that file keeps showing its English content,
+// with the "English only" note.
+Object.keys(aboutContentUr).forEach(key => {
+  if (aboutContent[key]) {
+    aboutContent[key].ur = aboutContentUr[key];
+  }
+});
