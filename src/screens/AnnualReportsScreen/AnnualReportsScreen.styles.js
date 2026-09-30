@@ -7,34 +7,58 @@ import {radii, spacing} from '../../theme/tokens';
  *   Title Medium — the year
  *   Body Small   — sub-lines
  *   Label Small  — "Open PDF" / "Not available"
+ *
+ * LAYOUT — the whole screen is one column, capped at COLUMN_MAX and centred.
+ * On a phone the cap never bites (the screen is narrower), so it costs
+ * nothing there; on a tablet or a foldable it stops the rows stretching into
+ * very wide, mostly empty bands.
  */
+const COLUMN_MAX = 560;
+
 export const createStyles = theme =>
   StyleSheet.create({
+    // ---- Header ----
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
+      columnGap: spacing.md,
+      width: '100%',
+      maxWidth: COLUMN_MAX,
+      alignSelf: 'center',
       paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
+    topBarRTL: {flexDirection: 'row-reverse'},
     backBtn: {width: 48, height: 48},
     topTextWrap: {flex: 1},
-    topTitle: {...theme.type.titleLarge, marginLeft: spacing.md},
-    topSub: {...theme.type.bodySmall, marginLeft: spacing.md},
+    topTitle: {...theme.type.titleLarge},
+    topSub: {...theme.type.bodySmall},
 
-    scroll: {paddingHorizontal: spacing.lg},
-    intro: {...theme.type.bodyMedium, marginBottom: spacing.sm},
-    introRTL: {textAlign: 'right', writingDirection: 'rtl'},
+    // ---- Scroll column ----
+    scroll: {
+      width: '100%',
+      maxWidth: COLUMN_MAX,
+      alignSelf: 'center',
+      paddingHorizontal: spacing.lg,
+    },
+    intro: {...theme.type.bodyMedium, marginBottom: spacing.md},
+
+    // Right-to-left text (Urdu). One style, used everywhere.
+    textRTL: {textAlign: 'right', writingDirection: 'rtl'},
 
     // ---- One report ----
+    cardPress: {marginBottom: spacing.sm},
+    cardPressed: {opacity: 0.85, transform: [{scale: 0.99}]},
+    card: {padding: spacing.md},
+    cardDisabled: {opacity: 0.55},
+
     row: {
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.md,
-      padding: spacing.md,
-      marginBottom: spacing.sm,
     },
     rowRTL: {flexDirection: 'row-reverse'},
-    rowDisabled: {opacity: 0.55},
+
     // The shell casts the shadow; the gradient rounds ITSELF
     badgeShell: {
       width: 52,
@@ -53,18 +77,28 @@ export const createStyles = theme =>
       alignItems: 'center',
       justifyContent: 'center',
     },
-    rowText: {flex: 1, alignItems: 'flex-start'},
+
+    rowText: {flex: 1, alignItems: 'flex-start', rowGap: 2},
     rowTextRTL: {alignItems: 'flex-end'},
     year: {...theme.type.titleMedium},
     reportLabel: {...theme.type.bodySmall},
+
+    // Status pill and chevron sit together at the end of the row
+    rowEnd: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.sm,
+    },
+    rowEndRTL: {flexDirection: 'row-reverse'},
     statusPill: {
-      marginTop: 4,
-      paddingHorizontal: 9,
-      paddingVertical: 2,
+      paddingHorizontal: 10,
+      paddingVertical: 3,
       borderRadius: radii.pill,
       backgroundColor: 'rgba(212, 113, 28, 0.12)',
     },
+    statusPillMuted: {backgroundColor: 'rgba(120, 120, 120, 0.14)'},
     statusText: {...theme.type.labelSmall, color: theme.accent},
+    statusTextMuted: {color: theme.text.muted},
   });
 
 export const createDynamicStyles = insets => ({

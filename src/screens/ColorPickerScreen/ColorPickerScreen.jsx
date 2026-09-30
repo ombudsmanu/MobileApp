@@ -117,9 +117,9 @@ const ColorPickerScreen = ({ navigation, route }) => {
             >
               <Icon
                 name="chevronLeft"
-                size={18}
+                size={30}
                 color={theme.icon.heading}
-                weight={2.5}
+                weight={3}
               />
             </GlassSurface>
           </Pressable>

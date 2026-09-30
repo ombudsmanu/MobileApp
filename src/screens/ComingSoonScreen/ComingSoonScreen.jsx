@@ -38,7 +38,7 @@ const ComingSoonScreen = ({navigation, route}) => {
       <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
           <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
-            <Icon name="chevronLeft" size={18} color={theme.icon.heading} weight={2.5} />
+            <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={2.5} />
           </GlassSurface>
         </Pressable>
         <Text style={styles.topTitle} numberOfLines={1}>

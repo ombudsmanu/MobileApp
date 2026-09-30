@@ -285,7 +285,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
         <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={10}>
           <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
-            <Icon name="chevronLeft" size={22} color={theme.icon.heading} weight={3} />
+            <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>

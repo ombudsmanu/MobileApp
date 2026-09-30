@@ -320,7 +320,7 @@ const AppearanceScreen = ({navigation}) => {
           <View style={styles.sideSlot}>
             <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
               <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
-                <Icon name="chevronLeft" size={18} color={theme.icon.heading} weight={2.5} />
+            <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
               </GlassSurface>
             </Pressable>
           </View>
