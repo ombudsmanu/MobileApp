@@ -537,19 +537,19 @@ export const aboutContent = {
       // NOTE: the Office covers 36 districts, so this list is probably still
       // partial. Add any remaining Regional Office staff here.
       people([
-        { name: 'Muhammad Ashraf', role: 'Consultant (Lahore-I)', photo: null },
+        { name: 'Muhammad Ashraf', role: 'Consultant (Lahore-I)',photo: require('../assets/people/ashraf.jpg') },
         {
           name: 'Syed Amar Shafiq',
           role: 'Consultant (Lahore-II)',
-          photo: null,
+          photo: require('../assets/people/syed-ammar.jpg'),
         },
-        { name: 'Moeen Masood', role: 'Advisor (Lahore-III)', photo: null },
-        { name: 'Dr. Aamer Ahmed', role: 'Advisor (Lahore-IV)', photo: null },
-        { name: 'Ahmed Mustjab Karamat', role: 'Advisor (LH-V)', photo: null },
+        { name: 'Moeen Masood', role: 'Advisor (Lahore-III)', photo: require('../assets/people/moeen-masood.jpg')},
+        { name: 'Dr. Aamer Ahmed', role: 'Advisor (Lahore-IV)', photo: require('../assets/people/aamer-ahmed.jpg')},
+        { name: 'Ahmed Mustjab Karamat', role: 'Advisor (LH-V)', photo: require('../assets/people/ahmed-mustjab.jpg')},
         {
           name: 'Muhammad Hassan Rizvi',
           role: 'Advisor (RO Kasur)',
-          photo: null,
+          photo:  require('../assets/people/muhammad-hassan.jpg'),
         },
         {
           name: 'Shahzad Ahmad Malik',
@@ -559,55 +559,55 @@ export const aboutContent = {
         {
           name: 'Malik Muhammad Aslam',
           role: 'Advisor (RO Sheikhupura)',
-          photo: null,
+          photo: require('../assets/people/malik-aslam.jpg'),
         },
         {
           name: 'Syed Pervaiz Abbas',
           role: 'Advisor (Gujranwala II)',
-          photo: null,
+          photo: require('../assets/people/syed-pervaiz.jpg'),
         },
         {
           name: 'Fazal Abbas',
           role: 'Consultant (RO Gujranwala-1 & RO Hafizabad)',
-          photo: null,
+          photo: require('../assets/people/fazal-abbas.jpg'),
         },
         {
           name: 'Muhammad Rafiq',
           role: 'Consultant (RO Gujrat & RO M.B.Din)',
-          photo: null,
+          photo: require('../assets/people/muhammad-rafiq.jpg'),
         },
         { name: 'Aamir Ijaz Akbar', role: 'Advisor (RO Narowal)', photo: null },
-        { name: 'Ashfaq Ahmad Rana', role: 'Advisor (RO Jhelum)', photo: null },
+        { name: 'Ashfaq Ahmad Rana', role: 'Advisor (RO Jhelum)', photo:require('../assets/people/ashfaq-ahmad.jpg')},
         {
           name: 'Ehsan Tufail',
           role: 'Advisor (RO Rawalpindi II)',
-          photo: null,
+          photo: require('../assets/people/ehsan-tufail.jpg'),
         },
         {
           name: 'Akbar Hayat',
           role: 'Consultant (RO Chakwal & RO RWP-III)',
-          photo: null,
+          photo: require('../assets/people/akbar-hayat.jpg'),
         },
         {
           name: 'Ch. Mumtaz Ahmad',
           role: 'Consultant (RO Sarghoda & RO Khushab)',
-          photo: null,
+          photo: require('../assets/people/mumtaz-ahmad.jpg'),
         },
         {
           name: 'Dr. Khalid Hussain',
           role: 'Consultant (RO Mianwali & RO Bhakkar)',
-          photo: null,
+          photo: require('../assets/people/dr-khalid.jpg'),
         },
         { name: 'Muhammad Ayub Khan', role: 'Advisor RO Chiniot', photo: null },
         {
           name: 'Aslam Hayat Sial',
           role: 'Consultant RO, Faisalabad-I',
-          photo: null,
+          photo: require('../assets/people/aslam-hayat.jpg'),
         },
         {
           name: 'Muhammad Nawaz Khalid Arbi',
           role: 'Advisor (RO Faisalabad-II)',
-          photo: null,
+          photo: require('../assets/people/m-nawaz.jpg'),
         },
       ]),
     ],
