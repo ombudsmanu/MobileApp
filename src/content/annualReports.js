@@ -15,7 +15,7 @@ export const annualReports = [
   {year: '2021', url: 'https://ombudsmanpunjab.gov.pk/system/files/Annual%20Report%202021-Optimized.pdf#overlay-context=annual_reports'},
   {year: '2020', url: 'https://ombudsmanpunjab.gov.pk/system/files/Final%20Annual%20Report%202020.pdf#overlay-context=annual_reports'},
   {year: '2019', url: 'https://ombudsmanpunjab.gov.pk/system/files/Annual%20Report%202019.pdf'},
-  {year: '2018', url: 'https://ombudsmanpunjab.gov.pk/system/files/Ombudsman%20ANNUAL%20REPORT%202018.pd'},
+  {year: '2018', url: 'https://ombudsmanpunjab.gov.pk/system/files/Ombudsman%20ANNUAL%20REPORT%202018.pdf'},
   {year: '2017', url: 'https://ombudsmanpunjab.gov.pk/system/files/Ombudsman%20Punjab%20Annual%20Report%202017.pdf#overlay-context=annual_reports'},
   {year: '2016', url: 'https://ombudsmanpunjab.gov.pk/system/files/Annual%20report%202016.pdf'},
   {year: '2015', url: 'https://ombudsmanpunjab.gov.pk/system/files/Annual%20Report%202015.pdf'},

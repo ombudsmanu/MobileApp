@@ -188,14 +188,12 @@ const DashboardScreen = ({ navigation }) => {
           overlay={
             <View style={styles.sliderOverlay} pointerEvents="none">
               <Text
-                style={[styles.sliderName, isRTL && styles.sliderEnd]}
+                style={[styles.sliderName, isRTL && styles.sliderTextRTL]}
                 numberOfLines={1}
               >
-                {displayName}
+                {displayName.trim()}
               </Text>
-              <Text
-                style={[styles.sliderLabel, isRTL && styles.sliderEnd, rtl]}
-              >
+              <Text style={[styles.sliderLabel, isRTL && styles.sliderTextRTL]}>
                 {t('welcomeBack')}
               </Text>
             </View>

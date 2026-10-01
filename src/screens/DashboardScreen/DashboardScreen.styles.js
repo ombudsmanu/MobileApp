@@ -88,26 +88,27 @@ export const createStyles = theme =>
       bottom: spacing.xl,
     },
     // In Urdu the whole block moves to the right edge
-    // alignSelf on the child beats alignItems on the parent, so the name
-    // and label land on the correct edge whatever the parent does
+       // Both lines span the overlay's full width (no alignSelf), so the edge is
+    // set by aligning the TEXT, not by pushing each box around. In Urdu the
+    // name and the label therefore end on exactly the same right edge.
     sliderName: {
       ...theme.type.headlineSmall,
       color: '#FFFFFF',
-      alignSelf: 'flex-start',
+      textAlign: 'left',
       textShadowColor: 'rgba(0, 0, 0, 0.55)',
       textShadowOffset: {width: 0, height: 1},
       textShadowRadius: 4,
     },
-   sliderLabel: {
+    sliderLabel: {
       ...theme.type.labelMedium,
       color: 'rgba(255, 255, 255, 0.88)',
-      alignSelf: 'flex-start',
+      textAlign: 'left',
       marginTop: 2,
       textShadowColor: 'rgba(0, 0, 0, 0.5)',
       textShadowOffset: {width: 0, height: 1},
       textShadowRadius: 3,
     },
-  sliderEnd: {alignSelf: 'flex-end'},
+    sliderTextRTL: {textAlign: 'right'},
         // ---- Section header ----
     sectionHeader: {
       flexDirection: 'row',

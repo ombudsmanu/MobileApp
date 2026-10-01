@@ -126,7 +126,7 @@ const PdfViewerScreen = ({navigation, route}) => {
               setPage(current);
               setPages(total);
             }}
-                        onError={error => {
+            onError={error => {
               const message = String(error?.message ?? error);
               console.warn('[PdfViewer] could not load', source.uri, message);
               setDetail(message);
@@ -172,7 +172,7 @@ const PdfViewerScreen = ({navigation, route}) => {
                   'Check your internet connection and try again, or open it in the browser.',
                 )}
               </Text>
-                            {__DEV__ && !!detail && (
+             {__DEV__ && !!detail && (
                 <Text style={styles.statusDetail} selectable>
                   {detail}
                 </Text>

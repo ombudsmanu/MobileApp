@@ -15,7 +15,16 @@ import {createStyles, TILE_STAGGER_MS} from './ModuleTile.styles';
  *   label         the card name (already translated)
  *   enabled       false → faded, not tappable, shows soonLabel
  *   index         position in the grid, for the staggered entrance
+ *
+ * Badge + name are centred in the card as one group; the "coming soon"
+ * pill sits in the space below and never moves them, so every card in a
+ * row lines up. Layout numbers are explained in ModuleTile.styles.js.
  */
+
+// Urdu is detected from the label itself (same test AppText uses), so the
+// layout is right even for a label that has no translation yet
+const ARABIC_SCRIPT = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+
 const ModuleTile = ({
   icon,
   colors,
@@ -23,11 +32,11 @@ const ModuleTile = ({
   soonLabel,
   enabled = true,
   index = 0,
-  isRTL = false,
   onPress,
 }) => {
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const urdu = ARABIC_SCRIPT.test(label ?? '');
 
   const appear = useRef(new Animated.Value(0)).current;
   const press = useRef(new Animated.Value(1)).current;
@@ -53,6 +62,9 @@ const ModuleTile = ({
       onPress={onPress}
       onPressIn={() => pressTo(0.96)}
       onPressOut={() => pressTo(1)}
+      accessibilityRole="button"
+      accessibilityLabel={enabled ? label : `${label}, ${soonLabel}`}
+      accessibilityState={{disabled: !enabled}}
       style={styles.tileOuter}>
       <Animated.View
         style={[
@@ -77,19 +89,23 @@ const ModuleTile = ({
           </LinearGradient>
         </View>
 
-        <View style={styles.nameRow}>
+        <View style={styles.nameSlot}>
           <Text
-            style={[styles.tileLabel, isRTL && styles.tileLabelUrdu]}
-            numberOfLines={2}
+            style={[styles.tileLabel, urdu && styles.tileLabelUrdu]}
+            numberOfLines={urdu ? 1 : 2}
             adjustsFontSizeToFit
-            minimumFontScale={0.8}>
+            minimumFontScale={urdu ? 0.7 : 0.85}>
             {label}
           </Text>
         </View>
 
         {!enabled && (
-          <View style={styles.soonPill}>
-            <Text style={styles.tileSoon}>{soonLabel}</Text>
+          <View pointerEvents="none" style={styles.pillDock}>
+            <View style={styles.soonPill}>
+              <Text style={styles.tileSoon} numberOfLines={1}>
+                {soonLabel}
+              </Text>
+            </View>
           </View>
         )}
       </Animated.View>
