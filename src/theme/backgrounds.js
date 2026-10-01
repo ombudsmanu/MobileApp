@@ -22,7 +22,7 @@ export const presetBackgrounds = [
   {
     key: 'bg3',
     label: 'Preset 3',
-    source: require('../assets/backgrounds/bg3.jpg'),
+    source: require('../assets/backgrounds/bg3.png'),
     caption: {en: 'Ombudsman Office Okara', ur: 'دفتر محتسب اوکاڑہ'},
   },
   {
@@ -34,7 +34,7 @@ export const presetBackgrounds = [
   {
     key: 'bg5',
     label: 'Preset 5',
-    source: require('../assets/backgrounds/bg5.jpg'),
+    source: require('../assets/backgrounds/bg5.png'),
     caption: {en: 'Ombudsman Office Attock', ur: 'دفتر محتسب اٹک'},
   },
   {

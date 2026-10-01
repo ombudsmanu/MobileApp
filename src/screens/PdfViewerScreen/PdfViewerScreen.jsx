@@ -56,7 +56,8 @@ const PdfViewerScreen = ({navigation, route}) => {
   const [pages, setPages] = useState(0);
   // Changing the key remounts <Pdf>, which starts the download again
   const [attempt, setAttempt] = useState(0);
-
+  // Technical reason for the last failure — shown only in development builds
+  const [detail, setDetail] = useState('');
   const source = useMemo(
     () => ({
       uri: cleanUrl(url),
@@ -67,7 +68,8 @@ const PdfViewerScreen = ({navigation, route}) => {
     [url, cacheName],
   );
 
-  const retry = useCallback(() => {
+    const retry = useCallback(() => {
+    setDetail('');
     setProgress(0);
     setStatus('loading');
     setAttempt(a => a + 1);
@@ -124,7 +126,12 @@ const PdfViewerScreen = ({navigation, route}) => {
               setPage(current);
               setPages(total);
             }}
-            onError={() => setStatus('error')}
+                        onError={error => {
+              const message = String(error?.message ?? error);
+              console.warn('[PdfViewer] could not load', source.uri, message);
+              setDetail(message);
+              setStatus('error');
+            }}
             style={[styles.pdf, {width}]}
           />
         )}
@@ -165,6 +172,11 @@ const PdfViewerScreen = ({navigation, route}) => {
                   'Check your internet connection and try again, or open it in the browser.',
                 )}
               </Text>
+                            {__DEV__ && !!detail && (
+                <Text style={styles.statusDetail} selectable>
+                  {detail}
+                </Text>
+              )}
               <View style={styles.buttons}>
                 <GlassButton
                   label={t('pdf.retry', 'TRY AGAIN')}

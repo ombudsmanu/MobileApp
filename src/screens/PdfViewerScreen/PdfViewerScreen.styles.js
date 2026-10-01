@@ -48,7 +48,7 @@ export const createStyles = theme =>
     statusContent: {alignItems: 'center'},
     statusTitle: {...theme.type.titleMedium, marginTop: spacing.sm, textAlign: 'center'},
     statusText: {...theme.type.bodySmall, marginTop: spacing.xs, textAlign: 'center'},
-
+    statusDetail: {...theme.type.labelSmall, marginTop: spacing.sm, textAlign: 'center', opacity: 0.7},
     progressTrack: {
       width: '100%',
       height: 6,

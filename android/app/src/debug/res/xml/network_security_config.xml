@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  NETWORK SECURITY — debug builds only (replaces the main file in debug).
+
+  Same Ombudsman rule as release, plus plain-HTTP allowed, because debug
+  builds load their JavaScript from Metro on the PC over http://.
+  Release builds never use this file.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+
+    <domain-config>
+        <domain includeSubdomains="true">ombudsmanpunjab.gov.pk</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/ombudsman_ca" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
