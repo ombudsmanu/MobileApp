@@ -40,6 +40,8 @@ const URDU_LINE_FACTOR = 2.2;
  * plenty of space already.
  */
 const EDGE_SPACE = '\u00A0';
+/** Labels up to this many characters get the edge spaces (not paragraphs). */
+const EDGE_SPACE_MAX_CHARS = 40;
 /** Collects the plain text inside children (strings, numbers, arrays). */
 const textOf = children => {
   if (typeof children === 'string' || typeof children === 'number') {
@@ -59,9 +61,14 @@ const AppText = ({ style, children, ...rest }) => {
       </Text>
     );
   }
+    // Short single-line labels get breathing room at both ends. "Short"
+  // rather than "numberOfLines === 1", because a centred title (the About
+  // Us hero) sets no line limit but is just as tight — its first letter's
+  // dots were being clipped. Paragraphs are long and already have room.
+  const plain = typeof children === 'string' ? children : '';
   const content =
-    rest.numberOfLines === 1 && typeof children === 'string'
-      ? EDGE_SPACE + children + EDGE_SPACE
+    plain && plain.length <= EDGE_SPACE_MAX_CHARS
+      ? EDGE_SPACE + plain + EDGE_SPACE
       : children;
   const flat = StyleSheet.flatten(style) || {};
   const fontSize = Math.round((flat.fontSize ?? 14) * URDU_SIZE_SCALE);
