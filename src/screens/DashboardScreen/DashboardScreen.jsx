@@ -14,6 +14,8 @@ import ImageSlider from '../../components/ImageSlider/ImageSlider';
 import Icon from '../../components/Icon/Icon';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import ModuleTile from '../../components/ModuleTile/ModuleTile';
+import { useScreenReady } from '../../navigation/useScreenReady';
+import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {
   createStyles,
   createDynamicStyles,
@@ -22,11 +24,6 @@ import {
   MODULE_FALLBACK,
   TILE_STAGGER_MS,
 } from './DashboardScreen.styles';
-
-const LANGUAGES = [
-  { code: 'en', label: 'EN' },
-  { code: 'ur', label: 'اردو' },
-];
 
 /**
  * One module card.
@@ -116,8 +113,8 @@ const DashboardScreen = ({ navigation }) => {
   const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
 
   const { user, isGuest, role } = useAuth();
-  const { lang, setLang, t, isRTL } = useLanguage();
-
+  const { lang, t, isRTL } = useLanguage();
+  const ready = useScreenReady();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Modules this role may see — the same registry drives the sidebar
@@ -153,27 +150,10 @@ const DashboardScreen = ({ navigation }) => {
 
         <View style={styles.topTextWrap}>
           <Text style={styles.topTitle}>OPMIS</Text>
-          <Text style={[styles.topSub, rtl]}>{t('orgName')}</Text>
+          <Text style={styles.topSub}>{t('orgName')}</Text>
         </View>
 
-        <View style={styles.langToggle}>
-          {LANGUAGES.map(l => {
-            const active = lang === l.code;
-            return (
-              <Pressable
-                key={l.code}
-                onPress={() => setLang(l.code)}
-                style={[styles.langOption, active && styles.langOptionActive]}
-              >
-                <Text
-                  style={[styles.langText, active && styles.langTextActive]}
-                >
-                  {l.label}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
+        <LanguageToggle />
       </View>
 
       <ScrollView
@@ -216,7 +196,8 @@ const DashboardScreen = ({ navigation }) => {
               label={t(`module.${m.key}`, m.label)}
               soonLabel={t('comingSoon')}
               enabled={m.enabled}
-              index={index}
+               index={index}
+              play={ready}
               isRTL={isRTL}
               onPress={() => navigation.navigate(m.route)}
             />

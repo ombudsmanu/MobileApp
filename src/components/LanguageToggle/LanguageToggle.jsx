@@ -10,9 +10,10 @@ import {createStyles} from './LanguageToggle.styles';
  *
  *   <LanguageToggle />
  *
- * Reads and sets the language through LanguageContext, so switching here
- * switches the whole app and is saved for the next launch. It has no props
- * to wire up: drop it into a top bar and it works.
+ * The ONLY toggle in the app: Dashboard, Appearance, About Us, the About
+ * pages and Annual Reports all use this one, so they always look and behave
+ * the same. It reads and sets the language through LanguageContext, so
+ * switching here switches the whole app and is saved for the next launch.
  *
  * It stays at the top right in both languages on purpose — if the bar
  * flipped in Urdu, the toggle would jump away from the finger that just
@@ -41,7 +42,11 @@ const LanguageToggle = ({style}) => {
             accessibilityState={{selected: active}}
             accessibilityLabel={l.a11y}
             style={[styles.option, active && styles.optionActive]}>
-            <Text style={[styles.text, active && styles.textActive]}>{l.label}</Text>
+            <Text
+              style={[styles.text, l.code === 'ur' && styles.textUrdu, active && styles.textActive]}
+              numberOfLines={1}>
+              {l.label}
+            </Text>
           </Pressable>
         );
       })}

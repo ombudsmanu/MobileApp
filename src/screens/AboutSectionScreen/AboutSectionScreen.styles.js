@@ -12,10 +12,15 @@ import {radii, spacing} from '../../theme/tokens';
  */
 export const PHOTO_SIZE = 132;
 export const PERSON_PHOTO_SIZE = 60;
+/** Width of the coloured ring around each photo. */
+export const PHOTO_RING = 3;
+/** Person icon size shown until a photo is supplied (42% of the circle). */
+export const PROFILE_ICON_SIZE = Math.round(PHOTO_SIZE * 0.42);
+export const PERSON_ICON_SIZE = Math.round(PERSON_PHOTO_SIZE * 0.42);
 
 export const createStyles = theme =>
   StyleSheet.create({
-       // Top bar: [back] [title — takes the free space] [EN / اردو]
+    // Top bar: [back] [title — takes the free space] [EN / اردو]
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -76,12 +81,41 @@ export const createStyles = theme =>
     signatureRole: {...theme.type.bodySmall},
 
     // ---- Photos ----
-    photo: {borderWidth: 3},
-    photoPlaceholder: {
-      borderWidth: 3,
+    // The RING is a circle with a coloured border that also clips whatever
+    // is inside it. The PHOTO sits inside at exactly the inner size, with
+    // resizeMode "cover": it fills the circle and trims the excess equally
+    // from both sides, so every photo is centred whatever its shape.
+    // (overflow:'hidden' is safe here — the LinearGradient problem does not
+    // apply to Images.) The ring's colour comes from createAccentStyles.
+    photoRingProfile: {
+      width: PHOTO_SIZE,
+      height: PHOTO_SIZE,
+      borderRadius: PHOTO_SIZE / 2,
+      borderWidth: PHOTO_RING,
+      overflow: 'hidden',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: theme.glass.fillStrong,
+    },
+    photoRingPerson: {
+      width: PERSON_PHOTO_SIZE,
+      height: PERSON_PHOTO_SIZE,
+      borderRadius: PERSON_PHOTO_SIZE / 2,
+      borderWidth: PHOTO_RING,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.glass.fillStrong,
+    },
+    photoInnerProfile: {
+      width: PHOTO_SIZE - PHOTO_RING * 2,
+      height: PHOTO_SIZE - PHOTO_RING * 2,
+      borderRadius: (PHOTO_SIZE - PHOTO_RING * 2) / 2,
+    },
+    photoInnerPerson: {
+      width: PERSON_PHOTO_SIZE - PHOTO_RING * 2,
+      height: PERSON_PHOTO_SIZE - PHOTO_RING * 2,
+      borderRadius: (PERSON_PHOTO_SIZE - PHOTO_RING * 2) / 2,
     },
 
     // ---- Profile card ----
@@ -158,7 +192,8 @@ export const createStyles = theme =>
     contactLabel: {...theme.type.labelSmall},
     contactValue: {...theme.type.bodyMedium},
     contactValueAction: {color: theme.accent},
-        // ---- Sub-section cards (Our Team → Head Office / Regional Office) ----
+
+    // ---- Sub-section cards (Our Team → Head Office / Regional Office) ----
     sectionGrid: {
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -169,7 +204,6 @@ export const createStyles = theme =>
 
     // A person's role, where they have one instead of a tenure
     personRole: {...theme.type.bodySmall, marginTop: 2},
-
   });
 
 export const createDynamicStyles = insets => ({
@@ -178,3 +212,12 @@ export const createDynamicStyles = insets => ({
 });
 
 export const BACK_RADIUS = radii.md;
+
+/**
+ * Styles that depend on the section's colour (purple on Former Ombudsman,
+ * and so on). Built with useMemo in the screen, like createDynamicStyles.
+ */
+export const createAccentStyles = accent =>
+  StyleSheet.create({
+    photoRing: {borderColor: accent},
+  });

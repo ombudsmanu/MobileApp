@@ -15,6 +15,7 @@ import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import GlassButton from '../../components/GlassButton/GlassButton';
 import Icon from '../../components/Icon/Icon';
+import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {
   createStyles,
   createDynamicStyles,
@@ -23,10 +24,7 @@ import {
 
 const SPECTRUM = ['#FF3B30', '#FF9500', '#FFCC00', '#34C759', '#007AFF', '#AF52DE'];
 
-const LANGUAGES = [
-  {code: 'en', label: 'EN'},
-  {code: 'ur', label: 'اردو'},
-];
+
 
 const TEXT_ROLES = ['headline', 'title', 'body', 'label'];
 
@@ -157,7 +155,7 @@ const AppearanceScreen = ({navigation}) => {
     discardBackground,
     applyTextColors,
   } = useTheme();
-  const {lang, setLang, t} = useLanguage();
+   const {t} = useLanguage();
 
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
@@ -329,21 +327,7 @@ const AppearanceScreen = ({navigation}) => {
             <Text style={styles.topSub}>{t('ap.subtitle')}</Text>
           </View>
           <View style={styles.sideSlotEnd}>
-            <View style={styles.langToggle}>
-              {LANGUAGES.map(l => {
-                const active = lang === l.code;
-                return (
-                  <Pressable
-                    key={l.code}
-                    onPress={() => setLang(l.code)}
-                    style={[styles.langOption, active && styles.langOptionActive]}>
-                    <Text style={[styles.langText, active && styles.langTextActive]}>
-                      {l.label}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
+            <LanguageToggle />
           </View>
         </View>
 

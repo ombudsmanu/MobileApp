@@ -27,6 +27,7 @@ export const createStyles = theme =>
       position: 'absolute',
       top: spacing.sm,
       maxWidth: '75%',
+      height: 30,
       paddingHorizontal: spacing.sm,
       paddingVertical: 5,
       borderRadius: radii.pill,

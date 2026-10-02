@@ -16,9 +16,10 @@ import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {
   createStyles,
   createDynamicStyles,
+  createAccentStyles,
   BACK_RADIUS,
-  PHOTO_SIZE,
-  PERSON_PHOTO_SIZE,
+  PROFILE_ICON_SIZE,
+  PERSON_ICON_SIZE,
 } from './AboutSectionScreen.styles';
 
 /**
@@ -50,32 +51,39 @@ const groupBlocks = blocks => {
 };
 
 /**
- * A round photo, or a person icon until the photo is supplied.
- * Every photo in About Us is drawn here, so making it tappable here makes
- * every profile and every person card open the full-screen viewer.
- * `name` and `caption` are shown under the enlarged photo.
+ * A round photo inside a coloured ring, or a person icon until the photo is
+ * supplied. Every photo in About Us is drawn here, so making it tappable
+ * here makes every profile and person card open the full-screen viewer.
+ *
+ *   variant      'profile' (132px, Ombudsman / Secretary) | 'person' (60px)
+ *   accentStyles the section-coloured ring (createAccentStyles)
+ *
+ * The photo sits INSIDE the ring at exactly the inner size, with
+ * resizeMode "cover": it fills the circle and trims equally from both
+ * sides, so it is centred whatever the image's shape.
  */
-const Photo = ({ source, size, accent, styles, theme, name, caption }) => {
-  const shape = {
-    width: size,
-    height: size,
-    borderRadius: size / 2,
-    borderColor: accent,
-  };
-  return source ? (
-    <PhotoTap
-      source={source}
-      style={[styles.photo, shape]}
-      name={name}
-      caption={caption}
-    />
-  ) : (
-    <View style={[styles.photoPlaceholder, shape]}>
-      <Icon
-        name="user"
-        size={Math.round(size * 0.42)}
-        color={theme.icon.muted}
-      />
+const Photo = ({ source, variant, accentStyles, styles, theme, name, caption }) => {
+  const isProfile = variant === 'profile';
+  const ring = isProfile ? styles.photoRingProfile : styles.photoRingPerson;
+  const inner = isProfile ? styles.photoInnerProfile : styles.photoInnerPerson;
+
+  return (
+    <View style={[ring, accentStyles.photoRing]}>
+      {source ? (
+        <PhotoTap
+          source={source}
+          style={inner}
+          resizeMode="cover"
+          name={name}
+          caption={caption}
+        />
+      ) : (
+        <Icon
+          name="user"
+          size={isProfile ? PROFILE_ICON_SIZE : PERSON_ICON_SIZE}
+          color={theme.icon.muted}
+        />
+      )}
     </View>
   );
 };
@@ -139,13 +147,13 @@ const TextCard = ({ blocks, accent, rtl, styles }) => (
 );
 
 /** Photo, name and role — for the Ombudsman and Secretary profiles. */
-const ProfileCard = ({ block, accent, styles, theme }) => (
+const ProfileCard = ({ block, accentStyles, styles, theme }) => (
   <GlassSurface style={styles.profileCard}>
     <View style={styles.profileInner}>
       <Photo
         source={block.photo}
-        size={PHOTO_SIZE}
-        accent={accent}
+        variant="profile"
+        accentStyles={accentStyles}
         styles={styles}
         theme={theme}
         name={block.name}
@@ -158,7 +166,7 @@ const ProfileCard = ({ block, accent, styles, theme }) => (
 );
 
 /** One person: photo, name, tenure, and an expandable biography. */
-const PersonCard = ({ person, accent, rtl, t, styles, theme }) => {
+const PersonCard = ({ person, accentStyles, rtl, t, styles, theme }) => {
   const [open, setOpen] = useState(false);
   const hasBio = !!person.bio?.length;
 
@@ -167,8 +175,8 @@ const PersonCard = ({ person, accent, rtl, t, styles, theme }) => {
       <View style={[styles.personRow, rtl && styles.rowRTL]}>
         <Photo
           source={person.photo}
-          size={PERSON_PHOTO_SIZE}
-          accent={accent}
+          variant="person"
+          accentStyles={accentStyles}
           styles={styles}
           theme={theme}
           name={person.name}
@@ -224,7 +232,7 @@ const PersonCard = ({ person, accent, rtl, t, styles, theme }) => {
  * Contact details. Email and phone rows are tappable — they open the
  * mail app or start a call, so nobody has to copy them by hand.
  */
-const ContactCard = ({ block, accent, styles, theme, rtl }) => {
+const ContactCard = ({ block, accent, rtl, styles, theme }) => {
   const open = row => {
     if (row.action === 'mail') {
       Linking.openURL(`mailto:${row.value}`);
@@ -282,7 +290,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
   const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
-  const { lang, t, isRTL } = useLanguage();
+  const {lang, t, isRTL} = useLanguage();
   const section = findAboutSection(route.params?.key);
   const content = section ? aboutContent[section.key] : null;
 
@@ -295,6 +303,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
 
   const groups = useMemo(() => (blocks ? groupBlocks(blocks) : []), [blocks]);
   const accent = section?.colors[1] ?? theme.accent;
+  const accentStyles = useMemo(() => createAccentStyles(accent), [accent]);
 
   const cardName = section
     ? t(`about.${section.key}`, section.label)
@@ -305,31 +314,15 @@ const AboutSectionScreen = ({ navigation, route }) => {
     <AppBackground>
       <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={10}>
-          <GlassSurface
-            strong
-            center
-            radius={BACK_RADIUS}
-            style={styles.backBtn}
-          >
-            <Icon
-              name="chevronLeft"
-              size={30}
-              color={theme.icon.heading}
-              weight={3}
-            />
+          <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
+            <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
-          <Text
-            style={[styles.topTitle, isRTL && styles.textRTL]}
-            numberOfLines={1}
-          >
+          <Text style={[styles.topTitle, isRTL && styles.textRTL]} numberOfLines={1}>
             {cardName}
           </Text>
-          <Text
-            style={[styles.topSub, isRTL && styles.textRTL]}
-            numberOfLines={1}
-          >
+          <Text style={[styles.topSub, isRTL && styles.textRTL]} numberOfLines={1}>
             {t('about.title')}
           </Text>
         </View>
@@ -381,7 +374,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
                 <ProfileCard
                   key={i}
                   block={g.block}
-                  accent={accent}
+                  accentStyles={accentStyles}
                   styles={styles}
                   theme={theme}
                 />
@@ -394,7 +387,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
                     <PersonCard
                       key={person.name}
                       person={person}
-                      accent={accent}
+                      accentStyles={accentStyles}
                       rtl={rtl}
                       t={t}
                       styles={styles}

@@ -24,6 +24,7 @@ import {
   createDynamicStyles,
   animationConfig,
   validationRules,
+  BACK_RADIUS
 } from './LoginScreen.styles';
 
 const LoginScreen = () => {
@@ -171,13 +172,22 @@ const LoginScreen = () => {
               ],
             }}
           >
-            <Pressable
+                     <Pressable
               onPress={() => navigation.goBack()}
               hitSlop={12}
-              style={styles.backButton}
+              accessibilityRole="button"
+              accessibilityLabel="Back"
+              style={({pressed}) => [styles.backWrap, pressed && styles.backPressed]}
             >
-              <Icon name="chevronLeft" size={16} color={theme.icon.title} />
-              <Text style={styles.backText}>Back</Text>
+              <GlassSurface strong radius={BACK_RADIUS} contentStyle={styles.backInner}>
+                <Icon
+                  name="chevronLeft"
+                  size={26}
+                  color={theme.icon.heading}
+                  weight={3}
+                />
+                <Text style={styles.backText}>Back</Text>
+              </GlassSurface>
             </Pressable>
 
                       <View style={styles.header}>

@@ -17,7 +17,7 @@ export const CUSTOM_FONT = false;
  * in src/assets/fonts. To switch to Noto Nastaliq Urdu, change this
  * name and the file.
  */
-export const URDU_FONT = 'NooriNastaleeq';
+export const URDU_FONT = 'NotoNastaliqUrdu-Regular';
 const FAMILY ={
   400: 'Poppins-Regular',
   500: 'Poppins-Medium',

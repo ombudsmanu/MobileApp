@@ -5,6 +5,7 @@ import Text from '../../components/AppText/AppText';
 import {useTheme} from '../../context/ThemeContext';
 import {useLanguage} from '../../context/LanguageContext';
 import {aboutSections} from '../../content/aboutSections';
+import {useScreenReady} from '../../navigation/useScreenReady';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import ModuleTile from '../../components/ModuleTile/ModuleTile';
@@ -12,13 +13,18 @@ import Icon from '../../components/Icon/Icon';
 import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {createStyles, createDynamicStyles, BACK_RADIUS} from './AboutUsScreen.styles';
 
-/** The About Us sections as cards — the same cards as the Dashboard modules. */
+/**
+ * The About Us sections as cards — the same cards as the Dashboard modules.
+ * The cards wait until the screen has finished sliding in, then cascade in
+ * from the first card (useScreenReady).
+ */
 const AboutUsScreen = ({navigation}) => {
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
   const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
   const {t, isRTL} = useLanguage();
+  const ready = useScreenReady();
 
   return (
     <AppBackground>
@@ -50,7 +56,7 @@ const AboutUsScreen = ({navigation}) => {
               colors={section.colors}
               label={t(`about.${section.key}`, section.label)}
               index={index}
-              isRTL={isRTL}
+              play={ready}
               onPress={() => navigation.navigate('AboutSection', {key: section.key})}
             />
           ))}

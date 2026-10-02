@@ -23,11 +23,11 @@ export const TILE_STAGGER_MS = 90;
  * card's centre line instead of hanging under the badge.
  */
 export const TILE = {
-  height: 200,
+  height: 210,
   badge: 56,
   gap: 12,
-  nameSlot: 48,
-  pillHeight: 24,
+  nameSlot: 60,
+  pillHeight: 30,
   pillBottom: 12,
 };
 
@@ -100,7 +100,7 @@ export const createStyles = theme =>
       alignItems: 'center',
     },
     soonPill: {
-      height: TILE.pillHeight,
+      minHeight: TILE.pillHeight,
       paddingHorizontal: 10,
       borderRadius: radii.pill,
       backgroundColor: 'rgba(212, 113, 28, 0.12)',
