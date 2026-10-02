@@ -29,7 +29,7 @@ export const createStyles = theme =>
       maxWidth: '75%',
       height: 30,
       paddingHorizontal: spacing.sm,
-      paddingVertical: 5,
+      paddingVertical: 8,
       borderRadius: radii.pill,
       backgroundColor: 'rgba(12, 20, 14, 0.55)',
     },
