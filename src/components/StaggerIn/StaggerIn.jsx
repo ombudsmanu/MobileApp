@@ -2,13 +2,13 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
 
 /** Delay between one item's entrance and the next, in milliseconds. */
-export const STAGGER_MS = 150;
+export const STAGGER_MS = 250;
 /**
  * Items after this position all start together. A long list (29 annual
  * reports) would otherwise make far-down rows wait seconds for their turn,
  * long after anyone could see them start.
  */
-export const MAX_STAGGER_INDEX = 8;
+export const MAX_STAGGER_INDEX = 12;
 
 /**
  * STAGGER IN — fades and slides its content into place, staggered by

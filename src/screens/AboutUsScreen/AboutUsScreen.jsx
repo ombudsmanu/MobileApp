@@ -58,11 +58,9 @@ const AboutUsScreen = ({ navigation }) => {
         </View>
         <LanguageToggle />
       </View>
-
       <ScrollView
         contentContainerStyle={[styles.scroll, dyn.scrollPad]}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         <View style={[styles.grid, isRTL && styles.gridRTL]}>
           {aboutSections.map((section, index) => (
             <ModuleTile
