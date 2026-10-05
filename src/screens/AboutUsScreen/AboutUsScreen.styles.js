@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {radii, spacing} from '../../theme/tokens';
+import { StyleSheet } from 'react-native';
+import { radii, spacing } from '../../theme/tokens';
 
 /**
  * TYPOGRAPHY (MD3)
@@ -19,20 +19,23 @@ export const createStyles = theme =>
       paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
-    backBtn: {width: 52, height: 52},
-    topTextWrap: {flex: 1},
-    topTitle: {...theme.type.titleLarge},
-    topSub: {...theme.type.bodySmall},
-    textRTL: {textAlign: 'right', writingDirection: 'rtl'},
+    backBtn: { width: 52, height: 52 },
+    topTextWrap: { flex: 1 },
+    topTitle: { ...theme.type.titleMedium },
+    textRTL: { textAlign: 'right', writingDirection: 'rtl' },
 
-    scroll: {paddingHorizontal: spacing.lg, paddingTop: spacing.sm},
-    grid: {flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'},
-    gridRTL: {flexDirection: 'row-reverse'},
+    scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.sm },
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    },
+    gridRTL: { flexDirection: 'row-reverse' },
   });
 
 export const createDynamicStyles = insets => ({
-  topBarPad: {paddingTop: insets.top + spacing.sm},
-  scrollPad: {paddingBottom: insets.bottom + spacing.xxl},
+  topBarPad: { paddingTop: insets.top + spacing.sm },
+  scrollPad: { paddingBottom: insets.bottom + spacing.xxl },
 });
 
 export const BACK_RADIUS = radii.md;

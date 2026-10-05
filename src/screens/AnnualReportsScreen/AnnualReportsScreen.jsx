@@ -78,15 +78,9 @@ const AnnualReportsScreen = ({ navigation }) => {
         <View style={styles.topTextWrap}>
           <Text
             style={[styles.topTitle, isRTL && styles.textRTL]}
-            numberOfLines={1}
-          >
-            {t('reports.title')}
-          </Text>
-          <Text
-            style={[styles.topSub, isRTL && styles.textRTL]}
             numberOfLines={2}
           >
-            {t('reports.subtitle')}
+            {t('reports.title')}
           </Text>
         </View>
         <LanguageToggle />
@@ -100,24 +94,25 @@ const AnnualReportsScreen = ({ navigation }) => {
           {t('reports.intro')}
         </Text>
 
-        {annualReports.map((report, index) => (
-          <StaggerIn
-            key={report.year}
-            index={index}
-            play={ready}
-            style={styles.cardWrap}
-          >
-            <ReportTile
-              year={report.year}
-              available={!!report.url}
-              subtitle={t('reports.report')}
-              openLabel={t('reports.open')}
-              soonLabel={t('reports.unavailable')}
-              rtl={isRTL}
-              onPress={() => openReport(report)}
-            />
-          </StaggerIn>
-        ))}
+        <View style={styles.grid}>
+          {annualReports.map((report, index) => (
+            <StaggerIn
+              key={report.year}
+              index={index}
+              play={ready}
+              style={styles.cardWrap}
+            >
+              <ReportTile
+                year={report.year}
+                available={!!report.url}
+                subtitle={t('reports.report')}
+                openLabel={t('reports.open')}
+                soonLabel={t('reports.unavailable')}
+                onPress={() => openReport(report)}
+              />
+            </StaggerIn>
+          ))}
+        </View>
       </ScrollView>
     </AppBackground>
   );

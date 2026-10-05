@@ -57,8 +57,8 @@ const ModuleTile = ({
     Animated.spring(appear, {
       toValue: 1,
       delay: TILE_STAGGER_MS * index,
-      friction: 7,
-      tension: 60,
+      friction: 9,
+      tension: 40,
       useNativeDriver: true,
     }).start();
   }, [appear, index, play]);

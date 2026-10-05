@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { Linking, Pressable, ScrollView, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
 import { useTheme } from '../../context/ThemeContext';
@@ -21,7 +20,8 @@ import {
   PROFILE_ICON_SIZE,
   PERSON_ICON_SIZE,
 } from './AboutSectionScreen.styles';
-
+import StaggerIn from '../../components/StaggerIn/StaggerIn';
+import { useScreenReady } from '../../navigation/useScreenReady';
 /**
  * Splits the blocks into cards: every heading starts a new text card;
  * profile and people blocks stand on their own.
@@ -62,7 +62,15 @@ const groupBlocks = blocks => {
  * resizeMode "cover": it fills the circle and trims equally from both
  * sides, so it is centred whatever the image's shape.
  */
-const Photo = ({ source, variant, accentStyles, styles, theme, name, caption }) => {
+const Photo = ({
+  source,
+  variant,
+  accentStyles,
+  styles,
+  theme,
+  name,
+  caption,
+}) => {
   const isProfile = variant === 'profile';
   const ring = isProfile ? styles.photoRingProfile : styles.photoRingPerson;
   const inner = isProfile ? styles.photoInnerProfile : styles.photoInnerPerson;
@@ -290,7 +298,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
   const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
-  const {lang, t, isRTL} = useLanguage();
+  const { lang, t, isRTL } = useLanguage();
   const section = findAboutSection(route.params?.key);
   const content = section ? aboutContent[section.key] : null;
 
@@ -304,7 +312,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
   const groups = useMemo(() => (blocks ? groupBlocks(blocks) : []), [blocks]);
   const accent = section?.colors[1] ?? theme.accent;
   const accentStyles = useMemo(() => createAccentStyles(accent), [accent]);
-
+  const ready = useScreenReady();
   const cardName = section
     ? t(`about.${section.key}`, section.label)
     : t('about.title');
@@ -314,16 +322,26 @@ const AboutSectionScreen = ({ navigation, route }) => {
     <AppBackground>
       <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={10}>
-          <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
-            <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
+          <GlassSurface
+            strong
+            center
+            radius={BACK_RADIUS}
+            style={styles.backBtn}
+          >
+            <Icon
+              name="chevronLeft"
+              size={30}
+              color={theme.icon.heading}
+              weight={3}
+            />
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
-          <Text style={[styles.topTitle, isRTL && styles.textRTL]} numberOfLines={1}>
-            {cardName}
-          </Text>
-          <Text style={[styles.topSub, isRTL && styles.textRTL]} numberOfLines={1}>
-            {t('about.title')}
+          <Text
+            style={[styles.topTitle, isRTL && styles.textRTL]}
+            numberOfLines={2}
+          >
+            {title}
           </Text>
         </View>
         <LanguageToggle />
@@ -333,35 +351,6 @@ const AboutSectionScreen = ({ navigation, route }) => {
         contentContainerStyle={[styles.scroll, dyn.scrollPad]}
         showsVerticalScrollIndicator={false}
       >
-        {/* ---- Header ---- */}
-        <GlassSurface style={styles.heroCard}>
-          <View style={styles.heroInner}>
-            {section && (
-              <View
-                style={[
-                  styles.badgeShell,
-                  { backgroundColor: section.colors[1] },
-                ]}
-              >
-                <LinearGradient
-                  colors={section.colors}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.badge}
-                >
-                  <Icon
-                    name={section.icon}
-                    size={30}
-                    color="#FFFFFF"
-                    weight={2.5}
-                  />
-                </LinearGradient>
-              </View>
-            )}
-            <Text style={styles.heroTitle}>{title}</Text>
-          </View>
-        </GlassSurface>
-
         {showEnglishNote && (
           <Text style={styles.langNote}>{t('about.englishOnly')}</Text>
         )}
@@ -371,28 +360,30 @@ const AboutSectionScreen = ({ navigation, route }) => {
           groups.map((g, i) => {
             if (g.kind === 'profile') {
               return (
-                <ProfileCard
-                  key={i}
-                  block={g.block}
-                  accentStyles={accentStyles}
-                  styles={styles}
-                  theme={theme}
-                />
+                <StaggerIn key={i} index={0} play={ready}>
+                  <ProfileCard
+                    block={g.block}
+                    accentStyles={accentStyles}
+                    styles={styles}
+                    theme={theme}
+                  />
+                </StaggerIn>
               );
             }
             if (g.kind === 'people') {
               return (
                 <View key={i}>
-                  {g.block.items.map(person => (
-                    <PersonCard
-                      key={person.name}
-                      person={person}
-                      accentStyles={accentStyles}
-                      rtl={rtl}
-                      t={t}
-                      styles={styles}
-                      theme={theme}
-                    />
+                  {g.block.items.map((person, j) => (
+                    <StaggerIn key={person.name} index={j} play={ready}>
+                      <PersonCard
+                        person={person}
+                        accentStyles={accentStyles}
+                        rtl={rtl}
+                        t={t}
+                        styles={styles}
+                        theme={theme}
+                      />
+                    </StaggerIn>
                   ))}
                 </View>
               );

@@ -23,8 +23,8 @@ import {AccessibilityInfo, Animated, Easing} from 'react-native';
  */
 export const PULSE_ENABLED = true;
 export const PULSE_MAX = 1.12; // a single pop can be bigger than a repeating one
-export const PULSE_MS = 420; // half the pop, so ~0.84s in and out
-export const PULSE_STAGGER_MS = 90; // matches the card entrance stagger
+export const PULSE_MS = 620; // half the pop, so ~1.2s in and out
+export const PULSE_STAGGER_MS = 130; // matches the card entrance stagger
 
 export const usePulse = (index = 0, play = true) => {
     const scale = useRef(new Animated.Value(1)).current;
@@ -63,8 +63,8 @@ export const usePulse = (index = 0, play = true) => {
           // Spring back, so it settles with a little life instead of stopping dead
           Animated.spring(scale, {
             toValue: 1,
-            friction: 5,
-            tension: 90,
+            friction: 7,
+            tension: 50,
             useNativeDriver: true,
           }),
         ]);

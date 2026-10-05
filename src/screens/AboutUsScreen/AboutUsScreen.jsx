@@ -1,45 +1,59 @@
-import React, {useMemo} from 'react';
-import {Pressable, ScrollView, View} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import React, { useMemo } from 'react';
+import { Pressable, ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
-import {useTheme} from '../../context/ThemeContext';
-import {useLanguage} from '../../context/LanguageContext';
-import {aboutSections} from '../../content/aboutSections';
-import {useScreenReady} from '../../navigation/useScreenReady';
+import { useTheme } from '../../context/ThemeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { aboutSections } from '../../content/aboutSections';
+import { useScreenReady } from '../../navigation/useScreenReady';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import ModuleTile from '../../components/ModuleTile/ModuleTile';
 import Icon from '../../components/Icon/Icon';
 import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
-import {createStyles, createDynamicStyles, BACK_RADIUS} from './AboutUsScreen.styles';
+import {
+  createStyles,
+  createDynamicStyles,
+  BACK_RADIUS,
+} from './AboutUsScreen.styles';
 
 /**
  * The About Us sections as cards — the same cards as the Dashboard modules.
  * The cards wait until the screen has finished sliding in, then cascade in
  * from the first card (useScreenReady).
  */
-const AboutUsScreen = ({navigation}) => {
-  const {theme} = useTheme();
+const AboutUsScreen = ({ navigation }) => {
+  const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
   const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
-  const {t, isRTL} = useLanguage();
+  const { t, isRTL } = useLanguage();
   const ready = useScreenReady();
 
   return (
     <AppBackground>
       <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
-          <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
-            <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
+          <GlassSurface
+            strong
+            center
+            radius={BACK_RADIUS}
+            style={styles.backBtn}
+          >
+            <Icon
+              name="chevronLeft"
+              size={30}
+              color={theme.icon.heading}
+              weight={3}
+            />
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
-          <Text style={[styles.topTitle, isRTL && styles.textRTL]} numberOfLines={1}>
+          <Text
+            style={[styles.topTitle, isRTL && styles.textRTL]}
+            numberOfLines={2}
+          >
             {t('about.title')}
-          </Text>
-          <Text style={[styles.topSub, isRTL && styles.textRTL]} numberOfLines={2}>
-            {t('officeName')}
           </Text>
         </View>
         <LanguageToggle />
@@ -47,7 +61,8 @@ const AboutUsScreen = ({navigation}) => {
 
       <ScrollView
         contentContainerStyle={[styles.scroll, dyn.scrollPad]}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <View style={[styles.grid, isRTL && styles.gridRTL]}>
           {aboutSections.map((section, index) => (
             <ModuleTile
@@ -57,7 +72,9 @@ const AboutUsScreen = ({navigation}) => {
               label={t(`about.${section.key}`, section.label)}
               index={index}
               play={ready}
-              onPress={() => navigation.navigate('AboutSection', {key: section.key})}
+              onPress={() =>
+                navigation.navigate('AboutSection', { key: section.key })
+              }
             />
           ))}
         </View>

@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {radii, spacing} from '../../theme/tokens';
+import { StyleSheet } from 'react-native';
+import { radii, spacing } from '../../theme/tokens';
 
 /**
  * TYPOGRAPHY (MD3) — each card runs largest to smallest
@@ -28,48 +28,43 @@ export const createStyles = theme =>
       paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
-    backBtn: {width: 52, height: 52},
-    topTextWrap: {flex: 1},
-    topTitle: {...theme.type.titleLarge},
-    topSub: {...theme.type.bodySmall},
+    backBtn: { width: 52, height: 52 },
+    // The title takes the space between the back button and the toggle,
+    // wrapping to a second line rather than being cut off. Title Medium,
+    // not Title Large: a two-line heading needs the smaller size to fit
+    // beside the toggle, and long names are the normal case here.
+    topTextWrap: { flex: 1 },
+    topTitle: { ...theme.type.titleMedium },
 
-    scroll: {paddingHorizontal: spacing.lg},
+    scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.xs },
 
-    // ---- Header: badge + section title ----
-    heroCard: {paddingVertical: spacing.lg, paddingHorizontal: spacing.lg},
-    heroInner: {alignItems: 'center'},
-    badgeShell: {
-      width: 64,
-      height: 64,
-      borderRadius: 20,
-      marginBottom: spacing.sm,
-      elevation: 4,
-      shadowColor: '#000000',
-      shadowOpacity: 0.2,
-      shadowRadius: 6,
-      shadowOffset: {width: 0, height: 3},
+    langNote: {
+      ...theme.type.bodySmall,
+      textAlign: 'center',
+      marginTop: spacing.md,
     },
-    badge: {width: 64, height: 64, borderRadius: 20, alignItems: 'center', justifyContent: 'center'},
-    heroTitle: {...theme.type.titleLarge, textAlign: 'center'},
-    langNote: {...theme.type.bodySmall, textAlign: 'center', marginTop: spacing.md},
 
     // ---- Text cards ----
-    textCard: {padding: spacing.lg, marginTop: spacing.md},
+    textCard: { padding: spacing.lg, marginTop: spacing.md },
     headingRow: {
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.sm,
       marginBottom: spacing.sm,
     },
-    headingBar: {width: 4, height: 20, borderRadius: 2},
-    heading: {...theme.type.titleMedium, flexShrink: 1},
-    paragraph: {...theme.type.bodyMedium, lineHeight: 22, marginBottom: spacing.sm},
-    textRTL: {textAlign: 'right', writingDirection: 'rtl'},
-    rowRTL: {flexDirection: 'row-reverse'},
+    headingBar: { width: 4, height: 20, borderRadius: 2 },
+    heading: { ...theme.type.titleMedium, flexShrink: 1 },
+    paragraph: {
+      ...theme.type.bodyMedium,
+      lineHeight: 22,
+      marginBottom: spacing.sm,
+    },
+    textRTL: { textAlign: 'right', writingDirection: 'rtl' },
+    rowRTL: { flexDirection: 'row-reverse' },
 
     // ---- Signature ----
-    signature: {alignItems: 'flex-end', marginTop: spacing.sm},
-    signatureRTL: {alignItems: 'flex-start'},
+    signature: { alignItems: 'flex-end', marginTop: spacing.sm },
+    signatureRTL: { alignItems: 'flex-start' },
     signatureRule: {
       width: 48,
       height: 2,
@@ -77,8 +72,8 @@ export const createStyles = theme =>
       backgroundColor: theme.glass.border,
       marginBottom: spacing.xs,
     },
-    signatureName: {...theme.type.titleSmall},
-    signatureRole: {...theme.type.bodySmall},
+    signatureName: { ...theme.type.titleSmall },
+    signatureRole: { ...theme.type.bodySmall },
 
     // ---- Photos ----
     // The RING is a circle with a coloured border that also clips whatever
@@ -119,17 +114,29 @@ export const createStyles = theme =>
     },
 
     // ---- Profile card ----
-    profileCard: {paddingVertical: spacing.lg, paddingHorizontal: spacing.lg, marginTop: spacing.md},
-    profileInner: {alignItems: 'center'},
-    profileName: {...theme.type.titleMedium, textAlign: 'center', marginTop: spacing.sm},
-    profileRole: {...theme.type.bodySmall, textAlign: 'center', marginTop: 2},
+    profileCard: {
+      paddingVertical: spacing.lg,
+      paddingHorizontal: spacing.lg,
+      marginTop: spacing.md,
+    },
+    profileInner: { alignItems: 'center' },
+    profileName: {
+      ...theme.type.titleMedium,
+      textAlign: 'center',
+      marginTop: spacing.sm,
+    },
+    profileRole: { ...theme.type.bodySmall, textAlign: 'center', marginTop: 2 },
 
     // ---- Person cards ----
-    personCard: {padding: spacing.md, marginTop: spacing.sm},
-    personRow: {flexDirection: 'row', alignItems: 'center', columnGap: spacing.md},
-    personText: {flex: 1, alignItems: 'flex-start'},
-    personTextRTL: {alignItems: 'flex-end'},
-    personName: {...theme.type.titleSmall},
+    personCard: { padding: spacing.md, marginTop: spacing.sm },
+    personRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+    },
+    personText: { flex: 1, alignItems: 'flex-start' },
+    personTextRTL: { alignItems: 'flex-end' },
+    personName: { ...theme.type.titleSmall },
     tenurePill: {
       marginTop: 4,
       paddingHorizontal: 10,
@@ -137,7 +144,7 @@ export const createStyles = theme =>
       borderRadius: radii.pill,
       backgroundColor: 'rgba(212, 113, 28, 0.12)',
     },
-    tenureText: {...theme.type.labelSmall, color: theme.accent},
+    tenureText: { ...theme.type.labelSmall, color: theme.accent },
     bioToggle: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -146,15 +153,23 @@ export const createStyles = theme =>
       marginTop: spacing.sm,
       marginBottom: spacing.xs,
     },
-    bioToggleText: {...theme.type.labelMedium, color: theme.accent, textShadowRadius: 0},
+    bioToggleText: {
+      ...theme.type.labelMedium,
+      color: theme.accent,
+      textShadowRadius: 0,
+    },
 
     // ---- No content yet ----
-    soonCard: {padding: spacing.lg, marginTop: spacing.md},
-    soonText: {...theme.type.bodyMedium, textAlign: 'center'},
+    soonCard: { padding: spacing.lg, marginTop: spacing.md },
+    soonText: { ...theme.type.bodyMedium, textAlign: 'center' },
     // ---- Bullet list ----
-    bulletRow: {flexDirection: 'row', marginBottom: spacing.sm, columnGap: spacing.sm},
-    bulletDot: {width: 7, height: 7, borderRadius: 4, marginTop: 7},
-    bulletText: {...theme.type.bodyMedium, lineHeight: 22, flex: 1},
+    bulletRow: {
+      flexDirection: 'row',
+      marginBottom: spacing.sm,
+      columnGap: spacing.sm,
+    },
+    bulletDot: { width: 7, height: 7, borderRadius: 4, marginTop: 7 },
+    bulletText: { ...theme.type.bodyMedium, lineHeight: 22, flex: 1 },
 
     // ---- Website link ----
     linkRow: {
@@ -170,17 +185,21 @@ export const createStyles = theme =>
       borderColor: theme.glass.border,
       backgroundColor: theme.glass.fillStrong,
     },
-    linkText: {...theme.type.labelMedium, color: theme.accent, textShadowRadius: 0},
+    linkText: {
+      ...theme.type.labelMedium,
+      color: theme.accent,
+      textShadowRadius: 0,
+    },
 
     // ---- Contact rows ----
-    contactCard: {padding: spacing.md, marginTop: spacing.md},
+    contactCard: { padding: spacing.md, marginTop: spacing.md },
     contactRow: {
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.md,
       paddingVertical: spacing.sm,
     },
-    contactDivider: {height: 1, backgroundColor: theme.glass.rim},
+    contactDivider: { height: 1, backgroundColor: theme.glass.rim },
     contactIcon: {
       width: 38,
       height: 38,
@@ -188,10 +207,10 @@ export const createStyles = theme =>
       alignItems: 'center',
       justifyContent: 'center',
     },
-    contactText: {flex: 1},
-    contactLabel: {...theme.type.labelSmall},
-    contactValue: {...theme.type.bodyMedium},
-    contactValueAction: {color: theme.accent},
+    contactText: { flex: 1 },
+    contactLabel: { ...theme.type.labelSmall },
+    contactValue: { ...theme.type.bodyMedium },
+    contactValueAction: { color: theme.accent },
 
     // ---- Sub-section cards (Our Team → Head Office / Regional Office) ----
     sectionGrid: {
@@ -200,15 +219,15 @@ export const createStyles = theme =>
       justifyContent: 'space-between',
       marginTop: spacing.md,
     },
-    sectionGridRTL: {flexDirection: 'row-reverse'},
+    sectionGridRTL: { flexDirection: 'row-reverse' },
 
     // A person's role, where they have one instead of a tenure
-    personRole: {...theme.type.bodySmall, marginTop: 2},
+    personRole: { ...theme.type.bodySmall, marginTop: 2 },
   });
 
 export const createDynamicStyles = insets => ({
-  topBarPad: {paddingTop: insets.top + spacing.sm},
-  scrollPad: {paddingBottom: insets.bottom + spacing.xxl},
+  topBarPad: { paddingTop: insets.top + spacing.sm },
+  scrollPad: { paddingBottom: insets.bottom + spacing.xxl },
 });
 
 export const BACK_RADIUS = radii.md;
@@ -219,5 +238,5 @@ export const BACK_RADIUS = radii.md;
  */
 export const createAccentStyles = accent =>
   StyleSheet.create({
-    photoRing: {borderColor: accent},
+    photoRing: { borderColor: accent },
   });

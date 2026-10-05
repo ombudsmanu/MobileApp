@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {radii, spacing} from '../../theme/tokens';
 
 /** Delay between each card's entrance, in milliseconds. */
-export const TILE_STAGGER_MS = 90;
+export const TILE_STAGGER_MS = 130;
 
 /**
  * LAYOUT — every card is built from the same fixed pieces, so badges and

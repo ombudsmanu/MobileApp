@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
 
 /** Delay between one item's entrance and the next, in milliseconds. */
-export const STAGGER_MS = 70;
+export const STAGGER_MS = 150;
 /**
  * Items after this position all start together. A long list (29 annual
  * reports) would otherwise make far-down rows wait seconds for their turn,
@@ -36,8 +36,9 @@ const StaggerIn = ({index = 0, play = true, style, children}) => {
     Animated.spring(appear, {
       toValue: 1,
       delay: STAGGER_MS * Math.min(index, MAX_STAGGER_INDEX),
-      friction: 7,
-      tension: 60,
+      // Matches ModuleTile's entrance, so lists and cards feel alike
+      friction: 9,
+      tension: 40,
       useNativeDriver: true,
     }).start();
   }, [appear, index, play]);
