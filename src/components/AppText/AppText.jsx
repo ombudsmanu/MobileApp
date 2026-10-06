@@ -1,55 +1,41 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { URDU_FONT } from '../../theme/tokens';
+import {StyleSheet, Text} from 'react-native';
+import {URDU_FONT} from '../../theme/tokens';
 
 /**
  * Drop-in replacement for <Text>.
  *
  * When the text contains Urdu (Arabic script) it switches to the Nastaleeq
- * font (URDU_FONT, currently Noto Nastaliq Urdu) and adjusts the metrics
- * Nastaleeq needs. English text passes through untouched.
+ * font (URDU_FONT — Noto Nastaliq Urdu) and applies the settings below.
+ * English text passes through completely untouched.
  *
- *   Size  ×URDU_SIZE_SCALE   Nastaleeq letters sit a little small in their
- *                            box, so Urdu is nudged up to read at the same
- *                            visual size as the English beside it
- *   Line  ×URDU_LINE_FACTOR  the diagonal stacking is much taller than
- *                            Latin text and needs about twice the line
- *   Normal weight            the font is used at one weight; asking Android
- *                            for bold on a custom font makes it look for a
- *                            separate bold file, and when it finds none it
- *                            silently falls back to the system font
- *   No font padding          Android otherwise adds the font's very tall
- *                            built-in spacing above and below, which pushes
- *                            Urdu off-centre in pills, buttons and cards
+ *   Size   ×URDU_SIZE_SCALE, never below URDU_MIN_SIZE — under ~14px the
+ *          dots of letters (the three under پ) blur into one smudge
+ *   Line   ×URDU_LINE_FACTOR — keeps labels visually centred in their box
+ *   Room   URDU_DRAW_ROOM above and below the box (see below)
+ *   Weight always normal — asking Android for bold on a custom font makes
+ *          it look for a separate bold file and fall back to the system font
  *
- * TUNING — these two numbers were set for Noto Nastaliq Urdu. If Urdu looks
- * too big or too small next to English, change URDU_SIZE_SCALE (try 1.0 to
- * 1.2). If a different Urdu font is ever used, re-check both.
+ * DRAWING ROOM — Nastaleeq strokes reach BEYOND the font's own declared top
+ * and bottom (the rising stroke of ک, the hanging tails of ے and ر), and
+ * Android clips text at the edge of its box. No line height fixes that: a
+ * taller line only moves where the cut happens (measured: at 2.5 the top
+ * of ک was still cut AND labels sat visibly low). Instead each Urdu text
+ * gets padding above and below — Android lets text draw into its own
+ * padding — cancelled by an equal negative margin, so the layout does not
+ * move at all. Measured on every app label at 14–24px: nothing is cut.
+ *
+ * EDGE SPACE — a no-break space at each end of short labels gives the
+ * first and last letters a little sideways room too.
  */
-const ARABIC_SCRIPT =
-  /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const ARABIC_SCRIPT = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
 const URDU_SIZE_SCALE = 1.1;
-
-/**
- * Smallest size Urdu is ever drawn at. Below about 14px the dots of
- * Nastaleeq letters (the three under پ, the two over ت) are too small for
- * a phone screen to draw apart, and blur into a single smudge — so small
- * labels like "پی ڈی ایف کھولیں" lose their dots. English is unaffected.
- */
 const URDU_MIN_SIZE = 14;
 const URDU_LINE_FACTOR = 2.2;
-
-/**
- * Nastaleeq letters can reach a little past their own width (the swash of
- * a first or last letter, like the پ of "پی ڈی ایف"). Android sizes the
- * text box to the letters' width and clips anything drawn outside it, so
- * tight single-line labels lose part of a letter. A no-break space at each
- * end gives the letters that room. Only single-line text: paragraphs have
- * plenty of space already.
- */
+const URDU_DRAW_ROOM = 0.8;
 const EDGE_SPACE = '\u00A0';
-/** Labels up to this many characters get the edge spaces (not paragraphs). */
-const EDGE_SPACE_MAX_CHARS = 40;
+const EDGE_SPACE_MAX_CHARS = 60;
+
 /** Collects the plain text inside children (strings, numbers, arrays). */
 const textOf = children => {
   if (typeof children === 'string' || typeof children === 'number') {
@@ -61,7 +47,10 @@ const textOf = children => {
   return '';
 };
 
-const AppText = ({ style, children, ...rest }) => {
+/** A style value as a number (unset or non-numeric counts as 0). */
+const num = value => (typeof value === 'number' ? value : 0);
+
+const AppText = ({style, children, ...rest}) => {
   if (!ARABIC_SCRIPT.test(textOf(children))) {
     return (
       <Text {...rest} style={style}>
@@ -69,24 +58,26 @@ const AppText = ({ style, children, ...rest }) => {
       </Text>
     );
   }
-    // Short single-line labels get breathing room at both ends. "Short"
-  // rather than "numberOfLines === 1", because a centred title (the About
-  // Us hero) sets no line limit but is just as tight — its first letter's
-  // dots were being clipped. Paragraphs are long and already have room.
-  const plain = typeof children === 'string' ? children : '';
-  const content =
-    plain && plain.length <= EDGE_SPACE_MAX_CHARS
-      ? EDGE_SPACE + plain + EDGE_SPACE
-      : children;
+
   const flat = StyleSheet.flatten(style) || {};
   const fontSize = Math.max(
     URDU_MIN_SIZE,
     Math.round((flat.fontSize ?? 14) * URDU_SIZE_SCALE),
   );
-    const lineHeight = Math.max(
-    flat.lineHeight ?? 0,
-    Math.round(fontSize * URDU_LINE_FACTOR),
-  );
+  const lineHeight = Math.max(flat.lineHeight ?? 0, Math.round(fontSize * URDU_LINE_FACTOR));
+  const room = Math.round(fontSize * URDU_DRAW_ROOM);
+
+  // Keep whatever spacing the screen already set, then add the room
+  const padTop = num(flat.paddingTop ?? flat.paddingVertical ?? flat.padding);
+  const padBottom = num(flat.paddingBottom ?? flat.paddingVertical ?? flat.padding);
+  const marTop = num(flat.marginTop ?? flat.marginVertical ?? flat.margin);
+  const marBottom = num(flat.marginBottom ?? flat.marginVertical ?? flat.margin);
+
+  const plain = typeof children === 'string' ? children : '';
+  const content =
+    plain && plain.length <= EDGE_SPACE_MAX_CHARS
+      ? EDGE_SPACE + plain + EDGE_SPACE
+      : children;
 
   return (
     <Text
@@ -99,14 +90,14 @@ const AppText = ({ style, children, ...rest }) => {
           lineHeight,
           fontWeight: 'normal',
           writingDirection: 'rtl',
-          // Font padding stays ON: it is the room Nastaleeq's descending
-          // tails need below the line. Turning it off (to tighten spacing)
-          // makes Android cut the tails off.
           includeFontPadding: true,
           textAlignVertical: 'center',
+          paddingTop: padTop + room,
+          paddingBottom: padBottom + room,
+          marginTop: marTop - room,
+          marginBottom: marBottom - room,
         },
-      ]}
-    >
+      ]}>
       {content}
     </Text>
   );

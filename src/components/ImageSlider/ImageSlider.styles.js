@@ -37,7 +37,7 @@ export const createStyles = theme =>
     captionChipRTL: {right: spacing.sm},
     // Nastaleeq lines are already tall (AppText doubles line height), so the
     // chip drops its vertical padding to stay the same visual weight
-    captionChipUrdu: {paddingVertical: 0, paddingHorizontal: spacing.sm + 2},
+    captionChipUrdu: {paddingVertical:-1, paddingHorizontal: spacing.sm + 2},
     // MD3 Label Medium — Label Small (11px) is too small on a photo
     captionText: {...theme.type.labelMedium, color: '#FFFFFF', textShadowRadius: 0},
 

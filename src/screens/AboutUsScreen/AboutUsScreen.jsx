@@ -159,12 +159,14 @@ const AboutUsScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.bannerArrow}>
-                      <Icon
-                        name={isRTL ? 'chevronLeft' : 'chevronRight'}
-                        size={36}
-                        color={bannerColor}
-                        weight={3}
-                      />
+                      <View style={isRTL ? styles.arrowNudgeRTL : styles.arrowNudgeLTR}>
+                        <Icon
+                          name={isRTL ? 'chevronLeft' : 'chevronRight'}
+                          size={28}
+                          color={bannerColor}
+                          weight={3}
+                        />
+                      </View>
                     </View>
                   </View>
                 </LinearGradient>

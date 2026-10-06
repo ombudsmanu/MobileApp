@@ -197,13 +197,11 @@ export const createStyles = theme =>
 
     // ---- Person cards ----
     personCard: { padding: spacing.md, marginTop: spacing.sm },
-    personRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      columnGap: spacing.md,
-    },
-    personText: { flex: 1, alignItems: 'flex-start' },
-    personTextRTL: { alignItems: 'flex-end' },
+        // columnGap only separates the boxes; Nastaleeq's first letter can reach
+    // past its box, so the text block also needs a little padding of its own
+    personRow: {flexDirection: 'row', alignItems: 'center', columnGap: spacing.md},
+    personText: {flex: 1, alignItems: 'flex-start'},
+    personTextRTL: {alignItems: 'flex-end'},
     personName: { ...theme.type.titleSmall },
     tenurePill: {
       marginTop: 4,

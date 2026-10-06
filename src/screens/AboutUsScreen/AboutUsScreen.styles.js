@@ -80,12 +80,15 @@ export const createStyles = theme =>
       width: 40,
       height: 40,
       borderRadius: 20,
-      display:'flex',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#FFFFFF',
     },
-
+    // The chevron's visual weight sits on its pointed side, so it looks
+    // off-centre even though it's geometrically centred. This nudge fixes
+    // the optical centre — positive for LTR (right arrow), negative for RTL.
+    arrowNudgeLTR: {marginLeft: -4},
+    arrowNudgeRTL: {marginRight: 2},
     // ---- Certifications & Accreditation ----
     sectionHeader: {
       flexDirection: 'row',
