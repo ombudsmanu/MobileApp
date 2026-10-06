@@ -76,7 +76,10 @@ const AnnualReportsScreen = ({ navigation }) => {
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
-          <Text style={[styles.topTitle, isRTL && styles.textRTL]} numberOfLines={2}>
+          <Text
+            style={[styles.topTitle, isRTL && styles.textRTL]}
+            numberOfLines={2}
+          >
             {t('reports.title')}
           </Text>
         </View>
@@ -91,9 +94,14 @@ const AnnualReportsScreen = ({ navigation }) => {
           {t('reports.intro')}
         </Text>
 
-                <View style={styles.grid}>
+        <View style={styles.grid}>
           {annualReports.map((report, index) => (
-            <StaggerIn key={report.year} index={index} play={ready} style={styles.cardWrap}>
+            <StaggerIn
+              key={report.year}
+              index={index}
+              play={ready}
+              style={styles.cardWrap}
+            >
               <ReportTile
                 year={report.year}
                 available={!!report.url}

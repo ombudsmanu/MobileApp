@@ -29,6 +29,14 @@ import { URDU_FONT } from '../../theme/tokens';
 const ARABIC_SCRIPT =
   /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
 const URDU_SIZE_SCALE = 1.1;
+
+/**
+ * Smallest size Urdu is ever drawn at. Below about 14px the dots of
+ * Nastaleeq letters (the three under پ, the two over ت) are too small for
+ * a phone screen to draw apart, and blur into a single smudge — so small
+ * labels like "پی ڈی ایف کھولیں" lose their dots. English is unaffected.
+ */
+const URDU_MIN_SIZE = 14;
 const URDU_LINE_FACTOR = 2.2;
 
 /**
@@ -71,8 +79,11 @@ const AppText = ({ style, children, ...rest }) => {
       ? EDGE_SPACE + plain + EDGE_SPACE
       : children;
   const flat = StyleSheet.flatten(style) || {};
-  const fontSize = Math.round((flat.fontSize ?? 14) * URDU_SIZE_SCALE);
-  const lineHeight = Math.max(
+  const fontSize = Math.max(
+    URDU_MIN_SIZE,
+    Math.round((flat.fontSize ?? 14) * URDU_SIZE_SCALE),
+  );
+    const lineHeight = Math.max(
     flat.lineHeight ?? 0,
     Math.round(fontSize * URDU_LINE_FACTOR),
   );

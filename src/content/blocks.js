@@ -15,7 +15,10 @@
  *   link({label, url})                     opens the browser
  *   sections([...])                        cards that open sub-pages
  */
-export const heading = text => ({type: 'heading', text});
+// icon (optional) — shown in a small badge beside the heading
+// icon  (optional) — shown in a small badge beside the heading
+// image (optional) — a logo shown in its own card ABOVE the heading
+export const heading = (text, icon, image) => ({type: 'heading', text, icon, image});
 export const paragraph = text => ({type: 'paragraph', text});
 export const profile = ({name, role, photo = null}) => ({type: 'profile', name, role, photo});
 export const signature = ({name, role}) => ({type: 'signature', name, role});

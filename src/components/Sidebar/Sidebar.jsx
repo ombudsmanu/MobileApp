@@ -147,6 +147,12 @@ const Sidebar = ({ visible, onClose, activeRoute, onNavigate }) => {
       },
     });
   };
+    /** Guests aren't logged in, so this is a straight move to the login
+   *  screen — no confirmation dialog, nothing to discard. */
+  const handleSignIn = () => {
+    onClose();
+    navigation.reset({index: 0, routes: [{name: 'Login'}]});
+  };
 
   const roleLine = isGuest
     ? 'Guest access'
@@ -276,13 +282,24 @@ const Sidebar = ({ visible, onClose, activeRoute, onNavigate }) => {
               icon={<Icon name="palette" size={18} color="#FFFFFF" />}
               onPress={openAppearance}
             />
-            <GlassButton
-              label="LOGOUT"
-              variant="destructive"
-              style={styles.footerBtn}
-              icon={<Icon name="logout" size={18} color="#FFFFFF" />}
-              onPress={handleLogout}
-            />
+                       {/* A guest has no session to end — offer sign-in instead */}
+            {isGuest ? (
+              <GlassButton
+                label="SIGN IN"
+                variant="primary"
+                style={styles.footerBtn}
+                icon={<Icon name="login" size={18} color="#FFFFFF" />}
+                onPress={handleSignIn}
+              />
+            ) : (
+              <GlassButton
+                label="LOGOUT"
+                variant="destructive"
+                style={styles.footerBtn}
+                icon={<Icon name="logout" size={18} color="#FFFFFF" />}
+                onPress={handleLogout}
+              />
+            )}
             <Text style={styles.version}>Version {APP_VERSION}</Text>
           </View>
         </Animated.View>

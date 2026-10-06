@@ -1,9 +1,24 @@
 import React, {useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useTheme} from '../../context/ThemeContext';
-import {createStyles, SHEEN_GEOMETRY} from './GlassSurface.styles';
-import {StyleSheet, View} from 'react-native';
 import {radii} from '../../theme/tokens';
+import {createStyles, SHEEN_GEOMETRY} from './GlassSurface.styles';
+
+/**
+ * GLASS SURFACE — the frosted card used throughout the app.
+ *
+ *   style         the card's own size, padding, margins
+ *   contentStyle  layout for the children (they sit in an inner view, so a
+ *                 flexDirection on `style` would land on the wrong element)
+ *   strong        a more opaque fill, for cards over busy backgrounds
+ *   radius        corner radius (defaults to the style's, then radii.lg)
+ *   center        centre a single child, with no inner content view
+ *
+ * Layers, back to front: the fill and border, a diagonal sheen gradient,
+ * a faint bottom rim, then the content. (The thin highlight line that used
+ * to run along the top edge was removed for a cleaner look.)
+ */
 const GlassSurface = ({
   children,
   style,
@@ -11,12 +26,13 @@ const GlassSurface = ({
   strong = false,
   radius,
   center = false,
-}) => { 
-   const {theme} = useTheme();
+}) => {
+  const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   // The sheen must round ITSELF — on Android a gradient doesn't render
   // inside a parent that clips it
   const cornerRadius = radius ?? StyleSheet.flatten(style)?.borderRadius ?? radii.lg;
+
   return (
     <View
       style={[
@@ -26,15 +42,14 @@ const GlassSurface = ({
         radius != null && {borderRadius: radius},
         style,
       ]}>
-        
       <LinearGradient
         pointerEvents="none"
         colors={[theme.glass.sheenFrom, 'transparent', theme.glass.sheenTo]}
         locations={SHEEN_GEOMETRY.locations}
         start={SHEEN_GEOMETRY.start}
         end={SHEEN_GEOMETRY.end}
-        style={[styles.sheen, {borderRadius: cornerRadius}]}      />
-      <View pointerEvents="none" style={styles.topHighlight} />
+        style={[styles.sheen, {borderRadius: cornerRadius}]}
+      />
       <View pointerEvents="none" style={styles.bottomRim} />
       {center ? children : <View style={[styles.content, contentStyle]}>{children}</View>}
     </View>

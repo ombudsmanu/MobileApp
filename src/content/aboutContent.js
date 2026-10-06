@@ -34,7 +34,7 @@ export const aboutContent = {
   // -------------------------------------------------------------------------
   introduction: {
     en: [
-      heading('History'),
+      heading('History', 'calendar'),
       paragraph(
         `The term “Ombudsman” is of Swedish origin and in its ordinary dictionary meaning denotes “an official appointed to investigate complaints against the public authorities, government departments or the people who work for them”. The institution of Ombudsman has its roots in ancient times. The complaint handling systems resembling the present Institution were functioning as far back as the early days of Islam, and are still functioning in many Muslim countries. However, as an institution, the Ombudsmanship originated in Sweden about 200 years ago as a parliamentary supervisory body.`,
       ),
@@ -44,7 +44,7 @@ export const aboutContent = {
       paragraph(
         `The institution has proved to be an invaluable help to the common man as a ‘grievance redressal mechanism’. The concept gradually became popular in a number of countries from 1960 onward. In Pakistan, first it was set up at the Federal level in 1983. Later it was established in Punjab on 30th September, 1996 through an Ordinance. The Ordinance was followed by two other Ordinances and finally the Punjab Office of the Ombudsman Act, 1997 (Act X of 1997) was promulgated.`,
       ),
-      heading('Ombudsmanship in Punjab'),
+      heading('Ombudsmanship in Punjab', 'search'),
       paragraph(
         `The Office of Ombudsman Punjab has been established with the prime objective “to provide protection for the rights of the people, to ensure adherence to the rule of law, to suppress corrupt practices; to diagnose, redress and rectify any injustice done to a person through maladministration”. The law empowers the Ombudsman Punjab to entertain complaints against any department, commission or a statutory corporation or other institutions established by the Provincial Government, but does not include the High Court and the courts working under the supervision of High Court and the Provincial Assembly and its secretariat.`,
       ),
@@ -60,7 +60,7 @@ export const aboutContent = {
       profile({
         name: 'Ms. Ayesha Hamid',
         role: 'Ombudsman Punjab',
-        photo: require('../assets/people/ayesha-hamid.jpg'),
+       photo: null,
       }),
       paragraph(
         `Ms. Ayesha Hamid was sworn in as the 9th Ombudsman for the Province of Punjab on 9th October, 2024. By assuming this Office, she made history as the first woman to hold this esteemed position.`,
@@ -177,7 +177,7 @@ export const aboutContent = {
       profile({
         name: 'Mr. Kaiser Saleem (PAS)',
         role: 'Secretary, Ombudsman Punjab',
-        photo: require('../assets/people/kaiser-saleem.jpg'),
+        photo: null,
       }),
       paragraph(
         `Mr. Kaiser Saleem (PAS) assumed the charge of the post of Secretary, Ombudsman Punjab on 27.09.2024. He obtained different trainings at national and international level. He holds vast experience of serving on administrative positions as well as Head of Autonomous bodies / Departments. During his career he has served as Deputy Commissioner, Okara & Muzaffargarh, Director Anti-Corruption Establishment, Faisalabad, Director General Multan Development Authority, Multan, and Additional Secretary in three departments i.e., Home Department, Planning & Development Department and School Education Department, Government of Punjab. He also remained posted as Secretary Government of the Punjab Housing, Urban Development and Public Health Engineering Department South Punjab and Secretary Government of the Punjab, School Education Department South Punjab. He also headed foreign funded projects in the Government of the Punjab.`,
@@ -320,7 +320,7 @@ export const aboutContent = {
   // -------------------------------------------------------------------------
   membership: {
     en: [
-      heading('International Ombudsman Institute (IOI)'),
+      heading('International Ombudsman Institute (IOI)', 'grid', require('../assets/images/ioi.jpg')),
 
       // CHECK: this text is identical to the AOA section below on the
       // official website, apart from the closing web address. Worth
@@ -339,7 +339,7 @@ export const aboutContent = {
       ),
       link({ label: 'www.theioi.org', url: 'https://www.theioi.org' }),
 
-      heading('Asian Ombudsman Association (AOA)'),
+      heading('Asian Ombudsman Association (AOA)', 'users', require('../assets/images/aoa.jpg')),
       paragraph(
         `In 1995, during the meeting of the Board of Directors of International Ombudsman Institute (IOI), it was stressed that Asia should also organize a Regional Body. So in view of China’s support which had already been ensured, the then Wafaqi Mohtasib Ombudsman of Pakistan made a commitment to renew the efforts. Pakistan, in 1996, convened the First Conference of the Asian Ombudsmen and the office holders of Ombudsman like institutions from all over the Continent. The main objectives for hosting the moot in which forty delegates from eighteen countries participated, were the promotion of Ombudsman’s concept and discussion on possibility for setting up of an Asian Ombudsman Association (AOA).`,
       ),
@@ -354,7 +354,7 @@ export const aboutContent = {
       ),
       link({ label: 'www.aoa.org.pk', url: 'https://www.aoa.org.pk' }),
 
-      heading('Forum of Pakistan Ombudsmen (FPO)'),
+      heading('Forum of Pakistan Ombudsmen (FPO)', 'check', require('../assets/images/fpo.png')),
       paragraph(
         `The Forum of Pakistan Ombudsmen (FPO) was established on April 16, 2011 as a non-governmental, apolitical, independent and professional forum for Ombudsmen in Pakistan. The Forum was established keeping in view the need to improve coordination, promote capacity building and provide quality services for the common man.`,
       ),
@@ -404,20 +404,10 @@ export const aboutContent = {
       paragraph(
         `The Office of the Ombudsman Punjab is served by Advisors and Consultants at the Head Office in Lahore and at Regional Offices across the Province.`,
       ),
-      sections([
-        {
-          key: 'teamHeadOffice',
-          label: 'Head Office',
-          icon: 'doc',
-          colors: ['#F0B43A', '#C28410'],
-        },
-        {
-          key: 'teamRegionalOffice',
-          label: 'Regional Office',
-          icon: 'grid',
-          colors: ['#E09A2E', '#A56C08'],
-        },
-      ]),
+         sections([
+      {key: 'teamHeadOffice', label: 'Head Office Team', icon: 'doc', colors: ['#5FA98C', '#2E6B56']},
+      {key: 'teamRegionalOffice', label: 'Regional Office Team', icon: 'grid', colors: ['#F0923A', '#C2610F']},
+    ]),
     ],
   },
 

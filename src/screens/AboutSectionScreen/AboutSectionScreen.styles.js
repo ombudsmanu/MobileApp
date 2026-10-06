@@ -37,7 +37,39 @@ export const createStyles = theme =>
     topTitle: { ...theme.type.titleMedium },
 
     scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.xs },
+    // Certification badges across the top of every section page
+    topBadges: {marginBottom: spacing.md},
+    
+    // ---- Office crest and name, at the top of a section page ----
+    crestWrap: {alignItems: 'center', marginBottom: spacing.md},
+    crest: {width: 96, height: 96},
+    crestName: {...theme.type.titleMedium, textAlign: 'center', marginTop: spacing.sm},
 
+    // Spacing between the sub-section rows (Our Team)
+    sectionRowWrap: {marginTop: spacing.sm},
+    cardWrap: {marginTop: spacing.md},
+    // ---- Header card: section badge + full title, in one row ----
+    // Badge on the leading side, title beside it; the row flips for Urdu.
+    heroCard: {paddingVertical: spacing.md, paddingHorizontal: spacing.md},
+    heroRow: {flexDirection: 'row', alignItems: 'center', columnGap: spacing.md},
+    heroRowRTL: {flexDirection: 'row-reverse'},
+    // The shell casts the shadow; the gradient rounds ITSELF.
+    // Its colour comes from createAccentStyles (the section's colour).
+    badgeShell: {
+      width: 56,
+      height: 56,
+      borderRadius: 18,
+      elevation: 4,
+      shadowColor: '#000000',
+      shadowOpacity: 0.2,
+      shadowRadius: 6,
+      shadowOffset: {width: 0, height: 3},
+    },
+    badge: {width: 56, height: 56, borderRadius: 18, alignItems: 'center', justifyContent: 'center'},
+    // Takes the rest of the row and wraps; Title Medium so a long official
+    // title fits in two lines beside the badge, even in Nastaleeq
+    heroTitle: {...theme.type.titleMedium, flex: 1},
+    heroTitleRTL: {textAlign: 'right', writingDirection: 'rtl'},
     langNote: {
       ...theme.type.bodySmall,
       textAlign: 'center',
@@ -45,14 +77,48 @@ export const createStyles = theme =>
     },
 
     // ---- Text cards ----
-    textCard: { padding: spacing.lg, marginTop: spacing.md },
+        // The margin moves to the StaggerIn wrapper, which is now the outer element
+    textCard: {padding: spacing.lg},
     headingRow: {
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.sm,
       marginBottom: spacing.sm,
     },
+        // Organisation logo, in its own light card above the heading.
+    // A plain light panel whatever the theme: these logos are supplied on
+    // white, so they need a light surround to read correctly.
+    logoCard: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: spacing.md,
+      marginBottom: spacing.md,
+      borderRadius: radii.md,
+      borderWidth: 1,
+      borderColor: theme.glass.border,
+      backgroundColor: 'rgba(255, 255, 255, 0.72)',
+    },
+    logo: {width: '70%', height: 72},
     headingBar: { width: 4, height: 20, borderRadius: 2 },
+        // Icon badge beside a heading (in place of the bar, when it has an icon).
+    // Its colour comes from createAccentStyles; the gradient rounds itself.
+    headingBadgeShell: {
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      elevation: 3,
+      shadowColor: '#000000',
+      shadowOpacity: 0.18,
+      shadowRadius: 5,
+      shadowOffset: {width: 0, height: 2},
+    },
+    headingBadge: {
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     heading: { ...theme.type.titleMedium, flexShrink: 1 },
     paragraph: {
       ...theme.type.bodyMedium,
@@ -125,6 +191,8 @@ export const createStyles = theme =>
       textAlign: 'center',
       marginTop: spacing.sm,
     },
+        // No photo above it, so no gap above the name either
+    profileNameNoPhoto: {marginTop: 0},
     profileRole: { ...theme.type.bodySmall, textAlign: 'center', marginTop: 2 },
 
     // ---- Person cards ----
@@ -238,5 +306,19 @@ export const BACK_RADIUS = radii.md;
  */
 export const createAccentStyles = accent =>
   StyleSheet.create({
-    photoRing: { borderColor: accent },
+    photoRing: {borderColor: accent},
+    badgeShell: {backgroundColor: accent},
+  });
+
+  
+/** The wide sub-section rows (Our Team → Head Office / Regional Office). */
+export const createRowStyles = theme =>
+  StyleSheet.create({
+    row: {paddingVertical: spacing.lg, paddingHorizontal: spacing.lg, overflow: 'hidden'},
+    rowInner: {alignItems: 'center', justifyContent: 'center'},
+    // Coloured bar on the leading edge, full height of the row
+    bar: {position: 'absolute', top: -40, bottom: -40, width: 5},
+    barStart: {left: -spacing.lg},
+    barEnd: {right: -spacing.lg},
+    label: {...theme.type.titleMedium, textAlign: 'center'},
   });

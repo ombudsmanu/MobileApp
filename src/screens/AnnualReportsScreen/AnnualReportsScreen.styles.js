@@ -136,10 +136,10 @@ export const createTileStyles = theme =>
     subtitleSlotUrdu: {height: TILE.subtitleSlotUrdu},
     subtitle: {...theme.type.bodySmall, textAlign: 'center'},
 
-    pillSlot: {height: TILE.pillSlot, marginTop: 6, justifyContent: 'center'},
+    pillSlot: {height: TILE.pillSlotUrdu, marginTop: 6, justifyContent: 'center'},
     pillSlotUrdu: {height: TILE.pillSlotUrdu},
     statusPill: {
-      minHeight: TILE.pillSlot,
+      minHeight: TILE.pillSlotUrdu,
       paddingHorizontal: 10,
       borderRadius: radii.pill,
       alignItems: 'center',

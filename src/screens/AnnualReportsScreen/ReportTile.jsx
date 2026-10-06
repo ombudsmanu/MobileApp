@@ -1,10 +1,10 @@
-import React, {useMemo, useRef} from 'react';
-import {Animated, Pressable, View} from 'react-native';
+import React, { useMemo, useRef } from 'react';
+import { Animated, Pressable, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Text from '../../components/AppText/AppText';
 import Icon from '../../components/Icon/Icon';
-import {useTheme} from '../../context/ThemeContext';
-import {createTileStyles, REPORT_COLORS} from './AnnualReportsScreen.styles';
+import { useTheme } from '../../context/ThemeContext';
+import { createTileStyles, REPORT_COLORS } from './AnnualReportsScreen.styles';
 
 /**
  * One year, as a grid tile: badge, year, subtitle, status pill.
@@ -23,16 +23,29 @@ import {createTileStyles, REPORT_COLORS} from './AnnualReportsScreen.styles';
  */
 
 // Urdu is detected from the subtitle itself (the same test AppText uses)
-const ARABIC_SCRIPT = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const ARABIC_SCRIPT =
+  /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
 
-const ReportTile = ({year, available, soonLabel, openLabel, subtitle, onPress}) => {
-  const {theme} = useTheme();
+const ReportTile = ({
+  year,
+  available,
+  soonLabel,
+  openLabel,
+  subtitle,
+  onPress,
+}) => {
+  const { theme } = useTheme();
   const styles = useMemo(() => createTileStyles(theme), [theme]);
   const urdu = ARABIC_SCRIPT.test(subtitle ?? '');
   const press = useRef(new Animated.Value(1)).current;
 
   const pressTo = value =>
-    Animated.spring(press, {toValue: value, friction: 6, tension: 180, useNativeDriver: true}).start();
+    Animated.spring(press, {
+      toValue: value,
+      friction: 6,
+      tension: 180,
+      useNativeDriver: true,
+    }).start();
 
   return (
     <Pressable
@@ -40,22 +53,32 @@ const ReportTile = ({year, available, soonLabel, openLabel, subtitle, onPress}) 
       onPressIn={() => pressTo(0.96)}
       onPressOut={() => pressTo(1)}
       accessibilityRole="button"
-      accessibilityLabel={`${subtitle} ${year}, ${available ? openLabel : soonLabel}`}>
+      accessibilityLabel={`${subtitle} ${year}, ${
+        available ? openLabel : soonLabel
+      }`}
+    >
       <Animated.View
         style={[
           styles.tile,
           urdu && styles.tileUrdu,
           !available && styles.tileDisabled,
-          {transform: [{scale: press}]},
-        ]}>
-        <View pointerEvents="none" style={[styles.tileAccent, {backgroundColor: REPORT_COLORS[1]}]} />
+          { transform: [{ scale: press }] },
+        ]}
+      >
+        <View
+          pointerEvents="none"
+          style={[styles.tileAccent, { backgroundColor: REPORT_COLORS[1] }]}
+        />
 
-        <View style={[styles.badgeShell, {backgroundColor: REPORT_COLORS[1]}]}>
+        <View
+          style={[styles.badgeShell, { backgroundColor: REPORT_COLORS[1] }]}
+        >
           <LinearGradient
             colors={REPORT_COLORS}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            style={styles.badge}>
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.badge}
+          >
             <Icon name="doc" size={24} color="#FFFFFF" weight={2.5} />
           </LinearGradient>
         </View>
@@ -71,10 +94,17 @@ const ReportTile = ({year, available, soonLabel, openLabel, subtitle, onPress}) 
         </View>
 
         <View style={[styles.pillSlot, urdu && styles.pillSlotUrdu]}>
-          <View style={[styles.statusPill, !available && styles.statusPillMuted]}>
+          <View
+            style={[styles.statusPill, !available && styles.statusPillMuted]}
+          >
             <Text
-              style={[styles.statusText, !available && styles.statusTextMuted]}
-              numberOfLines={1}>
+              style={[
+                styles.statusText,
+                urdu && styles.statusTextUrdu,
+                !available && styles.statusTextMuted,
+              ]}
+              numberOfLines={1}
+            >
               {available ? openLabel : soonLabel}
             </Text>
           </View>

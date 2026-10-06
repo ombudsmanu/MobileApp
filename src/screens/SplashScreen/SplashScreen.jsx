@@ -235,15 +235,21 @@ const SplashScreen = ({ navigation }) => {
 
           {/* ---- Brand card ---- */}
           <View style={{ alignSelf: 'stretch', alignItems: 'center' }}>
-                       <GlassSurface radius={PANEL_RADIUS} style={styles.brandCard}>
+            <GlassSurface radius={PANEL_RADIUS} style={styles.brandCard}>
               {/* Section 1: 14 → 14 */}
-              <Text style={styles.officeLine}>OFFICE OF THE{'\n'}OMBUDSMAN PUNJAB</Text>
+              <Text style={styles.officeLine}>
+                OFFICE OF THE{'\n'}OMBUDSMAN PUNJAB
+              </Text>
               <Text style={styles.welcome}>WELCOME TO</Text>
 
               <View style={styles.officeDivider} />
 
               {/* Section 2: 28 → 16 → 14 */}
-              <Text style={styles.orgName} numberOfLines={1} adjustsFontSizeToFit>
+              <Text
+                style={styles.orgName}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
                 Ombudsman Punjab
               </Text>
               <Text style={styles.misLine}>Management Information System</Text>
@@ -256,7 +262,7 @@ const SplashScreen = ({ navigation }) => {
           {/* ---- QMS + copyright + hint ---- */}
           <View style={{ alignSelf: 'stretch', alignItems: 'center' }}>
             <GlassSurface radius={PANEL_RADIUS} style={styles.qmsPanel}>
-                            {CERTIFICATIONS.map(c => (
+              {CERTIFICATIONS.map(c => (
                 <View key={c.key} style={styles.certBlock}>
                   <Text style={styles.certTitle}>{c.title}</Text>
                   <Text style={styles.certStandard}>{c.standard}</Text>

@@ -16,7 +16,7 @@ export const aboutSections = [
   {key: 'secretaryProfile', label: 'Secretary Profile', icon: 'user', colors: ['#2FB5A8', '#157A71']},
   {key: 'formerSecretaries', label: 'Former Secretaries', icon: 'users', colors: ['#5A8DEE', '#2F55B8']},
   {key: 'ourTeam', label: 'Our Team', icon: 'users', colors: ['#F0B43A', '#C28410']},
-  {key: 'childrenCommissioner', label: 'Commissioner for Children', icon: 'grid', colors: ['#EC6FA0', '#B83A6E']},
+   {key: 'childrenCommissioner', label: 'Commissioner for Children', icon: 'grid', colors: ['#5B9E6E', '#36704A']},
   {key: 'membership', label: 'Membership', icon: 'check', colors: ['#5FA98C', '#2E6B56']},
   {key: 'publicInformationOfficer', label: 'Public Information Officer', icon: 'bell', colors: ['#6C7BE0', '#3B47A8']},
 ];
@@ -28,8 +28,8 @@ export const aboutSections = [
  * them without any special handling.
  */
 export const aboutSubSections = [
-  {key: 'teamHeadOffice', label: 'Head Office', icon: 'doc', colors: ['#F0B43A', '#C28410']},
-  {key: 'teamRegionalOffice', label: 'Regional Office', icon: 'grid', colors: ['#E09A2E', '#A56C08']},
+  {key: 'teamHeadOffice', label: 'Head Office Team', icon: 'doc', colors: ['#5FA98C', '#2E6B56']},
+  {key: 'teamRegionalOffice', label: 'Regional Office Team', icon: 'grid', colors: ['#F0923A', '#C2610F']},
 ];
 
 /** Looks in the main sections first, then the sub-sections. */

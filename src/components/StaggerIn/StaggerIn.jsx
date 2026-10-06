@@ -30,7 +30,10 @@ const StaggerIn = ({index = 0, play = true, style, children}) => {
   const appear = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    // Back to the start when the screen is left, so returning to it
+    // replays the entrance — the same as ModuleTile
     if (!play) {
+      appear.setValue(0);
       return;
     }
     Animated.spring(appear, {

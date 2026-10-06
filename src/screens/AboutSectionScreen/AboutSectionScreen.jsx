@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Linking, Pressable, ScrollView, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
 import { useTheme } from '../../context/ThemeContext';
@@ -9,9 +9,9 @@ import { aboutContent } from '../../content/aboutContent';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import Icon from '../../components/Icon/Icon';
-import ModuleTile from '../../components/ModuleTile/ModuleTile';
 import PhotoTap from '../../components/PhotoTap/PhotoTap';
 import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
+import LinearGradient from 'react-native-linear-gradient';
 import {
   createStyles,
   createDynamicStyles,
@@ -22,6 +22,9 @@ import {
 } from './AboutSectionScreen.styles';
 import StaggerIn from '../../components/StaggerIn/StaggerIn';
 import { useScreenReady } from '../../navigation/useScreenReady';
+import CertificationBadges from '../../components/CertificationBadges/CertificationBadges';
+import SectionRow from './SectionRow';
+
 /**
  * Splits the blocks into cards: every heading starts a new text card;
  * profile and people blocks stand on their own.
@@ -97,16 +100,51 @@ const Photo = ({
 };
 
 /** Headings, paragraphs and a signature, together in one card. */
-const TextCard = ({ blocks, accent, rtl, styles }) => (
+const TextCard = ({ blocks, accent, colors, accentStyles, rtl, styles }) => (
   <GlassSurface style={styles.textCard}>
     {blocks.map((b, i) => {
       if (b.type === 'heading') {
         return (
-          <View key={i} style={[styles.headingRow, rtl && styles.rowRTL]}>
-            <View style={[styles.headingBar, { backgroundColor: accent }]} />
-            <Text style={[styles.heading, rtl && styles.textRTL]}>
-              {b.text}
-            </Text>
+          <View key={i}>
+            {b.image ? (
+              <View style={styles.logoCard}>
+                <Image
+                  source={b.image}
+                  style={styles.logo}
+                  resizeMode="contain"
+                />
+              </View>
+            ) : null}
+            <View style={[styles.headingRow, rtl && styles.rowRTL]}>
+              {b.icon ? (
+                // Small badge in the section's colours; the shell casts the
+                // shadow and the gradient rounds itself
+                <View
+                  style={[styles.headingBadgeShell, accentStyles.badgeShell]}
+                >
+                  <LinearGradient
+                    colors={colors}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.headingBadge}
+                  >
+                    <Icon
+                      name={b.icon}
+                      size={20}
+                      color="#FFFFFF"
+                      weight={2.5}
+                    />
+                  </LinearGradient>
+                </View>
+              ) : (
+                <View
+                  style={[styles.headingBar, { backgroundColor: accent }]}
+                />
+              )}
+              <Text style={[styles.heading, rtl && styles.textRTL]}>
+                {b.text}
+              </Text>
+            </View>
           </View>
         );
       }
@@ -154,20 +192,30 @@ const TextCard = ({ blocks, accent, rtl, styles }) => (
   </GlassSurface>
 );
 
-/** Photo, name and role — for the Ombudsman and Secretary profiles. */
+/**
+ * Name and role — for the Ombudsman, Secretary and PIO profiles.
+ * The photo circle is shown only when a photo is set; with photo: null
+ * the card is just the name and role, with no empty placeholder.
+ */
 const ProfileCard = ({ block, accentStyles, styles, theme }) => (
   <GlassSurface style={styles.profileCard}>
     <View style={styles.profileInner}>
-      <Photo
-        source={block.photo}
-        variant="profile"
-        accentStyles={accentStyles}
-        styles={styles}
-        theme={theme}
-        name={block.name}
-        caption={block.role}
-      />
-      <Text style={styles.profileName}>{block.name}</Text>
+      {block.photo ? (
+        <Photo
+          source={block.photo}
+          variant="profile"
+          accentStyles={accentStyles}
+          styles={styles}
+          theme={theme}
+          name={block.name}
+          caption={block.role}
+        />
+      ) : null}
+      <Text
+        style={[styles.profileName, !block.photo && styles.profileNameNoPhoto]}
+      >
+        {block.name}
+      </Text>
       <Text style={styles.profileRole}>{block.role}</Text>
     </View>
   </GlassSurface>
@@ -236,6 +284,7 @@ const PersonCard = ({ person, accentStyles, rtl, t, styles, theme }) => {
     </GlassSurface>
   );
 };
+
 /**
  * Contact details. Email and phone rows are tappable — they open the
  * mail app or start a call, so nobody has to copy them by hand.
@@ -312,11 +361,19 @@ const AboutSectionScreen = ({ navigation, route }) => {
   const groups = useMemo(() => (blocks ? groupBlocks(blocks) : []), [blocks]);
   const accent = section?.colors[1] ?? theme.accent;
   const accentStyles = useMemo(() => createAccentStyles(accent), [accent]);
+  // Pages whose content is a list of sub-pages (Our Team) show the crest
+  const hasSubSections = groups.some(g => g.kind === 'sections');
   const ready = useScreenReady();
   const cardName = section
     ? t(`about.${section.key}`, section.label)
     : t('about.title');
   const title = section ? t(`aboutTitle.${section.key}`, cardName) : cardName;
+
+  // ONE counter for the whole page, so every card — title, text, people,
+  // rows — animates in the order it appears, top to bottom. Separate
+  // counters made the person cards race the text card above them.
+  // Reset on every render, then stepped once per card as the page is built.
+  let cardIndex = 0;
 
   return (
     <AppBackground>
@@ -341,7 +398,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
             style={[styles.topTitle, isRTL && styles.textRTL]}
             numberOfLines={2}
           >
-            {title}
+            {t('about.title')}
           </Text>
         </View>
         <LanguageToggle />
@@ -351,6 +408,53 @@ const AboutSectionScreen = ({ navigation, route }) => {
         contentContainerStyle={[styles.scroll, dyn.scrollPad]}
         showsVerticalScrollIndicator={false}
       >
+        {/* ---- Office crest and name (pages with sub-sections) ---- */}
+        {hasSubSections && (
+          <View style={styles.crestWrap}>
+            <Image
+              source={require('../../assets/images/crest.png')}
+              style={styles.crest}
+              resizeMode="contain"
+            />
+            <Text style={styles.crestName}>{t('officeName')}</Text>
+          </View>
+        )}
+
+        {/* ---- Certification badges ---- */}
+        <CertificationBadges
+          play={ready}
+          startIndex={0}
+          style={styles.topBadges}
+        />
+
+        {/* ---- Header card: section badge + full title, in one row ---- */}
+        <StaggerIn index={cardIndex++} play={ready}>
+          <GlassSurface style={styles.heroCard}>
+            <View style={[styles.heroRow, isRTL && styles.heroRowRTL]}>
+              {section && (
+                <View style={[styles.badgeShell, accentStyles.badgeShell]}>
+                  <LinearGradient
+                    colors={section.colors}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.badge}
+                  >
+                    <Icon
+                      name={section.icon}
+                      size={26}
+                      color="#FFFFFF"
+                      weight={2.5}
+                    />
+                  </LinearGradient>
+                </View>
+              )}
+              <Text style={[styles.heroTitle, isRTL && styles.heroTitleRTL]}>
+                {title}
+              </Text>
+            </View>
+          </GlassSurface>
+        </StaggerIn>
+
         {showEnglishNote && (
           <Text style={styles.langNote}>{t('about.englishOnly')}</Text>
         )}
@@ -360,7 +464,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
           groups.map((g, i) => {
             if (g.kind === 'profile') {
               return (
-                <StaggerIn key={i} index={0} play={ready}>
+                <StaggerIn key={i} index={cardIndex++} play={ready}>
                   <ProfileCard
                     block={g.block}
                     accentStyles={accentStyles}
@@ -373,8 +477,12 @@ const AboutSectionScreen = ({ navigation, route }) => {
             if (g.kind === 'people') {
               return (
                 <View key={i}>
-                  {g.block.items.map((person, j) => (
-                    <StaggerIn key={person.name} index={j} play={ready}>
+                  {g.block.items.map(person => (
+                    <StaggerIn
+                      key={person.name}
+                      index={cardIndex++}
+                      play={ready}
+                    >
                       <PersonCard
                         person={person}
                         accentStyles={accentStyles}
@@ -390,46 +498,56 @@ const AboutSectionScreen = ({ navigation, route }) => {
             }
             if (g.kind === 'contact') {
               return (
-                <ContactCard
-                  key={i}
-                  block={g.block}
-                  accent={accent}
-                  rtl={rtl}
-                  styles={styles}
-                  theme={theme}
-                />
+                <StaggerIn key={i} index={cardIndex++} play={ready}>
+                  <ContactCard
+                    block={g.block}
+                    accent={accent}
+                    rtl={rtl}
+                    styles={styles}
+                    theme={theme}
+                  />
+                </StaggerIn>
               );
             }
             if (g.kind === 'sections') {
               return (
-                <View
-                  key={i}
-                  style={[styles.sectionGrid, isRTL && styles.sectionGridRTL]}
-                >
-                  {g.block.items.map((item, j) => (
-                    <ModuleTile
+                <View key={i}>
+                  {g.block.items.map(item => (
+                    <StaggerIn
                       key={item.key}
-                      icon={item.icon}
-                      colors={item.colors}
-                      label={t(`about.${item.key}`, item.label)}
-                      index={j}
-                      isRTL={isRTL}
-                      onPress={() =>
-                        navigation.push('AboutSection', { key: item.key })
-                      }
-                    />
+                      index={cardIndex++}
+                      play={ready}
+                      style={styles.sectionRowWrap}
+                    >
+                      <SectionRow
+                        label={t(`about.${item.key}`, item.label)}
+                        color={item.colors[1]}
+                        rtl={isRTL}
+                        onPress={() =>
+                          navigation.push('AboutSection', { key: item.key })
+                        }
+                      />
+                    </StaggerIn>
                   ))}
                 </View>
               );
             }
             return (
-              <TextCard
+              <StaggerIn
                 key={i}
-                blocks={g.blocks}
-                accent={accent}
-                rtl={rtl}
-                styles={styles}
-              />
+                index={cardIndex++}
+                play={ready}
+                style={styles.cardWrap}
+              >
+                <TextCard
+                  blocks={g.blocks}
+                  accent={accent}
+                  colors={section?.colors ?? [accent, accent]}
+                  accentStyles={accentStyles}
+                  rtl={rtl}
+                  styles={styles}
+                />
+              </StaggerIn>
             );
           })
         ) : (

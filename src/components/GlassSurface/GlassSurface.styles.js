@@ -3,7 +3,7 @@ import {radii} from '../../theme/tokens';
 
 export const createStyles = theme =>
   StyleSheet.create({
-       surface: {
+    surface: {
       backgroundColor: theme.glass.fill,
       borderWidth: 1,
       borderColor: theme.glass.border,
@@ -22,17 +22,8 @@ export const createStyles = theme =>
     },
     strong: {backgroundColor: theme.glass.fillStrong},
     sheen: {...StyleSheet.absoluteFillObject},
-        // Inset from the corners — without overflow:hidden, a full-width line
-    // would poke past the rounded edges
-    topHighlight: {
-      position: 'absolute',
-      top: 0,
-      left: 16,
-      right: 16,
-      height: 1.5,
-      borderRadius: 1,
-      backgroundColor: theme.glass.highlight,
-    },
+    // Faint line along the bottom edge. Inset from the corners — without
+    // overflow:hidden, a full-width line would poke past the rounded edges
     bottomRim: {
       position: 'absolute',
       bottom: 0,
@@ -43,11 +34,6 @@ export const createStyles = theme =>
       backgroundColor: theme.glass.rim,
     },
     content: {position: 'relative', flexShrink: 1},
-    centeredContent: {
-      ...StyleSheet.absoluteFillObject,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
   });
 
 export const SHEEN_GEOMETRY = {

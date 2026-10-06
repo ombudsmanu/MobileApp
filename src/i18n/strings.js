@@ -104,7 +104,7 @@ export const strings = {
       'This background is light, so darker text reads best on it.',
     'module.about': 'About Us',
     'screen.aboutUs': 'About Us',
-        // ---- About Us ----
+    // ---- About Us ----
     'about.title': 'About Us',
     'about.introduction': 'Introduction',
     'about.ombudsmanProfile': 'Ombudsman Profile',
@@ -117,15 +117,19 @@ export const strings = {
     'about.membership': 'Membership',
     'about.publicInformationOfficer': 'Public Information Officer',
     // Full titles, where the card uses a shorter name
-    'aboutTitle.childrenCommissioner': 'Office of Chief Provincial Commissioner for Children',
+    'aboutTitle.childrenCommissioner':
+      'Office of Chief Provincial Commissioner for Children',
     'about.contentSoon': 'Content for this section will be added soon.',
-        'about.readBio': 'Read biography',
+    'about.readBio': 'Read biography',
     'about.hideBio': 'Hide biography',
+    'about.specialSection': 'SPECIAL SECTION',
+    'about.certifications': 'Certifications & Accreditation',
+    'about.certCaption': 'Certified to international standards.',
     'about.englishOnly': 'This section is currently available in English only.',
-        'about.openLink': 'Visit website',
-            'about.teamHeadOffice': 'Head Office',
-    'about.teamRegionalOffice': 'Regional Office',
-        // ---- Annual Reports ----
+    'about.openLink': 'Visit website',
+    'about.teamHeadOffice': 'Head Office Team',
+    'about.teamRegionalOffice': 'Regional Office Team',
+    // ---- Annual Reports ----
     'module.annualReports': 'Annual Reports',
     'reports.title': 'Annual Reports',
     'reports.subtitle': 'Published by the Office of the Ombudsman Punjab',
@@ -136,19 +140,22 @@ export const strings = {
     'reports.notReadyTitle': 'Report unavailable',
     'reports.notReadyMsg': 'This report has not been published to the app yet.',
     'reports.openFailed': 'Could not open the report',
-    'reports.openFailedMsg': 'The report could not be opened. Please check your connection and try again.',
-    
+    'reports.openFailedMsg':
+      'The report could not be opened. Please check your connection and try again.',
+
     // Photo viewer (About Us)
     'photo.view': 'View photo',
     'photo.close': 'Close',
     'photo.hint': 'Tap anywhere to close',
-    
+
     // PDF viewer
     'pdf.loading': 'Loading report…',
-    'pdf.loadingHint': 'The first time takes a moment. After that it opens instantly, even offline.',
+    'pdf.loadingHint':
+      'The first time takes a moment. After that it opens instantly, even offline.',
     'pdf.page': 'Page',
     'pdf.errorTitle': "Couldn't open this report",
-    'pdf.errorMsg': 'Check your internet connection and try again, or open it in the browser.',
+    'pdf.errorMsg':
+      'Check your internet connection and try again, or open it in the browser.',
     'pdf.retry': 'TRY AGAIN',
     'pdf.openBrowser': 'OPEN IN BROWSER',
   },
@@ -253,7 +260,7 @@ export const strings = {
       'یہ پس منظر ہلکا ہے، اس لیے اس پر گہرا متن بہتر پڑھا جاتا ہے۔',
     'module.about': 'ہمارے بارے میں',
     'screen.aboutUs': 'ہمارے بارے میں',
-        // ---- About Us ----
+    // ---- About Us ----
     'about.title': 'ہمارے بارے میں',
     'about.introduction': 'تعارف',
     'about.ombudsmanProfile': 'محتسب کا پروفائل',
@@ -267,13 +274,16 @@ export const strings = {
     'about.publicInformationOfficer': 'پبلک انفارمیشن آفیسر',
     'aboutTitle.childrenCommissioner': 'دفتر چیف صوبائی کمشنر برائے اطفال',
     'about.contentSoon': 'اس حصے کا مواد جلد شامل کیا جائے گا۔',
-        'about.readBio': 'سوانح حیات پڑھیں',
+    'about.readBio': 'سوانح حیات پڑھیں',
     'about.hideBio': 'سوانح حیات چھپائیں',
+    'about.specialSection': 'خصوصی شعبہ',
+    'about.certifications': 'سرٹیفیکیشنز اور ایکریڈیٹیشن',
+    'about.certCaption': 'بین الاقوامی معیار کے مطابق تصدیق شدہ',
     'about.englishOnly': 'یہ حصہ فی الحال صرف انگریزی میں دستیاب ہے۔',
-        'about.openLink': 'ویب سائٹ دیکھیں',
-            'about.teamHeadOffice': 'مرکزی دفتر',
-    'about.teamRegionalOffice': 'علاقائی دفاتر',
-        // ---- Annual Reports ----
+    'about.openLink': 'ویب سائٹ دیکھیں',
+    'about.teamHeadOffice': 'مرکزی دفتر کی ٹیم',
+    'about.teamRegionalOffice': 'علاقائی دفاتر کی ٹیم',
+    // ---- Annual Reports ----
     'module.annualReports': 'سالانہ رپورٹس',
     'reports.title': 'سالانہ رپورٹس',
     'reports.subtitle': 'دفتر محتسب پنجاب کی شائع کردہ',
@@ -284,14 +294,17 @@ export const strings = {
     'reports.notReadyTitle': 'رپورٹ دستیاب نہیں',
     'reports.notReadyMsg': 'یہ رپورٹ ابھی ایپ میں شامل نہیں کی گئی۔',
     'reports.openFailed': 'رپورٹ نہیں کھل سکی',
-    'reports.openFailedMsg': 'رپورٹ نہیں کھل سکی۔ براہ کرم اپنا انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔',
-    
+    'reports.openFailedMsg':
+      'رپورٹ نہیں کھل سکی۔ براہ کرم اپنا انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔',
+
     // PDF viewer
     'pdf.loading': 'رپورٹ لوڈ ہو رہی ہے…',
-    'pdf.loadingHint': 'پہلی بار کچھ وقت لگتا ہے، اس کے بعد یہ فوراً کھلے گی، آف لائن بھی۔',
+    'pdf.loadingHint':
+      'پہلی بار کچھ وقت لگتا ہے، اس کے بعد یہ فوراً کھلے گی، آف لائن بھی۔',
     'pdf.page': 'صفحہ',
     'pdf.errorTitle': 'یہ رپورٹ نہیں کھل سکی',
-    'pdf.errorMsg': 'اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں، یا اسے براؤزر میں کھولیں۔',
+    'pdf.errorMsg':
+      'اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں، یا اسے براؤزر میں کھولیں۔',
     'pdf.retry': 'دوبارہ کوشش کریں',
     'pdf.openBrowser': 'براؤزر میں کھولیں',
     // Photo viewer (About Us)
