@@ -95,7 +95,11 @@ const ReportTile = ({
 
         <View style={[styles.pillSlot, urdu && styles.pillSlotUrdu]}>
           <View
-            style={[styles.statusPill, !available && styles.statusPillMuted]}
+            style={[
+              styles.statusPill,
+              urdu && styles.statusPillUrdu,
+              !available && styles.statusPillMuted,
+            ]}
           >
             <Text
               style={[

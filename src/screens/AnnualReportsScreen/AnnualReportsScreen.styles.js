@@ -51,19 +51,20 @@ export const createStyles = theme =>
 
 /**
  * One report tile, built from fixed rows so every tile lines up and the
- * pieces can never overlap:
+ * pieces can never overlap. The rows MUST add up to the tile height:
  *
- *   EN  14 pad + badge 48 + 8 + year 26 + subtitle 26 + 6 + pill 30 + 14 = 172
- *   UR  the same, with the subtitle and pill slots taller — a Nastaleeq
- *       line needs about twice the height of a Latin one
+ *   EN  14 pad + 48 badge + 8 + 26 year + 26 subtitle + 6 + 30 pill + 14 = 172
+ *   UR  14 pad + 48 badge + 8 + 26 year + 36 subtitle + 6 + 48 pill + 14 = 200
+ *       (tile 206, leaving 6 spare)
  *
- * The Urdu tile is TALLER rather than its text SMALLER. Shrinking Urdu to
- * fit an English-sized slot made it unreadable and merged the dots on
- * letters like پ into the strokes.
+ * Only the *Urdu values change for Urdu. A Nastaleeq line is much taller
+ * than a Latin one and fills its whole height, so Urdu gets taller slots
+ * and padding inside the pill — the tile grows, the text does not shrink.
+ * Changing an English value here pushes the pill out of the English tile.
  */
 export const TILE = {
   height: 172,
-  heightUrdu: 196,
+  heightUrdu: 206,
   pad: 14,
   badge: 48,
   gap: 8,
@@ -71,7 +72,7 @@ export const TILE = {
   subtitleSlot: 26,
   subtitleSlotUrdu: 36,
   pillSlot: 30,
-  pillSlotUrdu: 38,
+  pillSlotUrdu: 48,
 };
 
 export const createTileStyles = theme =>
@@ -93,16 +94,6 @@ export const createTileStyles = theme =>
     },
     tileUrdu: {height: TILE.heightUrdu},
     tileDisabled: {opacity: 0.55},
-    // Thin colour accent along the top edge, inset to clear the corners
-    tileAccent: {
-      position: 'absolute',
-      top: 0,
-      left: 24,
-      right: 24,
-      height: 3,
-      borderBottomLeftRadius: 3,
-      borderBottomRightRadius: 3,
-    },
 
     // The shell casts the shadow; the gradient rounds ITSELF
     badgeShell: {
@@ -136,16 +127,20 @@ export const createTileStyles = theme =>
     subtitleSlotUrdu: {height: TILE.subtitleSlotUrdu},
     subtitle: {...theme.type.bodySmall, textAlign: 'center'},
 
-    pillSlot: {height: TILE.pillSlotUrdu, marginTop: 6, justifyContent: 'center'},
+    pillSlot: {height: TILE.pillSlot, marginTop: 6, justifyContent: 'center'},
     pillSlotUrdu: {height: TILE.pillSlotUrdu},
     statusPill: {
-      minHeight: TILE.pillSlotUrdu,
+      minHeight: TILE.pillSlot,
       paddingHorizontal: 10,
       borderRadius: radii.pill,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'rgba(212, 113, 28, 0.12)',
     },
+    // Urdu only: Nastaleeq fills the whole height of its line (the ک at the
+    // top, the dots of پ at the bottom), so the pill needs its own padding
+    // or the dots sit on its edge
+    statusPillUrdu: {paddingVertical: 5},
     statusPillMuted: {backgroundColor: 'rgba(120, 120, 120, 0.14)'},
     statusText: {...theme.type.labelSmall, color: theme.accent, textAlign: 'center'},
     statusTextMuted: {color: theme.text.muted},

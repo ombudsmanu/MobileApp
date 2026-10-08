@@ -401,9 +401,6 @@ export const aboutContent = {
   // -------------------------------------------------------------------------
   ourTeam: {
     en: [
-      paragraph(
-        `The Office of the Ombudsman Punjab is served by Advisors and Consultants at the Head Office in Lahore and at Regional Offices across the Province.`,
-      ),
          sections([
       {key: 'teamHeadOffice', label: 'Head Office Team', icon: 'doc', colors: ['#5FA98C', '#2E6B56']},
       {key: 'teamRegionalOffice', label: 'Regional Office Team', icon: 'grid', colors: ['#F0923A', '#C2610F']},

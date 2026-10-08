@@ -24,7 +24,7 @@ import {
   createDynamicStyles,
   animationConfig,
   validationRules,
-  BACK_RADIUS
+  BACK_RADIUS,
 } from './LoginScreen.styles';
 
 const LoginScreen = () => {
@@ -73,7 +73,19 @@ const LoginScreen = () => {
       useNativeDriver: true,
     }).start();
   }, [fadeIn]);
-
+  /**
+   * BACK — return to the previous screen, or to the Splash screen when
+   * there is none. Login can be reached with nothing beneath it in the
+   * stack (from the guest SIGN IN button, which rebuilds the stack), and
+   * goBack() then does nothing at all.
+   */
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
+    }
+  };
   // ---- Validation -------------------------------------------------------
 
   /**
@@ -129,13 +141,13 @@ const LoginScreen = () => {
     }
 
     setSubmitting(true);
-     const result = await signIn({username, password, remember});
+    const result = await signIn({ username, password, remember });
     setSubmitting(false);
 
     if (result.ok) {
       navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
     } else {
-      notify.error('Sign in failed', result.message ?? 'Please try again.');
+      notify.error('Log in failed', result.message ?? 'Please try again.');
     }
   };
 
@@ -172,14 +184,21 @@ const LoginScreen = () => {
               ],
             }}
           >
-                     <Pressable
-              onPress={() => navigation.goBack()}
+            <Pressable
+              onPress={handleBack}
               hitSlop={12}
               accessibilityRole="button"
               accessibilityLabel="Back"
-              style={({pressed}) => [styles.backWrap, pressed && styles.backPressed]}
+              style={({ pressed }) => [
+                styles.backWrap,
+                pressed && styles.backPressed,
+              ]}
             >
-              <GlassSurface strong radius={BACK_RADIUS} contentStyle={styles.backInner}>
+              <GlassSurface
+                strong
+                radius={BACK_RADIUS}
+                contentStyle={styles.backInner}
+              >
                 <Icon
                   name="chevronLeft"
                   size={26}
@@ -190,8 +209,8 @@ const LoginScreen = () => {
               </GlassSurface>
             </Pressable>
 
-                      <View style={styles.header}>
-              <Text style={styles.heading}>Sign in</Text>
+            <View style={styles.header}>
+              <Text style={styles.heading}>Log in</Text>
               <Text style={styles.subheading}>
                 Access the Ombudsman Punjab Management Information System
               </Text>
@@ -213,7 +232,7 @@ const LoginScreen = () => {
                 onFocus={() => setFocusedField('username')}
                 onBlur={() => setFocusedField(null)}
                 placeholder="Enter username"
-                                autoCapitalize="none"
+                autoCapitalize="none"
                 autoCorrect={false}
                 autoComplete="username"
                 textContentType="username"
@@ -246,13 +265,16 @@ const LoginScreen = () => {
                 textContentType="password"
                 returnKeyType="done"
                 onSubmitEditing={handleSubmit}
-                               action={
+                action={
                   <Pressable
                     onPress={() => setShowPassword(prev => !prev)}
                     hitSlop={12}
                     style={styles.toggle}
                     accessibilityRole="button"
-                    accessibilityLabel={showPassword ? 'Hide password' : 'Show password'}>
+                    accessibilityLabel={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
+                  >
                     <Icon
                       name={showPassword ? 'eyeOff' : 'eye'}
                       size={22}
@@ -290,13 +312,13 @@ const LoginScreen = () => {
               </View>
 
               <GlassButton
-                label="SIGN IN"
+                label="LOG IN"
                 onPress={handleSubmit}
                 loading={submitting}
                 style={styles.submit}
               />
 
-               <View style={styles.dividerRow}>
+              <View style={styles.dividerRow}>
                 <View style={styles.dividerLine} />
                 <Text style={styles.dividerText}>OR</Text>
                 <View style={styles.dividerLine} />
@@ -308,7 +330,7 @@ const LoginScreen = () => {
                 loading={guestLoading}
                 onPress={handleGuest}
                 icon={<Icon name="user" size={17} color="#FFFFFF" />}
-                              />
+              />
             </GlassSurface>
 
             <Text style={styles.footer}>

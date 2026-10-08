@@ -43,6 +43,11 @@ export const presetBackgrounds = [
     source: require('../assets/backgrounds/bg7.jpg'),
     caption: {en: 'Office of the Ombudsman Punjab', ur: 'دفتر محتسب پنجاب'},
   },
+  {
+    key: 'bg8',
+    label: 'Preset 8',
+    source: require('../assets/backgrounds/bg8.png'),
+  }
 ];
 
 /** Accepts anything found in storage, including the old bare-string format. */
