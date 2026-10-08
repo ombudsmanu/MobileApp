@@ -48,7 +48,7 @@ export const createStyles = theme =>
       marginBottom: spacing.md,
       marginTop: spacing.xs,
     },
-    iconGlyph: {fontSize: 32, lineHeight: 38, ...weight(800)},
+    iconGlyph: {fontSize: 32, lineHeight: 38, ...theme.weight(800)},
 
     title: {...theme.type.headlineSmall, textAlign: 'center', textShadowRadius: 0},
     message: {...theme.type.bodyMedium, textAlign: 'center', marginTop: spacing.xs},

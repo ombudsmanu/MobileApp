@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {radii, spacing} from '../../theme/tokens';
-
+import {CARD_SHADOW, radii, spacing} from '../../theme/tokens';
 /**
  * TYPOGRAPHY (MD3) — each tile runs largest to smallest
  *   Title Medium — screen title, and the year (the headline of each tile)
@@ -36,6 +35,8 @@ export const createStyles = theme =>
       alignSelf: 'center',
       paddingHorizontal: spacing.lg,
     },
+        // Certification badges across the top of the screen
+    topBadges: {marginBottom: spacing.md},
     intro: {...theme.type.bodyMedium, marginBottom: spacing.md},
 
     // Right-to-left text (Urdu). One style, used everywhere.
@@ -44,7 +45,7 @@ export const createStyles = theme =>
     // ---- Grid ----
     // Years run newest-first in BOTH languages: the grid is not reversed
     // for Urdu, because reversing each row would put 2024 before 2025.
-    grid: {flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'},
+    grid: {flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between',marginTop: spacing.md},
     // StaggerIn wraps each tile, so IT is the grid item and carries the width
     cardWrap: {width: '48.5%', marginBottom: spacing.sm},
   });
@@ -85,12 +86,9 @@ export const createTileStyles = theme =>
       backgroundColor: theme.glass.fillStrong,
       borderWidth: 1,
       borderColor: theme.glass.border,
-      borderRadius: radii.lg,
-      elevation: 6,
-      shadowColor: theme.glass.shadow,
-      shadowOpacity: 0.35,
-      shadowRadius: 14,
-      shadowOffset: {width: 0, height: 6},
+            borderRadius: radii.lg,
+      boxShadow: CARD_SHADOW,
+  
     },
     tileUrdu: {height: TILE.heightUrdu},
     tileDisabled: {opacity: 0.55},

@@ -56,9 +56,14 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>NooriNastaleeq.ttf</string>
+		<string>Carlito-Bold.ttf</string>
+		<string>Carlito-Regular.ttf</string>
+		<string>NotoNastaliqUrdu-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-Medium.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-SemiBold.ttf</string>
 		<string>Poppins-Bold.ttf</string>
-		<string>Poppins-ExtraBold.ttf</string>
 		<string>Poppins-Medium.ttf</string>
 		<string>Poppins-Regular.ttf</string>
 		<string>Poppins-SemiBold.ttf</string>

@@ -35,7 +35,7 @@ export const createStyles = theme =>
     header: {paddingHorizontal: spacing.lg, paddingBottom: spacing.lg},
     brandRow: {flexDirection: 'row', alignItems: 'center'},
     crest: {width: 46, height: 46, marginRight: spacing.sm},
-    crestText: {color: theme.brandGreen, fontSize: 12, letterSpacing: 1, ...weight(800)},
+    crestText: {color: theme.brandGreen, fontSize: 12, letterSpacing: 1, ...theme.weight(800)},
     brandText: {flex: 1},
     brandTitle: {...theme.type.titleMedium},
     brandSub: {...theme.type.bodySmall},
@@ -79,7 +79,7 @@ export const createStyles = theme =>
     itemDisabled: {opacity: 0.5},
     itemIcon: {width: 32, alignItems: 'flex-start'},
     itemLabel: {...theme.type.labelLarge, color: theme.text.body, flex: 1},
-    itemLabelActive: {color: theme.accent, ...weight(700)},
+    itemLabelActive: {color: theme.accent, ...theme.weight(700)},
     soonTag: {
       ...theme.type.labelSmall,
       color: theme.accent,

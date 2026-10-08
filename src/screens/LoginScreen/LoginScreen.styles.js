@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { radii, spacing } from '../../theme/tokens';
-
+import { CARD_SHADOW, radii, spacing } from '../../theme/tokens';
 /**
  * TYPOGRAPHY (MD3)
  *   Headline Small — "Sign in"
@@ -34,6 +33,14 @@ export const createStyles = theme =>
     },
     backText: { ...theme.type.labelLarge, color: theme.text.heading },
 
+    // ---- Crest and brand card, as on the splash screen ----
+    crest: {
+      width: 112,
+      height: 112,
+      alignSelf: 'center',
+      marginBottom: spacing.sm,
+    },
+    brandCard: { marginBottom: spacing.md },
     header: {
       alignSelf: 'stretch',
       marginBottom: spacing.lg,
@@ -43,6 +50,7 @@ export const createStyles = theme =>
       backgroundColor: theme.glass.fillStrong,
       borderWidth: 1,
       borderColor: theme.glass.border,
+      boxShadow: CARD_SHADOW,
     },
     heading: { ...theme.type.headlineSmall },
     subheading: { ...theme.type.bodyMedium, marginTop: spacing.xs },

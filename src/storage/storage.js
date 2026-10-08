@@ -15,7 +15,8 @@ const KEYS = {
   rememberedUsername: '@opmis/rememberedUsername',
   themeOverrides: '@opmis/themeOverrides',
   backgroundImage: '@opmis/backgroundImage',
-    language: '@opmis/language',
+  language: '@opmis/language',
+  fonts: '@opmis/fonts',
 };
 
 const readJson = async key => {
@@ -70,7 +71,8 @@ export const storage = {
 
   // ---- Remember me ----
   getRememberedUsername: () => readText(KEYS.rememberedUsername),
-  saveRememberedUsername: username => writeText(KEYS.rememberedUsername, username),
+  saveRememberedUsername: username =>
+    writeText(KEYS.rememberedUsername, username),
   clearRememberedUsername: () => remove(KEYS.rememberedUsername),
 
   // ---- Appearance ----
@@ -80,9 +82,13 @@ export const storage = {
   getBackgroundImage: () => readJson(KEYS.backgroundImage),
   saveBackgroundImage: bg => writeJson(KEYS.backgroundImage, bg),
   clearBackgroundImage: () => remove(KEYS.backgroundImage),
-    // ---- Language ----
+  // ---- Language ----
   getLanguage: () => readText(KEYS.language),
   saveLanguage: lang => writeText(KEYS.language, lang),
+
+  // ---- Fonts ----
+  getFonts: () => readJson(KEYS.fonts),
+  saveFonts: fonts => writeJson(KEYS.fonts, fonts),
 };
 
 export default storage;

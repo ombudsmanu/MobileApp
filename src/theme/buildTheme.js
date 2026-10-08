@@ -1,7 +1,12 @@
-import {basePalette} from './palette';
-import {normalizeBackground} from './backgrounds';
-import {isDarkColor} from './colorUtils';
-import {typography} from './tokens';
+import { basePalette } from './palette';
+import { normalizeBackground } from './backgrounds';
+import { isDarkColor } from './colorUtils';
+import {
+  DEFAULT_FONTS,
+  makeTypography,
+  urduFamilyFor,
+  weightFor,
+} from './tokens';
 
 /** Which colour role each MD3 style takes. Colour follows the type family. */
 const STYLE_ROLE = {
@@ -25,7 +30,13 @@ const STYLE_ROLE = {
  * theme.type.<style> = size + weight + line height + colour, ready to
  * spread:  cardTitle: {...theme.type.titleMedium}
  */
-export const buildTheme = (overrides = {}, backgroundImage = null) => {
+export const buildTheme = (
+  overrides = {},
+  backgroundImage = null,
+  fonts = DEFAULT_FONTS,
+) => {
+  // The chosen fonts decide the type scale (and, for Urdu, AppText's family)
+  const typography = makeTypography(fonts.latin);
   const p = basePalette;
   const image = normalizeBackground(backgroundImage);
   const solidOverride = overrides.background ?? null;
@@ -43,7 +54,7 @@ export const buildTheme = (overrides = {}, backgroundImage = null) => {
   const base = onDark
     ? p.textOnDark
     : onWallpaper
-    ? {...p.text, ...p.textOnWallpaper}
+    ? { ...p.text, ...p.textOnWallpaper }
     : p.text;
 
   const text = {
@@ -63,7 +74,7 @@ export const buildTheme = (overrides = {}, backgroundImage = null) => {
   const halo = onWallpaper
     ? {
         textShadowColor: 'rgba(12, 20, 14, 0.40)',
-        textShadowOffset: {width: 0, height: 1},
+        textShadowOffset: { width: 0, height: 1 },
         textShadowRadius: 3,
       }
     : null;
@@ -86,14 +97,19 @@ export const buildTheme = (overrides = {}, backgroundImage = null) => {
 
   let glass = p.glass;
   if (onDark) {
-    glass = {...p.glass, ...p.glassOnDark};
+    glass = { ...p.glass, ...p.glassOnDark };
   } else if (onWallpaper) {
-    glass = {...p.glass, ...p.glassOnWallpaper};
+    glass = { ...p.glass, ...p.glassOnWallpaper };
   }
 
   return {
     name: p.name,
     isLight: !onDark,
+    // Fonts — `weight` lets a style file pick the right file for a weight,
+    // and `urduFont` is the family AppText uses for Urdu
+    fonts,
+    weight: weightFor(fonts.latin),
+    urduFont: urduFamilyFor(fonts.urdu),
 
     bgMode,
     bg: p.bg,

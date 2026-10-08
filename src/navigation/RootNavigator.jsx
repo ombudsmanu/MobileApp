@@ -12,6 +12,8 @@ import AboutUsScreen from '../screens/AboutUsScreen/AboutUsScreen';
 import AnnualReportsScreen from '../screens/AnnualReportsScreen/AnnualReportsScreen';
 import AboutSectionScreen from '../screens/AboutSectionScreen/AboutSectionScreen';
 import PdfViewerScreen from '../screens/PdfViewerScreen/PdfViewerScreen';
+import DownloadsScreen from '../screens/DownloadsScreen/DownloadsScreen';
+import RegisterComplaintScreen from '../screens/RegisterComplaintScreen/RegisterComplaintScreen';
 import {
   resolveBaseColor,
   createNavTheme,
@@ -69,15 +71,17 @@ const RootNavigator = () => {
             requireAdmin: true,
           }}
         />
-        <Stack.Screen
+               <Stack.Screen
           name="RegisterComplaint"
+          component={RegisterComplaintScreen}
+          options={placeholderScreenOptions}
+        />
+        {/* The complaint forms, once built, replace this placeholder.
+            Its title and icon come from the option that was tapped. */}
+        <Stack.Screen
+          name="ComplaintForm"
           component={ComingSoonScreen}
           options={placeholderScreenOptions}
-          initialParams={{
-            titleKey: 'screen.registerComplaint',
-            fallbackTitle: 'Register a Complaint',
-            icon: 'inbox',
-          }}
         />
          <Stack.Screen
           name="AboutUs"
@@ -99,8 +103,13 @@ const RootNavigator = () => {
           component={PdfViewerScreen}
           options={placeholderScreenOptions}
         />
+        <Stack.Screen
+          name="Downloads"
+          component={DownloadsScreen}
+          options={placeholderScreenOptions}
+        />
         {/* Future module screens go here */}
-      </Stack.Navigator>
+              </Stack.Navigator>
     </NavigationContainer>
   );
 };

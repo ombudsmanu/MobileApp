@@ -23,7 +23,7 @@ import {
 import StaggerIn from '../../components/StaggerIn/StaggerIn';
 import { useScreenReady } from '../../navigation/useScreenReady';
 import CertificationBadges from '../../components/CertificationBadges/CertificationBadges';
-import SectionRow from './SectionRow';
+import SectionRow from '../../components/SectionRow/SectionRow';
 
 /**
  * Splits the blocks into cards: every heading starts a new text card;

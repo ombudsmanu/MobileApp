@@ -16,6 +16,7 @@ import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import GlassButton from '../../components/GlassButton/GlassButton';
 import Icon from '../../components/Icon/Icon';
 import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
+import FontPicker from './FontPicker';
 import {
   createStyles,
   createDynamicStyles,
@@ -343,7 +344,8 @@ const AppearanceScreen = ({navigation}) => {
             <Text style={styles.previewBody}>{t('ap.previewBody')}</Text>
             <Text style={styles.previewLabel}>{t('ap.previewLabel')}</Text>
           </GlassSurface>
-
+          {/* ---------- FONT ---------- */}
+          <FontPicker />
           {/* ---------- TEXT COLOURS ---------- */}
           <GlassSurface style={styles.card}>
             <Text style={styles.cardTitle}>{t('ap.textColours')}</Text>
@@ -412,7 +414,6 @@ const AppearanceScreen = ({navigation}) => {
             <Text style={styles.cardSub}>{t('ap.previewHint')}</Text>
 
             <Text style={styles.sectionTitle}>{t('ap.solidColour')}</Text>
-            <Text style={styles.tileHint}>{t('ap.tileHint')}</Text>
             <View style={styles.row}>
               <GradientTile
                 colors={[theme.blobs[0], theme.blobs[1]]}

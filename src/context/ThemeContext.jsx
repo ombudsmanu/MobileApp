@@ -7,6 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { buildTheme } from '../theme/buildTheme';
+import { DEFAULT_FONTS, LATIN_FONTS, URDU_FONTS } from '../theme/tokens';
 import { normalizeBackground } from '../theme/backgrounds';
 import { storage } from '../storage/storage';
 
@@ -76,7 +77,9 @@ export const ThemeProvider = ({ children }) => {
   const [overrides, setOverrides] = useState({});
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [draft, setDraft] = useState(null);
-
+  // Fonts apply immediately and are saved — there is no draft for them,
+  // because a font is judged by seeing it, not by previewing one card
+  const [fonts, setFonts] = useState(DEFAULT_FONTS);
   // ---- Restore saved appearance on startup ------------------------------
   useEffect(() => {
     (async () => {
@@ -95,6 +98,19 @@ export const ThemeProvider = ({ children }) => {
       if (bg) {
         setBackgroundImage(bg);
       }
+
+      const savedFonts = await storage.getFonts();
+      if (savedFonts) {
+        // Ignore a saved name that no longer exists (a font we removed)
+        setFonts({
+          latin: LATIN_FONTS[savedFonts.latin]
+            ? savedFonts.latin
+            : DEFAULT_FONTS.latin,
+          urdu: URDU_FONTS[savedFonts.urdu]
+            ? savedFonts.urdu
+            : DEFAULT_FONTS.urdu,
+        });
+      }
     })();
   }, []);
 
@@ -111,8 +127,9 @@ export const ThemeProvider = ({ children }) => {
   // ---- Draft -----------------------------------------------------------
   const editing = draft ?? committed;
   const draftTheme = useMemo(
-    () => (draft ? buildTheme(draft.overrides, draft.backgroundImage) : theme),
-    [draft, theme],
+    () =>
+      draft ? buildTheme(draft.overrides, draft.backgroundImage, fonts) : theme,
+    [draft, theme, fonts],
   );
 
   const isTextDirty = !!draft && !sameText(draft.overrides, overrides);
@@ -228,7 +245,14 @@ export const ThemeProvider = ({ children }) => {
     });
     setDraft(d => (d ? { ...d, overrides: apply(d.overrides) } : d));
   }, []);
-
+  /** Sets one font group ('latin' or 'urdu'); applies and saves at once. */
+  const setFont = useCallback((group, key) => {
+    setFonts(prev => {
+      const next = { ...prev, [group]: key };
+      storage.saveFonts(next);
+      return next;
+    });
+  }, []);
   const resetEverything = useCallback(() => {
     setOverrides({});
     storage.saveThemeOverrides({});
@@ -254,6 +278,8 @@ export const ThemeProvider = ({ children }) => {
       applyTextColors,
       draftActions,
       resetEverything,
+      fonts,
+      setFont,
     }),
     [
       theme,
@@ -271,6 +297,8 @@ export const ThemeProvider = ({ children }) => {
       applyTextColors,
       draftActions,
       resetEverything,
+      fonts,
+      setFont,
     ],
   );
 
@@ -285,8 +313,10 @@ export const ThemeProvider = ({ children }) => {
  */
 const PreviewThemeContext = createContext(null);
 
-export const PreviewThemeProvider = ({theme, children}) => (
-  <PreviewThemeContext.Provider value={theme}>{children}</PreviewThemeContext.Provider>
+export const PreviewThemeProvider = ({ theme, children }) => (
+  <PreviewThemeContext.Provider value={theme}>
+    {children}
+  </PreviewThemeContext.Provider>
 );
 export const useTheme = () => {
   const ctx = useContext(ThemeContext);
@@ -295,5 +325,5 @@ export const useTheme = () => {
     throw new Error('useTheme() must be used inside a <ThemeProvider>');
   }
   // Inside a PreviewThemeProvider, components see the preview theme
-  return preview ? {...ctx, theme: preview} : ctx;
+  return preview ? { ...ctx, theme: preview } : ctx;
 };

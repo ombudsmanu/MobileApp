@@ -2,28 +2,48 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "src/assets/fonts/NooriNastaleeq.ttf",
-      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      "path": "src/assets/fonts/Carlito-Bold.ttf",
+      "sha1": "ab7b60e2097a90cc0e4fb539f5d1e4466d09fe64"
+    },
+    {
+      "path": "src/assets/fonts/Carlito-Regular.ttf",
+      "sha1": "f093c96d46e0456704585ab7974e06afd42c0d19"
+    },
+    {
+      "path": "src/assets/fonts/NotoNastaliqUrdu-Regular.ttf",
+      "sha1": "dfb8f5e2a9f6a6b3b8f00de72fc21ffb1c7965ce"
+    },
+    {
+      "path": "src/assets/fonts/OpenSans-Bold.ttf",
+      "sha1": "c7e6b913f990299fcc5928f4581727972e869727"
+    },
+    {
+      "path": "src/assets/fonts/OpenSans-Medium.ttf",
+      "sha1": "1632123e8a78dd095fb987c0cb2ad05063e0648a"
+    },
+    {
+      "path": "src/assets/fonts/OpenSans-Regular.ttf",
+      "sha1": "576aa669c4ceb3830fde859a4db52916def172af"
+    },
+    {
+      "path": "src/assets/fonts/OpenSans-SemiBold.ttf",
+      "sha1": "344041aeaad9e07a186cc3a937df915e5d98936f"
     },
     {
       "path": "src/assets/fonts/Poppins-Bold.ttf",
-      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
-    },
-    {
-      "path": "src/assets/fonts/Poppins-ExtraBold.ttf",
-      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
     },
     {
       "path": "src/assets/fonts/Poppins-Medium.ttf",
-      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
     },
     {
       "path": "src/assets/fonts/Poppins-Regular.ttf",
-      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
     },
     {
       "path": "src/assets/fonts/Poppins-SemiBold.ttf",
-      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
     }
   ]
 }

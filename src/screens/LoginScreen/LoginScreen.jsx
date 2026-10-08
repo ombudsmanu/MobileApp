@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
   Easing,
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -19,6 +20,7 @@ import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import GlassButton from '../../components/GlassButton/GlassButton';
 import GlassField from '../../components/GlassField/GlassField';
 import Icon from '../../components/Icon/Icon';
+import BrandCard from '../../components/BrandCard/BrandCard';
 import {
   createStyles,
   createDynamicStyles,
@@ -131,7 +133,7 @@ const LoginScreen = () => {
       const single = problems.length === 1;
       notify.dialog({
         type: 'warning',
-        title: single ? 'Incomplete details' : 'Check your details',
+        title: single ? 'Incomplete credentials' : 'Check your credentials',
         message: single
           ? problems[0]
           : problems.map(p => `\u2022 ${p}`).join('\n'),
@@ -209,13 +211,13 @@ const LoginScreen = () => {
               </GlassSurface>
             </Pressable>
 
-            <View style={styles.header}>
-              <Text style={styles.heading}>Log in</Text>
-              <Text style={styles.subheading}>
-                Access the Ombudsman Punjab Management Information System
-              </Text>
-            </View>
-
+                       {/* ---- Crest and brand card — the same as on the splash ---- */}
+            <Image
+              source={require('../../assets/images/crest.png')}
+              style={styles.crest}
+              resizeMode="contain"
+            />
+            <BrandCard style={styles.brandCard} />
             <GlassSurface style={styles.card}>
               {/* ---------- USERNAME ---------- */}
               <Text style={styles.label}>USERNAME</Text>

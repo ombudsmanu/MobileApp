@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {URDU_FONT} from '../../theme/tokens';
-
+import { StyleSheet, Text } from 'react-native';
+import { useTheme } from '../../context/ThemeContext';
 /**
  * Drop-in replacement for <Text>.
  *
@@ -28,7 +27,8 @@ import {URDU_FONT} from '../../theme/tokens';
  * EDGE SPACE — a no-break space at each end of short labels gives the
  * first and last letters a little sideways room too.
  */
-const ARABIC_SCRIPT = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const ARABIC_SCRIPT =
+  /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
 const URDU_SIZE_SCALE = 1.1;
 const URDU_MIN_SIZE = 14;
 const URDU_LINE_FACTOR = 2.2;
@@ -50,7 +50,12 @@ const textOf = children => {
 /** A style value as a number (unset or non-numeric counts as 0). */
 const num = value => (typeof value === 'number' ? value : 0);
 
-const AppText = ({style, children, ...rest}) => {
+const AppText = ({ style, children, ...rest }) => {
+  // The Urdu font follows the choice in Appearance (theme.urduFont).
+  // The hook must run on every render, so it is read before the English
+  // early-return below.
+  const { theme } = useTheme();
+
   if (!ARABIC_SCRIPT.test(textOf(children))) {
     return (
       <Text {...rest} style={style}>
@@ -64,14 +69,21 @@ const AppText = ({style, children, ...rest}) => {
     URDU_MIN_SIZE,
     Math.round((flat.fontSize ?? 14) * URDU_SIZE_SCALE),
   );
-  const lineHeight = Math.max(flat.lineHeight ?? 0, Math.round(fontSize * URDU_LINE_FACTOR));
+  const lineHeight = Math.max(
+    flat.lineHeight ?? 0,
+    Math.round(fontSize * URDU_LINE_FACTOR),
+  );
   const room = Math.round(fontSize * URDU_DRAW_ROOM);
 
   // Keep whatever spacing the screen already set, then add the room
   const padTop = num(flat.paddingTop ?? flat.paddingVertical ?? flat.padding);
-  const padBottom = num(flat.paddingBottom ?? flat.paddingVertical ?? flat.padding);
+  const padBottom = num(
+    flat.paddingBottom ?? flat.paddingVertical ?? flat.padding,
+  );
   const marTop = num(flat.marginTop ?? flat.marginVertical ?? flat.margin);
-  const marBottom = num(flat.marginBottom ?? flat.marginVertical ?? flat.margin);
+  const marBottom = num(
+    flat.marginBottom ?? flat.marginVertical ?? flat.margin,
+  );
 
   const plain = typeof children === 'string' ? children : '';
   const content =
@@ -85,7 +97,8 @@ const AppText = ({style, children, ...rest}) => {
       style={[
         style,
         {
-          fontFamily: URDU_FONT,
+          // null means the phone's own Arabic font
+          ...(theme.urduFont ? { fontFamily: theme.urduFont } : null),
           fontSize,
           lineHeight,
           fontWeight: 'normal',
@@ -97,7 +110,8 @@ const AppText = ({style, children, ...rest}) => {
           marginTop: marTop - room,
           marginBottom: marBottom - room,
         },
-      ]}>
+      ]}
+    >
       {content}
     </Text>
   );

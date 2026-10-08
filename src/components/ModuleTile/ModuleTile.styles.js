@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {radii, spacing} from '../../theme/tokens';
-
+import {CARD_SHADOW, radii, spacing} from '../../theme/tokens';
 /** Delay between each card's entrance, in milliseconds. */
 export const TILE_STAGGER_MS = 130;
 
@@ -42,12 +41,9 @@ export const createStyles = theme =>
       backgroundColor: theme.glass.fillStrong,
       borderWidth: 1,
       borderColor: theme.glass.border,
-      borderRadius: radii.lg,
-      elevation: 6,
-      shadowColor: theme.glass.shadow,
-      shadowOpacity: 0.35,
-      shadowRadius: 14,
-      shadowOffset: {width: 0, height: 6},
+            borderRadius: radii.lg,
+      boxShadow: CARD_SHADOW,
+    
     },
     // Thin colour accent along the top edge, inset to clear the corners
     tileAccent: {

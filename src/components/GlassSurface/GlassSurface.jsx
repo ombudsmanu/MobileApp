@@ -15,9 +15,9 @@ import {createStyles, SHEEN_GEOMETRY} from './GlassSurface.styles';
  *   radius        corner radius (defaults to the style's, then radii.lg)
  *   center        centre a single child, with no inner content view
  *
- * Layers, back to front: the fill and border, a diagonal sheen gradient,
- * a faint bottom rim, then the content. (The thin highlight line that used
- * to run along the top edge was removed for a cleaner look.)
+ * Layers, back to front: the fill, border and shadow, a diagonal sheen
+ * gradient, then the content. The thin decorative lines that used to run
+ * along the top and bottom edges were removed for a cleaner look.
  */
 const GlassSurface = ({
   children,
@@ -50,7 +50,6 @@ const GlassSurface = ({
         end={SHEEN_GEOMETRY.end}
         style={[styles.sheen, {borderRadius: cornerRadius}]}
       />
-      <View pointerEvents="none" style={styles.bottomRim} />
       {center ? children : <View style={[styles.content, contentStyle]}>{children}</View>}
     </View>
   );

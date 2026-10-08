@@ -16,7 +16,6 @@ import {
   heading,
   paragraph,
   profile,
-  signature,
   people,
   bullets,
   contact,
@@ -111,17 +110,11 @@ export const aboutContentUr = {
     paragraph(
       `دفتر محتسب پنجاب کی خدمات کو مزید بہتر بنانے کے لیے قارئین، شکایت کنندگان اور عوام کی جانب سے ہماری کارکردگی پر آراء اور تجاویز کا خیرمقدم کیا جاتا ہے۔`,
     ),
-    signature({
-      name: 'محترمہ عائشہ حامد',
-      role: 'محتسب صوبہ پنجاب',
-    }),
   ],
 
   // -------------------------------------------------------------------------
   formerOmbudsman: [
-    paragraph(
-      `دفتر محتسب پنجاب کے قیام سے اب تک درج ذیل ممتاز شخصیات صوبائی محتسب پنجاب کے طور پر خدمات انجام دے چکی ہیں:`,
-    ),
+   
     people([
       {
         name: 'میجر (ر) اعظم سلیمان خان',
@@ -188,9 +181,6 @@ export const aboutContentUr = {
 
   // -------------------------------------------------------------------------
   formerSecretaries: [
-    paragraph(
-      `درج ذیل افسران ہر ایک کے سامنے درج مدت کے دوران سیکرٹری، محتسب پنجاب کے طور پر خدمات انجام دے چکے ہیں:`,
-    ),
     people([
       {name: 'طاہر رضا ہمدانی', tenure: 'اپریل 2022 تا ستمبر 2024', photo: null, bio: null},
       {name: 'آصف اقبال چوہدری', tenure: 'مارچ 2021 تا مارچ 2022', photo: null, bio: null},
@@ -278,12 +268,9 @@ export const aboutContentUr = {
 
   // -------------------------------------------------------------------------
   ourTeam: [
-    paragraph(
-      `دفتر محتسب پنجاب میں لاہور کے مرکزی دفتر اور صوبے بھر کے علاقائی دفاتر میں مشیران اور کنسلٹنٹس خدمات انجام دیتے ہیں۔`,
-    ),
        sections([
-      {key: 'teamHeadOffice', label: 'مرکزی دفتر کی ٹیم', icon: 'doc', colors: ['#5FA98C', '#2E6B56']},
-      {key: 'teamRegionalOffice', label: 'علاقائی دفاتر کی ٹیم', icon: 'grid', colors: ['#F0923A', '#C2610F']},
+      {key: 'teamHeadOffice',label: 'ہیڈ آفس ٹیم', icon: 'doc', colors: ['#5FA98C', '#2E6B56']},
+      {key: 'teamRegionalOffice',label: 'ریجنل آفس ٹیم', icon: 'grid', colors: ['#F0923A', '#C2610F']},
     ]),
   ],
 

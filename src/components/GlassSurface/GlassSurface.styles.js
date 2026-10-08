@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {radii} from '../../theme/tokens';
+import {CARD_SHADOW, CARD_SHADOW_STRONG, radii} from '../../theme/tokens';
 
 export const createStyles = theme =>
   StyleSheet.create({
@@ -8,13 +8,9 @@ export const createStyles = theme =>
       borderWidth: 1,
       borderColor: theme.glass.border,
       borderRadius: radii.lg,
-      // A wallpaper is busy, so cards need a stronger shadow to separate
-      // from it. On flat backgrounds a softer shadow looks cleaner.
-      elevation: theme.bgMode === 'image' ? 14 : 10,
-      shadowColor: theme.glass.shadow,
-      shadowOpacity: theme.bgMode === 'image' ? 0.45 : 0.3,
-      shadowRadius: theme.bgMode === 'image' ? 26 : 20,
-      shadowOffset: {width: 0, height: theme.bgMode === 'image' ? 12 : 10},
+      // The app's shared card shadow (see CARD_SHADOW in tokens.js). A photo
+      // wallpaper is busy, so cards over it get the stronger version.
+      boxShadow: theme.bgMode === 'image' ? CARD_SHADOW_STRONG : CARD_SHADOW,
     },
     centered: {
       alignItems: 'center',
@@ -22,17 +18,6 @@ export const createStyles = theme =>
     },
     strong: {backgroundColor: theme.glass.fillStrong},
     sheen: {...StyleSheet.absoluteFillObject},
-    // Faint line along the bottom edge. Inset from the corners — without
-    // overflow:hidden, a full-width line would poke past the rounded edges
-    bottomRim: {
-      position: 'absolute',
-      bottom: 0,
-      left: 16,
-      right: 16,
-      height: 1,
-      borderRadius: 1,
-      backgroundColor: theme.glass.rim,
-    },
     content: {position: 'relative', flexShrink: 1},
   });
 

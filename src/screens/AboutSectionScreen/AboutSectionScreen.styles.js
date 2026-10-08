@@ -309,14 +309,3 @@ export const createAccentStyles = accent =>
   });
 
   
-/** The wide sub-section rows (Our Team → Head Office / Regional Office). */
-export const createRowStyles = theme =>
-  StyleSheet.create({
-    row: {paddingVertical: spacing.lg, paddingHorizontal: spacing.lg, overflow: 'hidden'},
-    rowInner: {alignItems: 'center', justifyContent: 'center'},
-    // Coloured bar on the leading edge, full height of the row
-    bar: {position: 'absolute', top: -40, bottom: -40, width: 5},
-    barStart: {left: -spacing.lg},
-    barEnd: {right: -spacing.lg},
-    label: {...theme.type.titleMedium, textAlign: 'center'},
-  });

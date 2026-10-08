@@ -150,7 +150,12 @@ const DashboardScreen = ({ navigation }) => {
 
         <View style={styles.topTextWrap}>
           <Text style={styles.topTitle}>OPMIS</Text>
-          <Text style={styles.topSub}>{t('orgName')}</Text>
+          <Text
+            style={[styles.topSub, isRTL ? styles.topSubUr : styles.topSubEn]}
+            numberOfLines={2}
+          >
+            {t('orgName')}
+          </Text>
         </View>
 
         <LanguageToggle />
@@ -196,7 +201,7 @@ const DashboardScreen = ({ navigation }) => {
               label={t(`module.${m.key}`, m.label)}
               soonLabel={t('comingSoon')}
               enabled={m.enabled}
-               index={index}
+              index={index}
               play={ready}
               isRTL={isRTL}
               onPress={() => navigation.navigate(m.route)}

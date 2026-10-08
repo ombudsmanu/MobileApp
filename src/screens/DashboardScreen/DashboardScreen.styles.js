@@ -18,6 +18,7 @@ import { radii, spacing } from '../../theme/tokens';
 export const MODULE_COLORS = {
   dashboard: ['#4A90D9', '#1F5C9E'], // blue    — overview, trust
   complaints: ['#F2A04C', '#D4711C'], // orange  — take action
+    downloads: ['#6C8FD6', '#3B5BA5'], // indigo  — documents to take away
   dms: ['#43A35A', '#1F6B33'], // green   — organised, safe
   cases: ['#9B6FD6', '#5B3AA0'], // purple  — formal, authority
   reports: ['#2FB5A8', '#157A71'], // teal    — clarity, analysis
@@ -46,9 +47,20 @@ export const createStyles = theme =>
       paddingBottom: spacing.md,
     },
     menuBtn: { width: 48, height: 48 },
-    topTextWrap: { flex: 1, marginHorizontal: spacing.md },
+    topTextWrap: { flex: 1, marginHorizontal: spacing.sm },
     topTitle: { ...theme.type.titleLarge, letterSpacing: 0.5 },
     topSub: { ...theme.type.bodySmall },
+    // The full name is 45 characters but the title block is only ~140px
+    // wide (between the menu button and the toggle), so at Body Small it
+    // needed 2.1 lines and the last word was cut. Label Small fits it in
+    // two. Urdu keeps its own size — AppText has a minimum below which
+    // Nastaleeq dots blur — and fits two lines comfortably.
+    topSubEn: { ...theme.type.labelSmall, lineHeight: 15 },
+    // Urdu wraps onto a second line, and without textAlign Android starts
+    // each line at the LEFT edge — so the second line began on the wrong
+    // side. (Writing direction alone orders the letters; it does not
+    // position the line.)
+    topSubUr: { textAlign: 'right' },
 
     // ---- Language toggle ----
     langToggle: {

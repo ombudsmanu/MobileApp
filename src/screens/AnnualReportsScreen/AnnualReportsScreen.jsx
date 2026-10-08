@@ -12,6 +12,7 @@ import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import Icon from '../../components/Icon/Icon';
 import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import StaggerIn from '../../components/StaggerIn/StaggerIn';
+import CertificationBadges from '../../components/CertificationBadges/CertificationBadges';
 import ReportTile from './ReportTile';
 import {createStyles, createDynamicStyles, BACK_RADIUS} from './AnnualReportsScreen.styles';
 
@@ -74,8 +75,7 @@ const AnnualReportsScreen = ({navigation}) => {
       <ScrollView
         contentContainerStyle={[styles.scroll, dyn.scrollPad]}
         showsVerticalScrollIndicator={false}>
-        <Text style={[styles.intro, isRTL && styles.textRTL]}>{t('reports.intro')}</Text>
-
+         <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} />
         <View style={styles.grid}>
           {annualReports.map((report, index) => (
             <StaggerIn key={report.year} index={index} play={ready} style={styles.cardWrap}>

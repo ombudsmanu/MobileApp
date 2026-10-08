@@ -5,7 +5,6 @@ import {
   Image,
   PanResponder,
   Pressable,
-  Text,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -15,6 +14,8 @@ import { useAuth } from '../../context/AuthContext';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import Icon from '../../components/Icon/Icon';
+import Text from '../../components/AppText/AppText';
+import BrandCard from '../../components/BrandCard/BrandCard';
 import {
   createStyles,
   createDynamicStyles,
@@ -22,7 +23,6 @@ import {
   CERTIFICATIONS,
   PANEL_RADIUS,
   HINT_RADIUS,
-  CREST_RADIUS,
 } from './SplashScreen.styles';
 
 const SplashScreen = ({ navigation }) => {
@@ -216,47 +216,17 @@ const SplashScreen = ({ navigation }) => {
             },
           ]}
         >
-          {/* ---- Crest + office line ---- */}
+          {/* ---- Crest — directly on the background, no card behind it ---- */}
           <View style={{ alignItems: 'center' }}>
-            <GlassSurface
-              strong
-              center
-              radius={CREST_RADIUS}
-              style={styles.crestPanel}
-            >
-              <View style={styles.crestPlate}>
-                <Image
-                  source={require('../../assets/images/crest.png')}
-                  style={styles.crestImage}
-                />
-              </View>
-            </GlassSurface>
+            <Image
+              source={require('../../assets/images/crest.png')}
+              style={styles.crestImage}
+            />
           </View>
 
-          {/* ---- Brand card ---- */}
+          {/* ---- Brand card — shared with the login screen ---- */}
           <View style={{ alignSelf: 'stretch', alignItems: 'center' }}>
-            <GlassSurface radius={PANEL_RADIUS} style={styles.brandCard}>
-              {/* Section 1: 14 → 14 */}
-              <Text style={styles.officeLine}>
-                OFFICE OF THE{'\n'}OMBUDSMAN PUNJAB
-              </Text>
-              <Text style={styles.welcome}>WELCOME TO</Text>
-
-              <View style={styles.officeDivider} />
-
-              {/* Section 2: 28 → 16 → 14 */}
-              <Text
-                style={styles.orgName}
-                numberOfLines={1}
-                adjustsFontSizeToFit
-              >
-                Ombudsman Punjab
-              </Text>
-              <Text style={styles.misLine}>Management Information System</Text>
-              <View style={styles.opmisPill}>
-                <Text style={styles.opmisPillText}>OPMIS</Text>
-              </View>
-            </GlassSurface>
+            <BrandCard style={styles.brandCardSpacing} />
           </View>
 
           {/* ---- QMS + copyright + hint ---- */}
@@ -314,8 +284,9 @@ const SplashScreen = ({ navigation }) => {
                     />
                   </GlassSurface>
                 </Pressable>
-                <Text style={styles.swipeTitle}>Swipe Up To Proceed</Text>
-                <Text style={styles.swipeSub}>Continue to OPMIS</Text>
+                <Text style={styles.swipeTitle}>Swipe up to proceed</Text>
+                <Text style={styles.swipeUrdu}>اوپر کی جانب سوائپ کریں</Text>
+                <Text style={styles.swipeSub}>Continue to OPMIS App</Text>
               </View>
             </Animated.View>
           </View>
