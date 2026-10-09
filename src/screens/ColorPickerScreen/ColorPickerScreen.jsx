@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { notify } from '../../utils/notify';
@@ -10,10 +10,12 @@ import Icon from '../../components/Icon/Icon';
 import {
   createStyles,
   createDynamicStyles,
+  createSampleStyles,
   BACK_RADIUS,
   WHEEL_CONFIG,
 } from './ColorPickerScreen.styles';
 import { useTheme, PreviewThemeProvider } from '../../context/ThemeContext';
+import { useLayout } from '../../theme/responsive';
 const LABELS = {
   headline: 'Headline',
   title: 'Title',
@@ -45,7 +47,8 @@ const ColorPickerScreen = ({ navigation, route }) => {
 
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const { width, isLandscape } = useLayout();
+  const dyn = useMemo(() => createDynamicStyles(insets, width), [insets, width]);
 
   const [initial] = useState(() => currentColorFor(theme, draft, target));
   const [picked, setPicked] = useState(initial);
@@ -96,13 +99,42 @@ const ColorPickerScreen = ({ navigation, route }) => {
   };
 
   // The sample: the picked colour replaces only the role being edited
-  const sample = {
-    headline: target === 'headline' ? picked : theme.text.headline,
-    title: target === 'title' ? picked : theme.text.title,
-    body: target === 'body' ? picked : theme.text.body,
-    label: target === 'label' ? picked : theme.text.label,
-  };
-  const sampleBg = target === 'background' ? picked : theme.glass.fillStrong;
+  const sampleStyles = useMemo(
+    () =>
+      createSampleStyles({
+        picked,
+        background: target === 'background' ? picked : theme.glass.fillStrong,
+        headline: target === 'headline' ? picked : theme.text.headline,
+        title: target === 'title' ? picked : theme.text.title,
+        body: target === 'body' ? picked : theme.text.body,
+        label: target === 'label' ? picked : theme.text.label,
+      }),
+    [picked, target, theme],
+  );
+
+  // RESPONSIVE — upright: preview on top, wheel below. Landscape: side by
+  // side (preview scrolls if short) — stacked, the preview alone would fill
+  // a sideways phone. Tablet: centred, no wider than READING_WIDTH.
+  const preview = (
+    <GlassSurface style={styles.previewCard}>
+      <View style={styles.previewRow}>
+        <View style={[styles.previewChip, sampleStyles.chip]} />
+        <View>
+          <Text style={styles.previewHex}>{picked}</Text>
+          <Text style={styles.previewLabel}>SELECTED COLOUR</Text>
+        </View>
+      </View>
+
+      <View style={[styles.sampleBox, sampleStyles.box]}>
+        <Text style={[styles.sampleHeadline, sampleStyles.headline]}>Headline</Text>
+        <Text style={[styles.sampleTitle, sampleStyles.title]}>Title</Text>
+        <Text style={[styles.sampleBody, sampleStyles.body]}>
+          Body text looks like this.
+        </Text>
+        <Text style={[styles.sampleLabel, sampleStyles.label]}>LABEL TEXT</Text>
+      </View>
+    </GlassSurface>
+  );
 
   return (
     <PreviewThemeProvider theme={theme}>
@@ -129,33 +161,16 @@ const ColorPickerScreen = ({ navigation, route }) => {
           </View>
         </View>
 
-        <View style={styles.body}>
-          <GlassSurface style={styles.previewCard}>
-            <View style={styles.previewRow}>
-              <View style={[styles.previewChip, { backgroundColor: picked }]} />
-              <View>
-                <Text style={styles.previewHex}>{picked}</Text>
-                <Text style={styles.previewLabel}>SELECTED COLOUR</Text>
-              </View>
-            </View>
+        <View style={[styles.body, dyn.sidePad, isLandscape && styles.bodyRow]}>
+          {isLandscape ? (
+            <ScrollView style={styles.side} showsVerticalScrollIndicator={false}>
+              {preview}
+            </ScrollView>
+          ) : (
+            preview
+          )}
 
-            <View style={[styles.sampleBox, { backgroundColor: sampleBg }]}>
-              <Text style={[styles.sampleHeadline, { color: sample.headline }]}>
-                Headline
-              </Text>
-              <Text style={[styles.sampleTitle, { color: sample.title }]}>
-                Title
-              </Text>
-              <Text style={[styles.sampleBody, { color: sample.body }]}>
-                Body text looks like this.
-              </Text>
-              <Text style={[styles.sampleLabel, { color: sample.label }]}>
-                LABEL TEXT
-              </Text>
-            </View>
-          </GlassSurface>
-
-          <View style={styles.wheelCard}>
+          <View style={[styles.wheelCard, isLandscape && styles.wheelCardSide]}>
             <View style={styles.wheelWrap}>
               <ColorPicker
                 key={wheelSeed.key}
@@ -188,7 +203,7 @@ const ColorPickerScreen = ({ navigation, route }) => {
           </View>
         </View>
 
-        <View style={[styles.footer, dyn.footerPad]}>
+        <View style={[styles.footer, dyn.sidePad, dyn.footerPad]}>
           <GlassButton
             label="CANCEL"
             variant="glass"

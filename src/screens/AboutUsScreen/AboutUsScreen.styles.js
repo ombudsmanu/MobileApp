@@ -13,11 +13,11 @@ import {radii, spacing} from '../../theme/tokens';
 export const createStyles = theme =>
   StyleSheet.create({
     // ---- Header ----
+    // Left/right padding comes from createDynamicStyles (insets)
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.md,
-      paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
     backBtn: {width: 52, height: 52},
@@ -25,12 +25,9 @@ export const createStyles = theme =>
     topTitle: {...theme.type.titleMedium},
     textRTL: {textAlign: 'right', writingDirection: 'rtl'},
     rowRTL: {flexDirection: 'row-reverse'},
-
-    scroll: {paddingHorizontal: spacing.lg, paddingTop: spacing.sm},
-
-    // ---- Section cards ----
-    grid: {flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'},
-    gridRTL: {flexDirection: 'row-reverse'},
+    // Left/right padding comes from createDynamicStyles (insets).
+    // The section cards are laid out by ResponsiveGrid.
+    scroll: {paddingTop: spacing.sm},
 
     // ---- Special Section banner ----
     bannerPress: {marginTop: spacing.sm},
@@ -111,9 +108,22 @@ export const createStyles = theme =>
     badgeRow: {marginTop: spacing.md},
   });
 
+/**
+ * Space around the content. Left/right include the insets because in
+ * landscape the camera notch and the 3-button navigation bar sit at the
+ * sides — without them the cards would slide underneath.
+ */
 export const createDynamicStyles = insets => ({
-  topBarPad: {paddingTop: insets.top + spacing.sm},
-  scrollPad: {paddingBottom: insets.bottom + spacing.xxl},
+  topBarPad: {
+    paddingTop: insets.top + spacing.sm,
+    paddingLeft: insets.left + spacing.lg,
+    paddingRight: insets.right + spacing.lg,
+  },
+  scrollPad: {
+    paddingBottom: insets.bottom + spacing.xxl,
+    paddingLeft: insets.left + spacing.lg,
+    paddingRight: insets.right + spacing.lg,
+  },
 });
 
 /** The banner's colour — the featured section's own colour. */

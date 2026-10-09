@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {radii, spacing} from '../../theme/tokens';
+import {sideGutters} from '../../theme/responsive';
 
 /**
  * TYPOGRAPHY (MD3)
@@ -22,7 +23,6 @@ export const createStyles = theme =>
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.md,
-      paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
     topBarRTL: {flexDirection: 'row-reverse'},
@@ -66,9 +66,21 @@ export const createStyles = theme =>
     button: {width: '100%'},
   });
 
-export const createDynamicStyles = insets => ({
-  topBarPad: {paddingTop: insets.top + spacing.sm},
-  bodyPad: {paddingBottom: insets.bottom},
+/**
+ * Top bar: clear of the status bar and notch.
+ * Document: as wide as the screen allows — the grey surround reaches the
+ * edges, but the pages themselves stay out from under the notch and the
+ * side navigation bar in landscape. react-native-pdf needs its width as a
+ * number, so it is given the exact space between the two insets.
+ */
+export const createDynamicStyles = (insets, width) => ({
+  topBarPad: {paddingTop: insets.top + spacing.sm, ...sideGutters(width, insets)},
+  bodyPad: {
+    paddingBottom: insets.bottom,
+    paddingLeft: insets.left,
+    paddingRight: insets.right,
+  },
+  pdfSize: {width: width - insets.left - insets.right},
 });
 
 export const BACK_RADIUS = radii.md;

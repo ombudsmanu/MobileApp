@@ -6,7 +6,8 @@ import { createStyles } from './Icon.styles';
  * Geometric icon set built from Views.
  * Names: menu, grid, doc, folder, chart, users, inbox, calendar,
  *        search, settings, palette, logout, login, chevronLeft,
- *        chevronUp, close, user, lock, mail, bell, check, eye, eyeOff */
+ *        chevronUp, chevronDown, close, plus, upload, user, lock, mail, bell,
+ *        check, eye, eyeOff */
 const Icon = ({ name, size = 22, color = '#FFFFFF', weight = 2 }) => {
   const s = useMemo(
     () => createStyles(size, color, weight),
@@ -382,6 +383,70 @@ const Icon = ({ name, size = 22, color = '#FFFFFF', weight = 2 }) => {
           })}
         </View>
       );
+
+    // A downward chevron — the same corner as chevronUp, rotated to point down
+    case 'chevronDown':
+      return (
+        <View style={s.box}>
+          <View
+            style={{
+              width: size * 0.42,
+              height: size * 0.42,
+              borderLeftWidth: weight,
+              borderTopWidth: weight,
+              borderColor: color,
+              top: -size * 0.08,
+              transform: [{ rotate: '225deg' }],
+            }}
+          />
+        </View>
+      );
+
+    // A plus sign — two crossing bars centred on the box
+    case 'plus': {
+      const len = size * 0.64;
+      const off = (size - len) / 2;
+      return (
+        <View style={s.box}>
+          {bar(len, weight, size * 0.5 - weight / 2, off)}
+          {bar(weight, len, off, size * 0.5 - weight / 2)}
+        </View>
+      );
+    }
+
+    // Upload — an up-arrow rising out of an open tray (document upload).
+    // The arrowhead is a rotated corner; its centre is placed on the icon's
+    // vertical axis so the whole glyph reads as centred.
+    case 'upload': {
+      const headSize = size * 0.3;
+      const headTop = size * 0.1;
+      const headLeft = size * 0.5 - headSize / 2;
+      return (
+        <View style={s.box}>
+          {/* arrow stem */}
+          {bar(weight, size * 0.46, size * 0.16, size * 0.5 - weight / 2)}
+          {/* arrow head (a ^ made from a rotated corner) */}
+          <View
+            style={{
+              position: 'absolute',
+              top: headTop,
+              left: headLeft,
+              width: headSize,
+              height: headSize,
+              borderTopWidth: weight,
+              borderLeftWidth: weight,
+              borderColor: color,
+              borderTopLeftRadius: weight,
+              transform: [{ rotate: '45deg' }],
+            }}
+          />
+          {/* open tray: a bottom line with two short uprights */}
+          {bar(size * 0.6, weight, size * 0.78, size * 0.2)}
+          {bar(weight, size * 0.16, size * 0.64, size * 0.2)}
+          {bar(weight, size * 0.16, size * 0.64, size * 0.8 - weight)}
+        </View>
+      );
+    }
 
     case 'user':
       return (

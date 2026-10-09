@@ -21,6 +21,7 @@ import {
   BACK_RADIUS,
 } from './AboutUsScreen.styles';
 import CertificationBadges from '../../components/CertificationBadges/CertificationBadges';
+import ResponsiveGrid from '../../components/ResponsiveGrid/ResponsiveGrid';
 /**
  * ABOUT US — the sections as cards, then a Special Section banner, then
  * the Office's certifications.
@@ -92,7 +93,7 @@ const AboutUsScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
       >
         {/* ---- Sections ---- */}
-        <View style={[styles.grid, isRTL && styles.gridRTL]}>
+        <ResponsiveGrid rtl={isRTL}>
           {GRID_SECTIONS.map((section, index) => (
             <ModuleTile
               key={section.key}
@@ -104,7 +105,7 @@ const AboutUsScreen = ({ navigation }) => {
               onPress={() => openSection(section.key)}
             />
           ))}
-        </View>
+        </ResponsiveGrid>
 
         {/* ---- Special Section banner ---- */}
         {SPECIAL_SECTION && (

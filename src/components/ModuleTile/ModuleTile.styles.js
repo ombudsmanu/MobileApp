@@ -32,7 +32,9 @@ export const TILE = {
 
 export const createStyles = theme =>
   StyleSheet.create({
-    tileOuter: {width: '48.5%', marginBottom: spacing.sm},
+    // No width here: the card fills its ResponsiveGrid cell, and the grid
+    // decides how many cards share a row (2 phone · 3 tablet · 4 landscape)
+    tileOuter: {alignSelf: 'stretch'},
     tile: {
       height: TILE.height,
       paddingHorizontal: spacing.sm,

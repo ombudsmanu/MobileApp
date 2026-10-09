@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { radii, spacing } from '../../theme/tokens';
+import { sideGutters, READING_WIDTH } from '../../theme/responsive';
 
 /**
  * TYPOGRAPHY (MD3) — each card runs largest to smallest
@@ -25,7 +26,6 @@ export const createStyles = theme =>
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.md,
-      paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
     backBtn: { width: 52, height: 52 },
@@ -36,7 +36,9 @@ export const createStyles = theme =>
     topTextWrap: { flex: 1 },
     topTitle: { ...theme.type.titleMedium },
 
-    scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.xs },
+    // Left/right padding: createDynamicStyles (centred reading column)
+    scroll: { paddingTop: spacing.xs },
+    
     // Certification badges across the top of every section page
     topBadges: {marginBottom: spacing.md},
     
@@ -224,6 +226,8 @@ export const createStyles = theme =>
       color: theme.accent,
       textShadowRadius: 0,
     },
+    // The chevron points up when the biography is open, down when closed
+    bioChevronClosed: { transform: [{ rotate: '180deg' }] },
 
     // ---- No content yet ----
     soonCard: { padding: spacing.lg, marginTop: spacing.md },
@@ -291,10 +295,19 @@ export const createStyles = theme =>
     personRole: { ...theme.type.bodySmall, marginTop: 2 },
   });
 
-export const createDynamicStyles = insets => ({
-  topBarPad: { paddingTop: insets.top + spacing.sm },
-  scrollPad: { paddingBottom: insets.bottom + spacing.xxl },
-});
+/**
+ * Space around the content. On a phone held upright: the usual side
+ * padding. On a tablet or in landscape: a centred column no wider than
+ * READING_WIDTH, so lines of text stay a comfortable length — and always
+ * clear of the notch and the side navigation bar.
+ */
+export const createDynamicStyles = (insets, width) => {
+  const gutters = sideGutters(width, insets, READING_WIDTH);
+  return {
+    topBarPad: { paddingTop: insets.top + spacing.sm, ...gutters },
+    scrollPad: { paddingBottom: insets.bottom + spacing.xxl, ...gutters },
+  };
+};
 
 export const BACK_RADIUS = radii.md;
 
@@ -306,6 +319,10 @@ export const createAccentStyles = accent =>
   StyleSheet.create({
     photoRing: {borderColor: accent},
     badgeShell: {backgroundColor: accent},
+    // Heading bar and bullet dots
+    fill: {backgroundColor: accent},
+    // Soft square behind each contact icon (accent at 10% strength)
+    tint: {backgroundColor: `${accent}1A`},
   });
 
   

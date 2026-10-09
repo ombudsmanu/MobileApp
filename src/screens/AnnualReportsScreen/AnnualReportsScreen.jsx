@@ -13,11 +13,13 @@ import Icon from '../../components/Icon/Icon';
 import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import StaggerIn from '../../components/StaggerIn/StaggerIn';
 import CertificationBadges from '../../components/CertificationBadges/CertificationBadges';
+import ResponsiveGrid from '../../components/ResponsiveGrid/ResponsiveGrid';
 import ReportTile from './ReportTile';
 import {createStyles, createDynamicStyles, BACK_RADIUS} from './AnnualReportsScreen.styles';
 
 /**
- * ANNUAL REPORTS — a two-column grid of year tiles.
+ * ANNUAL REPORTS — a grid of year tiles: 2 per row on a phone, 3 on a
+ * tablet, 4 in landscape (ResponsiveGrid).
  *
  * Tapping a year opens its PDF inside the app (PdfViewer screen): scroll,
  * pinch-zoom and a page counter, with the file kept on the phone after the
@@ -73,12 +75,14 @@ const AnnualReportsScreen = ({navigation}) => {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, dyn.scrollPad]}
+        contentContainerStyle={dyn.scrollPad}
         showsVerticalScrollIndicator={false}>
-         <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} />
-        <View style={styles.grid}>
+        <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} />
+
+        {/* Not reversed for Urdu — years stay newest-first in both languages */}
+        <ResponsiveGrid style={styles.grid}>
           {annualReports.map((report, index) => (
-            <StaggerIn key={report.year} index={index} play={ready} style={styles.cardWrap}>
+            <StaggerIn key={report.year} index={index} play={ready}>
               <ReportTile
                 year={report.year}
                 available={!!report.url}
@@ -89,7 +93,7 @@ const AnnualReportsScreen = ({navigation}) => {
               />
             </StaggerIn>
           ))}
-        </View>
+        </ResponsiveGrid>
       </ScrollView>
     </AppBackground>
   );

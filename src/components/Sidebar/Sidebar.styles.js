@@ -4,6 +4,13 @@ import {radii, spacing, weight} from '../../theme/tokens';
 export const SIDEBAR_WIDTH = 288;
 
 /**
+ * Below this screen height (a phone turned sideways is ~390dp), the header,
+ * menu and footer scroll together instead of the header and footer staying
+ * fixed — otherwise they would leave the menu almost no room.
+ */
+export const COMPACT_HEIGHT = 560;
+
+/**
  * TYPOGRAPHY (MD3)
  *   Title Medium — brand name
  *   Title Small  — user's name
@@ -13,13 +20,14 @@ export const SIDEBAR_WIDTH = 288;
  */
 export const createStyles = theme =>
   StyleSheet.create({
+    fill: {flex: 1},
     overlay: {...StyleSheet.absoluteFillObject, backgroundColor: '#000000'},
+    // Width (and the left inset) come from createDynamicStyles
     panel: {
       position: 'absolute',
       top: 0,
       bottom: 0,
       left: 0,
-      width: SIDEBAR_WIDTH,
       backgroundColor: theme.isLight ? 'rgba(250, 247, 241, 0.97)' : 'rgba(6, 30, 19, 0.95)',
       borderRightWidth: 1,
       borderRightColor: theme.glass.rim,
@@ -102,7 +110,18 @@ export const createStyles = theme =>
     version: {...theme.type.labelSmall, textAlign: 'center', marginBottom: spacing.sm},
   });
 
-export const createDynamicStyles = insets => ({
-  headerPad: {paddingTop: insets.top + 18},
-  footerPad: {paddingBottom: insets.bottom + 12},
-});
+/**
+ * The panel is SIDEBAR_WIDTH of content plus the left inset, which is
+ * padded out — so in landscape a notch or navigation bar on the left sits
+ * over the panel's background, not over its text.
+ * panelWidth (a number) is also how far it slides to hide completely.
+ */
+export const createDynamicStyles = insets => {
+  const panelWidth = SIDEBAR_WIDTH + insets.left;
+  return {
+    panelWidth,
+    panelSize: {width: panelWidth, paddingLeft: insets.left},
+    headerPad: {paddingTop: insets.top + 18},
+    footerPad: {paddingBottom: insets.bottom + 12},
+  };
+};

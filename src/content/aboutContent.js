@@ -104,10 +104,6 @@ export const aboutContent = {
       paragraph(
         `Feedback / comments on our performance from the readers / complainants and general public are welcome for further improvement of service delivery by the Office of the Ombudsman Punjab.`,
       ),
-      signature({
-        name: 'Ms. Ayesha Hamid',
-        role: 'Ombudsman for the Province of Punjab',
-      }),
     ],
   },
 

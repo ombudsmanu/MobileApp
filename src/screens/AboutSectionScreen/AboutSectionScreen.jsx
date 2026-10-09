@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { useLayout } from '../../theme/responsive';
 import { findAboutSection } from '../../content/aboutSections';
 import { aboutContent } from '../../content/aboutContent';
 import AppBackground from '../../components/AppBackground/AppBackground';
@@ -137,9 +138,7 @@ const TextCard = ({ blocks, accent, colors, accentStyles, rtl, styles }) => (
                   </LinearGradient>
                 </View>
               ) : (
-                <View
-                  style={[styles.headingBar, { backgroundColor: accent }]}
-                />
+                <View style={[styles.headingBar, accentStyles.fill]} />
               )}
               <Text style={[styles.heading, rtl && styles.textRTL]}>
                 {b.text}
@@ -162,7 +161,7 @@ const TextCard = ({ blocks, accent, colors, accentStyles, rtl, styles }) => (
           <View key={i}>
             {b.items.map((item, j) => (
               <View key={j} style={[styles.bulletRow, rtl && styles.rowRTL]}>
-                <View style={[styles.bulletDot, { backgroundColor: accent }]} />
+                                <View style={[styles.bulletDot, accentStyles.fill]} />
                 <Text style={[styles.bulletText, rtl && styles.textRTL]}>
                   {item}
                 </Text>
@@ -264,7 +263,7 @@ const PersonCard = ({ person, accentStyles, rtl, t, styles, theme }) => {
             <Text style={styles.bioToggleText}>
               {open ? t('about.hideBio') : t('about.readBio')}
             </Text>
-            <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
+            <View style={open ? null : styles.bioChevronClosed}>
               <Icon
                 name="chevronUp"
                 size={18}
@@ -289,7 +288,7 @@ const PersonCard = ({ person, accentStyles, rtl, t, styles, theme }) => {
  * Contact details. Email and phone rows are tappable — they open the
  * mail app or start a call, so nobody has to copy them by hand.
  */
-const ContactCard = ({ block, accent, rtl, styles, theme }) => {
+const ContactCard = ({ block, accent, accentStyles, rtl, styles, theme }) => {
   const open = row => {
     if (row.action === 'mail') {
       Linking.openURL(`mailto:${row.value}`);
@@ -308,9 +307,7 @@ const ContactCard = ({ block, accent, rtl, styles, theme }) => {
             onPress={() => open(row)}
             style={[styles.contactRow, rtl && styles.rowRTL]}
           >
-            <View
-              style={[styles.contactIcon, { backgroundColor: `${accent}1A` }]}
-            >
+            <View style={[styles.contactIcon, accentStyles.tint]}>
               <Icon name={row.icon} size={18} color={accent} />
             </View>
             <View style={styles.contactText}>
@@ -346,7 +343,8 @@ const AboutSectionScreen = ({ navigation, route }) => {
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const { width } = useLayout();
+  const dyn = useMemo(() => createDynamicStyles(insets, width), [insets, width]);
   const { lang, t, isRTL } = useLanguage();
   const section = findAboutSection(route.params?.key);
   const content = section ? aboutContent[section.key] : null;
@@ -502,6 +500,7 @@ const AboutSectionScreen = ({ navigation, route }) => {
                   <ContactCard
                     block={g.block}
                     accent={accent}
+                    accentStyles={accentStyles}
                     rtl={rtl}
                     styles={styles}
                     theme={theme}

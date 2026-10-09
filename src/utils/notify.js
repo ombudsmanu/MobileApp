@@ -37,6 +37,22 @@ export const notify = {
       buttons: [{text: button, style: 'confirm', onPress: onConfirm}],
     }),
 
+  /**
+   * Two labelled actions, each with its own callback (plus the cross to
+   * dismiss). Use for a choice like Camera / Gallery, where BOTH buttons
+   * do something — confirm() only runs one callback, this runs either.
+   */
+  choose: ({title, message, type = 'info', primaryText, onPrimary, secondaryText, onSecondary}) =>
+    open({
+      type,
+      title,
+      message,
+      buttons: [
+        {text: secondaryText, style: 'cancel', onPress: onSecondary},
+        {text: primaryText, style: 'confirm', onPress: onPrimary},
+      ],
+    }),
+
   /** Cancel + confirm. */
   confirm: ({title, message, confirmText = 'Confirm', cancelText = 'Cancel', onConfirm}) =>
     open({

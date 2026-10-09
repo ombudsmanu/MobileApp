@@ -12,8 +12,7 @@ import Text from '../AppText/AppText';
 import Icon from '../Icon/Icon';
 import {useTheme} from '../../context/ThemeContext';
 import {useLanguage} from '../../context/LanguageContext';
-import {createStyles, VIEWER} from './Phototap.styles';
-
+import {createStyles, createViewerStyles, VIEWER} from './Phototap.styles';
 /**
  * PHOTO TAP — a drop-in replacement for <Image> that opens the photo large
  * in a full-screen viewer when tapped.
@@ -38,6 +37,7 @@ const PhotoTap = ({source, style, name, caption, resizeMode = 'cover'}) => {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const {t, isRTL} = useLanguage();
   const insets = useSafeAreaInsets();
+  const viewer = useMemo(() => createViewerStyles(insets), [insets]);
   const {width, height} = useWindowDimensions();
 
   const [open, setOpen] = useState(false);
@@ -56,7 +56,11 @@ const PhotoTap = ({source, style, name, caption, resizeMode = 'cover'}) => {
 
   const viewSize = useMemo(() => {
     const boxW = Math.min(width - VIEWER.sideGap * 2, VIEWER.maxSize);
-    const boxH = Math.min(height * VIEWER.maxHeightShare, VIEWER.maxSize);
+    const boxH = Math.min(
+      height * VIEWER.maxHeightShare,
+      height - VIEWER.textRoom,
+      VIEWER.maxSize,
+    );
     // Largest size that fits the box without changing the photo's shape
     let fit = Math.min(boxW / natural.w, boxH / natural.h);
     if (!natural.unknown) {
@@ -87,7 +91,12 @@ const PhotoTap = ({source, style, name, caption, resizeMode = 'cover'}) => {
     );
   }, [anim]);
 
-  const scale = anim.interpolate({inputRange: [0, 1], outputRange: [0.92, 1]});
+  // Fade the backdrop in, and grow the photo from 92% as it does
+  const backdropMotion = useMemo(() => ({opacity: anim}), [anim]);
+  const stageMotion = useMemo(
+    () => ({transform: [{scale: anim.interpolate({inputRange: [0, 1], outputRange: [0.92, 1]})}]}),
+    [anim],
+  );
   const closeLabel = t('photo.close', 'Close');
 
   return (
@@ -109,7 +118,7 @@ const PhotoTap = ({source, style, name, caption, resizeMode = 'cover'}) => {
           statusBarTranslucent
           onShow={animateIn}
           onRequestClose={hide}>
-          <Animated.View style={[styles.backdrop, {opacity: anim}]}>
+          <Animated.View style={[styles.backdrop, backdropMotion]}>
             {/* Full-screen tap target underneath everything */}
             <Pressable
               style={StyleSheet.absoluteFill}
@@ -118,7 +127,7 @@ const PhotoTap = ({source, style, name, caption, resizeMode = 'cover'}) => {
             />
 
             {/* pointerEvents none: a tap on the photo falls through and closes too */}
-            <Animated.View pointerEvents="none" style={[styles.stage, {transform: [{scale}]}]}>
+            <Animated.View pointerEvents="none" style={[styles.stage, stageMotion]}>
               <Image source={source} style={[styles.photo, viewSize]} resizeMode="cover" />
               {name ? <Text style={styles.name}>{name}</Text> : null}
               {caption ? <Text style={styles.caption}>{caption}</Text> : null}
@@ -131,13 +140,13 @@ const PhotoTap = ({source, style, name, caption, resizeMode = 'cover'}) => {
               accessibilityLabel={closeLabel}
               style={[
                 styles.closeBtn,
-                {top: insets.top + 12},
-                isRTL ? styles.closeLeft : styles.closeRight,
+                viewer.closeTop,
+                isRTL ? viewer.closeLeft : viewer.closeRight,
               ]}>
               <Icon name="close" size={18} color="#FFFFFF" weight={2.5} />
             </Pressable>
 
-            <Text style={[styles.hint, {bottom: insets.bottom + 24}]}>
+            <Text style={[styles.hint, viewer.hintBottom]}>
               {t('photo.hint', 'Tap anywhere to close')}
             </Text>
           </Animated.View>

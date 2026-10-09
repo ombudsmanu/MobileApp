@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {radii, spacing} from '../../theme/tokens';
-
+import {sideGutters, READING_WIDTH} from '../../theme/responsive';
 /**
  * TYPOGRAPHY (MD3)
  *   Title Large  — "Appearance"
@@ -15,16 +15,22 @@ export const createStyles = theme =>
     fillAbsolute: {...StyleSheet.absoluteFillObject},
 
     // ---- Top bar ----
+       // Left/right padding: createDynamicStyles (centred column)
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
-    sideSlot: {width: 96},
-    sideSlotEnd: {width: 96, alignItems: 'flex-end'},
+    // Left: the back button. At run time it is made exactly as wide as the
+    // right slot (createSideStyles), so the title sits in the true centre.
+    sideSlot: {minWidth: 52},
+    // Right: the language toggle at its natural width — measured, never
+    // squeezed (a fixed 96 was narrower than the toggle, which then spilled
+    // over the title; a wide font like Poppins made the clash visible)
+    sideSlotEnd: {alignItems: 'flex-end'},
     backBtn: {width: 52, height: 52},
-    topTextWrap: {flex: 1, alignItems: 'center'},
+    // Small inner padding so the title never touches either slot
+    topTextWrap: {flex: 1, alignItems: 'center', paddingHorizontal: spacing.xs},
     topTitle: {...theme.type.titleLarge, textAlign: 'center'},
     topSub: {...theme.type.bodySmall, textAlign: 'center'},
 
@@ -52,7 +58,6 @@ export const createStyles = theme =>
     langText: {...theme.type.labelMedium, color: theme.control.label, textShadowRadius: 0},
     langTextActive: {color: theme.text.onAccent},
 
-    scroll: {paddingHorizontal: spacing.lg},
 
     // ---- Cards ----
     card: {padding: spacing.md, marginTop: spacing.md},
@@ -215,9 +220,27 @@ export const createStyles = theme =>
     },
   });
 
-export const createDynamicStyles = insets => ({
-  topBarPad: {paddingTop: insets.top + spacing.sm},
-  scrollPad: {paddingBottom: insets.bottom + spacing.xxl},
+/**
+ * Space around the content. On a phone held upright: the usual side
+ * padding. On a tablet or in landscape: a centred column no wider than
+ * READING_WIDTH, and always clear of the notch and side navigation bar.
+ */
+export const createDynamicStyles = (insets, width) => {
+  const gutters = sideGutters(width, insets, READING_WIDTH);
+  return {
+    topBarPad: {paddingTop: insets.top + spacing.sm, ...gutters},
+    scrollPad: {paddingBottom: insets.bottom + spacing.xxl, ...gutters},
+  };
+};
+
+/**
+ * Equal side slots in the top bar: the left one gets the width the
+ * language toggle actually measured on screen. Equal slots keep the title
+ * centred, and since neither slot is narrower than what it holds, nothing
+ * can spill over the title — whatever font or language is chosen.
+ */
+export const createSideStyles = toggleWidth => ({
+  slot: toggleWidth > 0 ? {width: toggleWidth} : null,
 });
 
 export const CHIP_RADIUS = radii.pill;

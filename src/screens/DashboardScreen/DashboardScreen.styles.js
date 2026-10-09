@@ -1,14 +1,14 @@
-import { StyleSheet } from 'react-native';
-import { radii, spacing } from '../../theme/tokens';
+import {StyleSheet} from 'react-native';
+import {spacing, radii} from '../../theme/tokens';
 
 /**
  * TYPOGRAPHY (MD3)
  *   Headline Small — welcome name on the slider (white)
  *   Title Large    — "OPMIS" top bar
- *   Title Small    — "MODULES" header, module names
+ *   Title Medium   — "MODULES" header
  *   Body Small     — org name under OPMIS
- *   Label Medium   — "WELCOME BACK", language toggle
- *   Label Small    — "COMING SOON"
+ *   Label Medium   — "WELCOME BACK"
+ * The module cards use ModuleTile's own typography.
  */
 
 /**
@@ -18,7 +18,7 @@ import { radii, spacing } from '../../theme/tokens';
 export const MODULE_COLORS = {
   dashboard: ['#4A90D9', '#1F5C9E'], // blue    — overview, trust
   complaints: ['#F2A04C', '#D4711C'], // orange  — take action
-    downloads: ['#6C8FD6', '#3B5BA5'], // indigo  — documents to take away
+  downloads: ['#6C8FD6', '#3B5BA5'], // indigo  — documents to take away
   dms: ['#43A35A', '#1F6B33'], // green   — organised, safe
   cases: ['#9B6FD6', '#5B3AA0'], // purple  — formal, authority
   reports: ['#2FB5A8', '#157A71'], // teal    — clarity, analysis
@@ -27,70 +27,52 @@ export const MODULE_COLORS = {
   search: ['#8D9AA9', '#5C6878'], // slate   — neutral utility
   notices: ['#F0B43A', '#C28410'], // amber   — attention
   settings: ['#6B7C8F', '#3E4C5C'], // grey    — configuration
-   about: ['#5FA98C', '#2E6B56'], // sage — institutional, informative
-     annualReports: ['#2FB5A8', '#157A71'], // teal — records, analysis
+  about: ['#5FA98C', '#2E6B56'], // sage    — institutional, informative
+  annualReports: ['#2FB5A8', '#157A71'], // teal — records, analysis
 };
 export const MODULE_FALLBACK = ['#43A35A', '#1F6B33'];
 
-/** Delay between each card's entrance, in milliseconds. */
-export const TILE_STAGGER_MS = 90;
+/**
+ * SLIDER HEIGHT by screen:
+ *   phone, portrait   200 — as before
+ *   phone, landscape  160 — the screen is only ~390dp tall, so a 200 slider
+ *                           would push the module cards almost off it
+ *   tablet            280 — a wide tablet slider looks squashed at 200
+ */
+export const SLIDER_HEIGHT = {phone: 200, phoneLandscape: 160, tablet: 280};
+
+export const sliderHeightFor = ({isTablet, isLandscape}) => {
+  if (isTablet) {
+    return SLIDER_HEIGHT.tablet;
+  }
+  return isLandscape ? SLIDER_HEIGHT.phoneLandscape : SLIDER_HEIGHT.phone;
+};
 
 export const createStyles = theme =>
   StyleSheet.create({
-    flex: { flex: 1 },
+    flex: {flex: 1},
 
-    // ---- Top bar ----
+    // ---- Top bar ---- (left/right padding: createDynamicStyles)
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
-    menuBtn: { width: 48, height: 48 },
-    topTextWrap: { flex: 1, marginHorizontal: spacing.sm },
-    topTitle: { ...theme.type.titleLarge, letterSpacing: 0.5 },
-    topSub: { ...theme.type.bodySmall },
+    menuBtn: {width: 48, height: 48},
+    topTextWrap: {flex: 1, marginHorizontal: spacing.sm},
+    topTitle: {...theme.type.titleLarge, letterSpacing: 0.5},
+    topSub: {...theme.type.bodySmall},
     // The full name is 45 characters but the title block is only ~140px
     // wide (between the menu button and the toggle), so at Body Small it
     // needed 2.1 lines and the last word was cut. Label Small fits it in
     // two. Urdu keeps its own size — AppText has a minimum below which
     // Nastaleeq dots blur — and fits two lines comfortably.
-    topSubEn: { ...theme.type.labelSmall, lineHeight: 15 },
+    topSubEn: {...theme.type.labelSmall, lineHeight: 15},
     // Urdu wraps onto a second line, and without textAlign Android starts
     // each line at the LEFT edge — so the second line began on the wrong
     // side. (Writing direction alone orders the letters; it does not
     // position the line.)
-    topSubUr: { textAlign: 'right' },
-
-    // ---- Language toggle ----
-    langToggle: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 3,
-      borderRadius: radii.pill,
-      borderWidth: 1,
-      borderColor: theme.glass.border,
-      backgroundColor: theme.glass.fillStrong,
-    },
-    // Fixed height + centred content: EN and اردو line up even though
-    // Nastaleeq needs a taller line than Latin text
-    langOption: {
-      height: 30,
-      minWidth: 44,
-      paddingHorizontal: 11,
-      borderRadius: radii.pill,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    langOptionActive: { backgroundColor: theme.accent },
-    langText: {
-      ...theme.type.labelMedium,
-      color: theme.control.label,
-      textShadowRadius: 0,
-    },
-    langTextActive: { color: theme.text.onAccent },
-
-    scroll: { paddingHorizontal: spacing.lg },
+    topSubUr: {textAlign: 'right'},
 
     // ---- Slider overlay (on a photo → fixed white) ----
     sliderOverlay: {
@@ -99,8 +81,7 @@ export const createStyles = theme =>
       right: spacing.md,
       bottom: spacing.xl,
     },
-    // In Urdu the whole block moves to the right edge
-       // Both lines span the overlay's full width (no alignSelf), so the edge is
+    // Both lines span the overlay's full width (no alignSelf), so the edge is
     // set by aligning the TEXT, not by pushing each box around. In Urdu the
     // name and the label therefore end on exactly the same right edge.
     sliderName: {
@@ -121,7 +102,8 @@ export const createStyles = theme =>
       textShadowRadius: 3,
     },
     sliderTextRTL: {textAlign: 'right'},
-        // ---- Section header ----
+
+    // ---- Section header ----
     sectionHeader: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -138,111 +120,25 @@ export const createStyles = theme =>
       letterSpacing: 1.5,
       flexShrink: 1,
     },
-    sectionCount: {
-      paddingHorizontal: 9,
-      paddingVertical: 2,
-      borderRadius: radii.pill,
-      backgroundColor: theme.glass.fillStrong,
-      borderWidth: 1,
-      borderColor: theme.glass.border,
-    },
-    sectionCountText: {...theme.type.labelSmall, color: theme.accent},
     sectionRule: {flex: 1, height: 1, backgroundColor: theme.glass.border},
-
-    // ---- Module cards ----
-    tileGrid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-    },
-    tileGridRTL: { flexDirection: 'row-reverse' },
-    tileOuter: { width: '48.5%', marginBottom: spacing.sm },
-         tile: {
-      paddingTop: 18,
-      paddingHorizontal: spacing.sm,
-      height: 184,
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      backgroundColor: theme.glass.fillStrong,
-      borderWidth: 1,
-      borderColor: theme.glass.border,
-      borderRadius: radii.lg,
-      elevation: 6,
-      shadowColor: theme.glass.shadow,
-      shadowOpacity: 0.35,
-      shadowRadius: 14,
-      shadowOffset: {width: 0, height: 6},
-    },
-    // Rows sit closer; the name starts just under the badge rather than
-    // floating in the middle of its box
-    nameRow: {
-      height: 52,
-      marginTop: 6,
-      alignSelf: 'stretch',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    // Thin colour accent along the top edge, inset to clear the corners
-    tileAccent: {
-      position: 'absolute',
-      top: 0,
-      left: 24,
-      right: 24,
-      height: 3,
-      borderBottomLeftRadius: 3,
-      borderBottomRightRadius: 3,
-    },
-    // Badge: the shell casts the shadow, the gradient rounds ITSELF
-    badgeShell: {
-      width: 56,
-      height: 56,
-      borderRadius: 18,
-      marginBottom: spacing.sm,
-      elevation: 4,
-      shadowColor: '#000000',
-      shadowOpacity: 0.2,
-      shadowRadius: 6,
-      shadowOffset: { width: 0, height: 3 },
-    },
-    badge: {
-      width: 56,
-      height: 56,
-      borderRadius: 18,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    /**
-     * Title Medium (16) instead of Title Small (14): the module name is
-     * the card's main content, so it takes the same style as a card title
-     * elsewhere in the app. Urdu inherits this and AppText scales it up,
-     * so both languages gain the same step.
-     */
-    tileLabel: {...theme.type.titleMedium, textAlign: 'center', lineHeight: 22},
-    tileLabelUrdu: {
-      ...theme.type.titleMedium,
-      writingDirection: 'rtl',
-      textAlign: 'center',
-    },
-    soonPill: {
-      marginTop: 6,
-      height: 26,
-      paddingHorizontal: 10,
-      borderRadius: radii.pill,
-      backgroundColor: 'rgba(212, 113, 28, 0.12)',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    tileSoon: {
-      ...theme.type.labelSmall,
-      color: theme.accent,
-      textAlign: 'center',
-    },
-    rtlText: { textAlign: 'right', writingDirection: 'rtl' },
   });
 
+/**
+ * Space around the content. Left/right include the insets because in
+ * landscape the camera notch and the 3-button navigation bar sit at the
+ * sides — without them the cards would slide underneath.
+ */
 export const createDynamicStyles = insets => ({
-  topBarPad: { paddingTop: insets.top + spacing.sm },
-  scrollPad: { paddingBottom: insets.bottom + spacing.xxl },
+  topBarPad: {
+    paddingTop: insets.top + spacing.sm,
+    paddingLeft: insets.left + spacing.lg,
+    paddingRight: insets.right + spacing.lg,
+  },
+  scrollPad: {
+    paddingBottom: insets.bottom + spacing.xxl,
+    paddingLeft: insets.left + spacing.lg,
+    paddingRight: insets.right + spacing.lg,
+  },
 });
 
 export const MENU_RADIUS = radii.md;

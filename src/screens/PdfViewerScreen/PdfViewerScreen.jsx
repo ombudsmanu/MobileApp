@@ -1,10 +1,11 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {ActivityIndicator, Linking, Pressable, View, useWindowDimensions} from 'react-native';
+import {ActivityIndicator, Linking, Pressable, View} from 'react-native';
 import Pdf from 'react-native-pdf';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
 import {useTheme} from '../../context/ThemeContext';
 import {useLanguage} from '../../context/LanguageContext';
+import {useLayout} from '../../theme/responsive';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import GlassButton from '../../components/GlassButton/GlassButton';
@@ -46,9 +47,9 @@ const PdfViewerScreen = ({navigation, route}) => {
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const {width} = useLayout();
+  const dyn = useMemo(() => createDynamicStyles(insets, width), [insets, width]);
   const {t, isRTL} = useLanguage();
-  const {width} = useWindowDimensions();
 
   const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error'
   const [progress, setProgress] = useState(0);
@@ -132,7 +133,7 @@ const PdfViewerScreen = ({navigation, route}) => {
               setDetail(message);
               setStatus('error');
             }}
-            style={[styles.pdf, {width}]}
+            style={[styles.pdf, dyn.pdfSize]}
           />
         )}
 

@@ -1,9 +1,11 @@
 import React, {useMemo} from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Pressable, ScrollView, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Text from '../../components/AppText/AppText';
 import {useTheme} from '../../context/ThemeContext';
 import {useAuth} from '../../context/AuthContext';
 import {useLanguage} from '../../context/LanguageContext';
+import {useLayout} from '../../theme/responsive';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import GlassButton from '../../components/GlassButton/GlassButton';
@@ -20,15 +22,22 @@ import {createStyles, createDynamicStyles, BACK_RADIUS} from './ComingSoonScreen
  *
  * The admin check here is a second line of defence: the Dashboard
  * already hides the button, but the route itself refuses non-admins too.
+ *
+ * RESPONSIVE — the card is centred and no wider than FORM_WIDTH. It sits
+ * in a ScrollView, so on a phone turned sideways (only ~390dp tall) the
+ * GO BACK button can still be reached instead of being cut off.
+ *
+ * Text comes from AppText, so an Urdu title gets the Nastaleeq font.
  */
 const ComingSoonScreen = ({navigation, route}) => {
   const {theme} = useTheme();
   const {isAdmin} = useAuth();
-  const {t} = useLanguage();
+  const {t, isRTL} = useLanguage();
 
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const {width} = useLayout();
+  const dyn = useMemo(() => createDynamicStyles(insets, width), [insets, width]);
 
   const {titleKey, fallbackTitle, icon = 'doc', requireAdmin = false} = route.params ?? {};
   const denied = requireAdmin && !isAdmin;
@@ -41,12 +50,15 @@ const ComingSoonScreen = ({navigation, route}) => {
             <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={2.5} />
           </GlassSurface>
         </Pressable>
-        <Text style={styles.topTitle} numberOfLines={1}>
+        <Text style={[styles.topTitle, isRTL && styles.textRTL]} numberOfLines={1}>
           {t(titleKey, fallbackTitle)}
         </Text>
       </View>
 
-      <View style={[styles.content, dyn.bottomPad]}>
+      <ScrollView
+        style={styles.flex}
+        contentContainerStyle={[styles.content, dyn.contentPad]}
+        showsVerticalScrollIndicator={false}>
         <GlassSurface strong style={styles.card}>
           <View style={styles.inner}>
             <View style={[styles.iconRing, denied && styles.iconRingDenied]}>
@@ -71,7 +83,7 @@ const ComingSoonScreen = ({navigation, route}) => {
             />
           </View>
         </GlassSurface>
-      </View>
+      </ScrollView>
     </AppBackground>
   );
 };

@@ -37,6 +37,13 @@ const ImageSlider = ({slides, height = 200, interval = 4500, overlay, rtl = fals
   const indexRef = useRef(0);
   const dragging = useRef(false);
 
+  // Each slide is exactly the slider's measured width; both sizes change
+  // on rotation, so they are rebuilt only when they change
+  const sizeStyles = useMemo(
+    () => ({slide: {width, height}, wrap: {height}}),
+    [width, height],
+  );
+
   // ---- Auto-play --------------------------------------------------------
   useEffect(() => {
     if (!width || slides.length < 2) {
@@ -54,6 +61,17 @@ const ImageSlider = ({slides, height = 200, interval = 4500, overlay, rtl = fals
     return () => clearInterval(id);
   }, [width, slides.length, interval]);
 
+  // ---- Rotation ---------------------------------------------------------
+  // Each slide is exactly `width` wide, so slide n starts at n × width.
+  // When the width changes (phone rotated, tablet split-screen) the list
+  // keeps its OLD scroll position, which now lands between two photos.
+  // Jump straight to the current slide at the new width.
+  useEffect(() => {
+    if (width > 0) {
+      listRef.current?.scrollToOffset({offset: indexRef.current * width, animated: false});
+    }
+  }, [width]);
+
   const onSwipeEnd = e => {
     const i = Math.round(e.nativeEvent.contentOffset.x / width);
     indexRef.current = i;
@@ -64,7 +82,7 @@ const ImageSlider = ({slides, height = 200, interval = 4500, overlay, rtl = fals
   const renderSlide = ({item}) => {
     const urduCaption = ARABIC_SCRIPT.test(item.caption ?? '');
     return (
-      <View style={{width, height}}>
+      <View style={sizeStyles.slide}>
         <Image source={item.source} style={styles.image} resizeMode="cover" />
         <LinearGradient
           colors={['rgba(0,0,0,0.05)', 'rgba(0,0,0,0.10)', 'rgba(0,0,0,0.70)']}
@@ -89,7 +107,7 @@ const ImageSlider = ({slides, height = 200, interval = 4500, overlay, rtl = fals
 
   return (
     <View
-      style={[styles.wrap, {height}]}
+      style={[styles.wrap, sizeStyles.wrap]}
       onLayout={e => setWidth(e.nativeEvent.layout.width)}>
       {width > 0 && (
         <FlatList

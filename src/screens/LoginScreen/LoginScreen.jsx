@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { notify } from '../../utils/notify';
+import { useLayout } from '../../theme/responsive';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import GlassButton from '../../components/GlassButton/GlassButton';
@@ -27,15 +28,38 @@ import {
   animationConfig,
   validationRules,
   BACK_RADIUS,
+  LOGIN_LAYOUT,
 } from './LoginScreen.styles';
 
+const CREST = require('../../assets/images/crest.png');
+
+/**
+ * LOG IN
+ *
+ * RESPONSIVE
+ *   Phone, upright — one column: back, crest, brand card, form, footer.
+ *   Tablet         — the same column, centred and no wider than FORM_WIDTH,
+ *                    so the fields don't stretch across the screen.
+ *   Landscape      — two columns: crest + brand card on the left, the form
+ *                    on the right. With a phone sideways the screen is only
+ *                    ~390dp tall, and one long column would put the LOG IN
+ *                    button far below the fold.
+ * The page scrolls in every layout, so nothing is out of reach when the
+ * keyboard is open.
+ */
 const LoginScreen = () => {
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const { width, isLandscape } = useLayout();
+  // Two columns only when sideways AND wide enough (not a narrow split-screen)
+  const twoColumns = isLandscape && width >= LOGIN_LAYOUT.twoColumnMin;
+  const dyn = useMemo(
+    () => createDynamicStyles(insets, width, twoColumns),
+    [insets, width, twoColumns],
+  );
 
   const { signIn, signInAsGuest, rememberedUsername } = useAuth();
 
@@ -75,10 +99,27 @@ const LoginScreen = () => {
       useNativeDriver: true,
     }).start();
   }, [fadeIn]);
+
+  // Entrance: fade in while rising into place (built once, not per render)
+  const entrance = useMemo(
+    () => ({
+      opacity: fadeIn,
+      transform: [
+        {
+          translateY: fadeIn.interpolate({
+            inputRange: [0, 1],
+            outputRange: [animationConfig.fadeInOffset, 0],
+          }),
+        },
+      ],
+    }),
+    [fadeIn],
+  );
+
   /**
    * BACK — return to the previous screen, or to the Splash screen when
    * there is none. Login can be reached with nothing beneath it in the
-   * stack (from the guest SIGN IN button, which rebuilds the stack), and
+   * stack (from the guest LOG IN button, which rebuilds the stack), and
    * goBack() then does nothing at all.
    */
   const handleBack = () => {
@@ -88,6 +129,7 @@ const LoginScreen = () => {
       navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
     }
   };
+
   // ---- Validation -------------------------------------------------------
 
   /**
@@ -160,6 +202,127 @@ const LoginScreen = () => {
     navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
   };
 
+  // ---- Pieces -----------------------------------------------------------
+
+  // Crest and brand card — the same as on the splash. The crest is a little
+  // smaller in two columns, where height is short.
+  const brand = (
+    <>
+      <Image
+        source={CREST}
+        style={twoColumns ? styles.crestCompact : styles.crest}
+        resizeMode="contain"
+      />
+      <BrandCard style={styles.brandCard} />
+    </>
+  );
+
+  const form = (
+    <GlassSurface style={styles.card}>
+      {/* ---------- USERNAME ---------- */}
+      <Text style={styles.label}>USERNAME</Text>
+      <GlassField
+        focused={focusedField === 'username'}
+        errored={!!errors.username}
+        value={username}
+        onChangeText={text => {
+          setUsername(text);
+          if (errors.username) {
+            setErrors(prev => ({ ...prev, username: undefined }));
+          }
+        }}
+        onFocus={() => setFocusedField('username')}
+        onBlur={() => setFocusedField(null)}
+        placeholder="Enter username"
+        autoCapitalize="none"
+        autoCorrect={false}
+        autoComplete="username"
+        textContentType="username"
+        maxLength={validationRules.maxUsernameLength}
+        returnKeyType="next"
+      />
+      {!!errors.username && <Text style={styles.error}>{errors.username}</Text>}
+
+      {/* ---------- PASSWORD ---------- */}
+      <Text style={[styles.label, styles.labelSpaced]}>PASSWORD</Text>
+      <GlassField
+        focused={focusedField === 'password'}
+        errored={!!errors.password}
+        value={password}
+        onChangeText={text => {
+          setPassword(text);
+          if (errors.password) {
+            setErrors(prev => ({ ...prev, password: undefined }));
+          }
+        }}
+        onFocus={() => setFocusedField('password')}
+        onBlur={() => setFocusedField(null)}
+        placeholder="Enter your password"
+        secureTextEntry={!showPassword}
+        autoCapitalize="none"
+        autoCorrect={false}
+        autoComplete="password"
+        textContentType="password"
+        returnKeyType="done"
+        onSubmitEditing={handleSubmit}
+        action={
+          <Pressable
+            onPress={() => setShowPassword(prev => !prev)}
+            hitSlop={12}
+            style={styles.toggle}
+            accessibilityRole="button"
+            accessibilityLabel={showPassword ? 'Hide password' : 'Show password'}
+          >
+            <Icon
+              name={showPassword ? 'eyeOff' : 'eye'}
+              size={22}
+              color={theme.icon.body}
+              weight={2}
+            />
+          </Pressable>
+        }
+      />
+      {!!errors.password && <Text style={styles.error}>{errors.password}</Text>}
+
+      {/* ---------- OPTIONS ---------- */}
+      <View style={styles.optionsRow}>
+        <Pressable
+          onPress={() => setRemember(prev => !prev)}
+          hitSlop={8}
+          style={styles.rememberRow}
+        >
+          <View style={[styles.checkbox, remember && styles.checkboxOn]}>
+            {remember && (
+              <Icon name="check" size={14} color={theme.icon.onAccent} weight={2} />
+            )}
+          </View>
+          <Text style={styles.rememberText}>Remember me</Text>
+        </Pressable>
+      </View>
+
+      <GlassButton
+        label="LOG IN"
+        onPress={handleSubmit}
+        loading={submitting}
+        style={styles.submit}
+      />
+
+      <View style={styles.dividerRow}>
+        <View style={styles.dividerLine} />
+        <Text style={styles.dividerText}>OR</Text>
+        <View style={styles.dividerLine} />
+      </View>
+
+      <GlassButton
+        label="CONTINUE AS GUEST"
+        variant="glass"
+        loading={guestLoading}
+        onPress={handleGuest}
+        icon={<Icon name="user" size={17} color="#FFFFFF" />}
+      />
+    </GlassSurface>
+  );
+
   // ---- Render -----------------------------------------------------------
 
   return (
@@ -173,169 +336,33 @@ const LoginScreen = () => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <Animated.View
-            style={{
-              opacity: fadeIn,
-              transform: [
-                {
-                  translateY: fadeIn.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [animationConfig.fadeInOffset, 0],
-                  }),
-                },
-              ],
-            }}
-          >
+          <Animated.View style={entrance}>
             <Pressable
               onPress={handleBack}
               hitSlop={12}
               accessibilityRole="button"
               accessibilityLabel="Back"
-              style={({ pressed }) => [
-                styles.backWrap,
-                pressed && styles.backPressed,
-              ]}
+              style={({ pressed }) => [styles.backWrap, pressed && styles.backPressed]}
             >
-              <GlassSurface
-                strong
-                radius={BACK_RADIUS}
-                contentStyle={styles.backInner}
-              >
-                <Icon
-                  name="chevronLeft"
-                  size={26}
-                  color={theme.icon.heading}
-                  weight={3}
-                />
+              <GlassSurface strong radius={BACK_RADIUS} contentStyle={styles.backInner}>
+                <Icon name="chevronLeft" size={26} color={theme.icon.heading} weight={3} />
                 <Text style={styles.backText}>Back</Text>
               </GlassSurface>
             </Pressable>
 
-                       {/* ---- Crest and brand card — the same as on the splash ---- */}
-            <Image
-              source={require('../../assets/images/crest.png')}
-              style={styles.crest}
-              resizeMode="contain"
-            />
-            <BrandCard style={styles.brandCard} />
-            <GlassSurface style={styles.card}>
-              {/* ---------- USERNAME ---------- */}
-              <Text style={styles.label}>USERNAME</Text>
-              <GlassField
-                focused={focusedField === 'username'}
-                errored={!!errors.username}
-                value={username}
-                onChangeText={text => {
-                  setUsername(text);
-                  if (errors.username) {
-                    setErrors(prev => ({ ...prev, username: undefined }));
-                  }
-                }}
-                onFocus={() => setFocusedField('username')}
-                onBlur={() => setFocusedField(null)}
-                placeholder="Enter username"
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoComplete="username"
-                textContentType="username"
-                maxLength={validationRules.maxUsernameLength}
-                returnKeyType="next"
-              />
-              {!!errors.username && (
-                <Text style={styles.error}>{errors.username}</Text>
-              )}
-
-              {/* ---------- PASSWORD ---------- */}
-              <Text style={[styles.label, styles.labelSpaced]}>PASSWORD</Text>
-              <GlassField
-                focused={focusedField === 'password'}
-                errored={!!errors.password}
-                value={password}
-                onChangeText={text => {
-                  setPassword(text);
-                  if (errors.password) {
-                    setErrors(prev => ({ ...prev, password: undefined }));
-                  }
-                }}
-                onFocus={() => setFocusedField('password')}
-                onBlur={() => setFocusedField(null)}
-                placeholder="Enter your password"
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoComplete="password"
-                textContentType="password"
-                returnKeyType="done"
-                onSubmitEditing={handleSubmit}
-                action={
-                  <Pressable
-                    onPress={() => setShowPassword(prev => !prev)}
-                    hitSlop={12}
-                    style={styles.toggle}
-                    accessibilityRole="button"
-                    accessibilityLabel={
-                      showPassword ? 'Hide password' : 'Show password'
-                    }
-                  >
-                    <Icon
-                      name={showPassword ? 'eyeOff' : 'eye'}
-                      size={22}
-                      color={theme.icon.body}
-                      weight={2}
-                    />
-                  </Pressable>
-                }
-              />
-              {!!errors.password && (
-                <Text style={styles.error}>{errors.password}</Text>
-              )}
-
-              {/* ---------- OPTIONS ---------- */}
-              <View style={styles.optionsRow}>
-                <Pressable
-                  onPress={() => setRemember(prev => !prev)}
-                  hitSlop={8}
-                  style={styles.rememberRow}
-                >
-                  <View
-                    style={[styles.checkbox, remember && styles.checkboxOn]}
-                  >
-                    {remember && (
-                      <Icon
-                        name="check"
-                        size={14}
-                        color={theme.icon.onAccent}
-                        weight={2}
-                      />
-                    )}
-                  </View>
-                  <Text style={styles.rememberText}>Remember me</Text>
-                </Pressable>
+            {twoColumns ? (
+              <View style={styles.columns}>
+                <View style={styles.side}>{brand}</View>
+                <View style={styles.side}>{form}</View>
               </View>
+            ) : (
+              <>
+                {brand}
+                {form}
+              </>
+            )}
 
-              <GlassButton
-                label="LOG IN"
-                onPress={handleSubmit}
-                loading={submitting}
-                style={styles.submit}
-              />
-
-              <View style={styles.dividerRow}>
-                <View style={styles.dividerLine} />
-                <Text style={styles.dividerText}>OR</Text>
-                <View style={styles.dividerLine} />
-              </View>
-
-              <GlassButton
-                label="CONTINUE AS GUEST"
-                variant="glass"
-                loading={guestLoading}
-                onPress={handleGuest}
-                icon={<Icon name="user" size={17} color="#FFFFFF" />}
-              />
-            </GlassSurface>
-
-            <Text style={styles.footer}>
+            <Text style={[styles.footer, twoColumns && styles.footerCompact]}>
               Office of the Ombudsman, Punjab {'\u00B7'} OPMIS {'\u00B7'} v1.10
             </Text>
           </Animated.View>

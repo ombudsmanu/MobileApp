@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { CARD_SHADOW, radii, spacing } from '../../theme/tokens';
+import { sideGutters, FORM_WIDTH } from '../../theme/responsive';
 /**
  * TYPOGRAPHY (MD3)
  *   Headline Small — "Sign in"
@@ -8,14 +9,25 @@ import { CARD_SHADOW, radii, spacing } from '../../theme/tokens';
  *   Label Large    — Back
  *   Label Medium   — USERNAME / PASSWORD, SHOW/HIDE
  *   Label Small    — OR divider
+ *
+ * RESPONSIVE (see LoginScreen.jsx)
+ *   one column  — no wider than FORM_WIDTH (480), centred on a tablet
+ *   two columns — landscape, when the screen is at least
+ *                 LOGIN_LAYOUT.twoColumnMin wide; the pair is no wider than
+ *                 LOGIN_LAYOUT.twoColumnMax
  */
+export const LOGIN_LAYOUT = {
+  twoColumnMin: 600,
+  twoColumnMax: 920,
+};
+
 export const createStyles = theme =>
   StyleSheet.create({
     flex: { flex: 1 },
+    // Left/right padding: createDynamicStyles (centred column)
     scroll: {
       flexGrow: 1,
       justifyContent: 'center',
-      paddingHorizontal: spacing.lg,
     },
     // Glass pill, matching the back button on every other screen.
     // The wrapper only positions it — GlassSurface draws the surface, and
@@ -40,7 +52,22 @@ export const createStyles = theme =>
       alignSelf: 'center',
       marginBottom: spacing.sm,
     },
+    // Smaller crest for the two-column (landscape) layout, where height is short
+    crestCompact: {
+      width: 80,
+      height: 80,
+      alignSelf: 'center',
+      marginBottom: spacing.sm,
+    },
     brandCard: { marginBottom: spacing.md },
+
+    // ---- Two columns (landscape): brand on the left, form on the right ----
+    columns: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.xl,
+    },
+    side: { flex: 1 },
     header: {
       alignSelf: 'stretch',
       marginBottom: spacing.lg,
@@ -122,12 +149,20 @@ export const createStyles = theme =>
       textAlign: 'center',
       marginTop: spacing.xxl,
     },
+    footerCompact: { marginTop: spacing.md },
   });
 
-export const createDynamicStyles = insets => ({
+/**
+ * Space around the page: clear of the status bar, navigation bar and
+ * notch, and on a wide screen a centred column (one column: FORM_WIDTH;
+ * two columns: LOGIN_LAYOUT.twoColumnMax). In landscape the top and bottom
+ * shrink, because height is what a sideways phone is short of.
+ */
+export const createDynamicStyles = (insets, width, twoColumns) => ({
   scrollPadding: {
-    paddingTop: insets.top + spacing.xl,
-    paddingBottom: insets.bottom + spacing.xl,
+    paddingTop: insets.top + (twoColumns ? spacing.sm : spacing.xl),
+    paddingBottom: insets.bottom + (twoColumns ? spacing.md : spacing.xl),
+    ...sideGutters(width, insets, twoColumns ? LOGIN_LAYOUT.twoColumnMax : FORM_WIDTH),
   },
 });
 

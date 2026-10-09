@@ -6,6 +6,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Text from '../../components/AppText/AppText';
 import {useTheme, PreviewThemeProvider} from '../../context/ThemeContext';
 import {useLanguage} from '../../context/LanguageContext';
+import {useLayout} from '../../theme/responsive';
 import {notify} from '../../utils/notify';
 import {radii} from '../../theme/tokens';
 import {colorTargets, textSwatches, backgroundSwatches} from '../../theme/swatches';
@@ -20,6 +21,7 @@ import FontPicker from './FontPicker';
 import {
   createStyles,
   createDynamicStyles,
+  createSideStyles,
   BACK_RADIUS,
 } from './AppearanceScreen.styles';
 
@@ -160,7 +162,13 @@ const AppearanceScreen = ({navigation}) => {
 
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const {width} = useLayout();
+  const dyn = useMemo(() => createDynamicStyles(insets, width), [insets, width]);
+
+  // Width of the language toggle as drawn, so the back-button slot can match
+  // it and the title stays centred and uncovered (see createSideStyles)
+  const [toggleWidth, setToggleWidth] = useState(0);
+  const side = useMemo(() => createSideStyles(toggleWidth), [toggleWidth]);
 
   const [target, setTarget] = useState('title');
 
@@ -316,7 +324,7 @@ const AppearanceScreen = ({navigation}) => {
       <AppBackground previewTheme={theme}>
         {/* ---------- TOP BAR ---------- */}
         <View style={[styles.topBar, dyn.topBarPad]}>
-          <View style={styles.sideSlot}>
+          <View style={[styles.sideSlot, side.slot]}>
             <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
               <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
             <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
@@ -324,17 +332,28 @@ const AppearanceScreen = ({navigation}) => {
             </Pressable>
           </View>
           <View style={styles.topTextWrap}>
-            <Text style={styles.topTitle}>{t('ap.title')}</Text>
-            <Text style={styles.topSub}>{t('ap.subtitle')}</Text>
+            {/* One line; a wide font shrinks it slightly instead of overflowing */}
+            <Text
+              style={styles.topTitle}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.75}>
+              {t('ap.title')}
+            </Text>
+            <Text style={styles.topSub} numberOfLines={2}>
+              {t('ap.subtitle')}
+            </Text>
           </View>
-          <View style={styles.sideSlotEnd}>
+          <View
+            style={styles.sideSlotEnd}
+            onLayout={e => setToggleWidth(Math.ceil(e.nativeEvent.layout.width))}>
             <LanguageToggle />
           </View>
         </View>
 
         <ScrollView
           style={styles.flex}
-          contentContainerStyle={[styles.scroll, dyn.scrollPad]}
+          contentContainerStyle={dyn.scrollPad}
           showsVerticalScrollIndicator={false}>
 
           {/* ---------- LIVE PREVIEW ---------- */}

@@ -14,6 +14,9 @@ import AboutSectionScreen from '../screens/AboutSectionScreen/AboutSectionScreen
 import PdfViewerScreen from '../screens/PdfViewerScreen/PdfViewerScreen';
 import DownloadsScreen from '../screens/DownloadsScreen/DownloadsScreen';
 import RegisterComplaintScreen from '../screens/RegisterComplaintScreen/RegisterComplaintScreen';
+import ComplaintFormScreen from '../screens/ComplaintFormScreen/ComplaintFormScreen';
+import OverseasComplaintFormScreen from '../screens/OverseasComplaintFormScreen/OverseasComplaintFormScreen';
+
 import {
   resolveBaseColor,
   createNavTheme,
@@ -76,8 +79,18 @@ const RootNavigator = () => {
           component={RegisterComplaintScreen}
           options={placeholderScreenOptions}
         />
-        {/* The complaint forms, once built, replace this placeholder.
-            Its title and icon come from the option that was tapped. */}
+        {/* The two complaint forms. ComplaintForm stays registered as a
+            placeholder for any other option added later. */}
+        <Stack.Screen
+          name="ComplaintFormPakistan"
+          component={ComplaintFormScreen}
+          options={placeholderScreenOptions}
+        />
+        <Stack.Screen
+          name="ComplaintFormOverseas"
+          component={OverseasComplaintFormScreen}
+          options={placeholderScreenOptions}
+        />
         <Stack.Screen
           name="ComplaintForm"
           component={ComingSoonScreen}

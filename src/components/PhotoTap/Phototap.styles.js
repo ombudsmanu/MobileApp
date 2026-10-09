@@ -13,6 +13,10 @@ export const VIEWER = {
   maxSize: 440, // the photo's longest side never exceeds this (tablets)
   sideGap: 24, // space either side of the photo on a phone
   maxHeightShare: 0.55, // leaves room below the photo for name + caption
+  // Height kept free for the name, caption and hint. Only matters on a
+  // short screen (a phone sideways), where 55% alone would push the
+  // caption into the "Tap anywhere to close" hint.
+  textRoom: 210,
   maxUpscale: 2.5, // a small photo is enlarged at most this many times
   radius: 16,
 };
@@ -59,8 +63,7 @@ export const createStyles = theme =>
       alignItems: 'center',
       justifyContent: 'center',
     },
-    closeRight: {right: 16},
-    closeLeft: {left: 16},
+    // The close button's position comes from createViewerStyles (insets)
 
     hint: {
       ...theme.type.bodySmall,
@@ -72,3 +75,15 @@ export const createStyles = theme =>
       textShadowColor: 'transparent',
     },
   });
+  
+/**
+ * Positions that depend on the screen's safe area: the close button stays
+ * clear of the status bar and — in landscape — of a notch or navigation
+ * bar on either side; the hint stays above the navigation bar.
+ */
+export const createViewerStyles = insets => ({
+  closeTop: {top: insets.top + 12},
+  closeRight: {right: insets.right + 16},
+  closeLeft: {left: insets.left + 16},
+  hintBottom: {bottom: insets.bottom + 24},
+});

@@ -5,6 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
 import {useTheme} from '../../context/ThemeContext';
 import {useLanguage} from '../../context/LanguageContext';
+import {useLayout} from '../../theme/responsive';
 import {downloads} from '../../content/downloads';
 import {downloadToDevice} from '../../utils/downloadFile';
 import {useScreenReady} from '../../navigation/useScreenReady';
@@ -119,7 +120,8 @@ const DownloadsScreen = ({navigation}) => {
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const {width} = useLayout();
+  const dyn = useMemo(() => createDynamicStyles(insets, width), [insets, width]);
   const {t, isRTL} = useLanguage();
   const ready = useScreenReady();
 
@@ -140,7 +142,7 @@ const DownloadsScreen = ({navigation}) => {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, dyn.scrollPad]}
+        contentContainerStyle={dyn.scrollPad}
         showsVerticalScrollIndicator={false}>
                     <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} />
         <Text style={[styles.intro, isRTL && styles.textRTL]}>{t('downloads.intro')}</Text>

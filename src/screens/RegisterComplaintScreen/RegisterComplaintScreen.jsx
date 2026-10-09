@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from '../../components/AppText/AppText';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { useLayout } from '../../theme/responsive';
 import { useScreenReady } from '../../navigation/useScreenReady';
 import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
@@ -46,16 +47,30 @@ const RegisterComplaintScreen = ({ navigation }) => {
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
-  const dyn = useMemo(() => createDynamicStyles(insets), [insets]);
+  const { width } = useLayout();
+  const dyn = useMemo(() => createDynamicStyles(insets, width), [insets, width]);
   const { t, isRTL } = useLanguage();
   const ready = useScreenReady();
 
-  const open = option =>
+  // Each option goes to its own form
+  const ROUTES = {
+    pakistan: 'ComplaintFormPakistan',
+    overseas: 'ComplaintFormOverseas',
+  };
+
+  const open = option => {
+    const route = ROUTES[option.key];
+    if (route) {
+      navigation.navigate(route);
+      return;
+    }
+    // Anything added later without a form yet falls back to the placeholder
     navigation.navigate('ComplaintForm', {
       titleKey: option.labelKey,
       fallbackTitle: option.fallback,
       icon: option.icon,
     });
+  };
 
   return (
     <AppBackground>
@@ -87,7 +102,7 @@ const RegisterComplaintScreen = ({ navigation }) => {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, dyn.scrollPad]}
+        contentContainerStyle={dyn.scrollPad}
         showsVerticalScrollIndicator={false}
       >
         <CertificationBadges

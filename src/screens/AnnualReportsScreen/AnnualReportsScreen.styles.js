@@ -6,36 +6,28 @@ import {CARD_SHADOW, radii, spacing} from '../../theme/tokens';
  *   Body Small   — "Annual Report" under the year
  *   Label Small  — "Open PDF" / "Not available"
  *
- * LAYOUT — two tiles per row, in a column capped at COLUMN_MAX and centred,
- * so the grid does not stretch into very wide bands on a tablet.
+   * LAYOUT — the tiles are laid out by ResponsiveGrid: 2 per row on a phone,
+ * 3 on a tablet, 4 in landscape. (This screen used to be a single 560dp
+ * column centred on tablets; with more tiles per row it no longer needs
+ * that cap, and the grid now uses the whole width like the Dashboard.)
  */
-const COLUMN_MAX = 560;
 
 export const createStyles = theme =>
   StyleSheet.create({
     // ---- Header ----
+    // Left/right padding comes from createDynamicStyles (insets)
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.md,
-      width: '100%',
-      maxWidth: COLUMN_MAX,
-      alignSelf: 'center',
-      paddingHorizontal: spacing.lg,
       paddingBottom: spacing.md,
     },
     backBtn: {width: 48, height: 48},
     topTextWrap: {flex: 1},
     topTitle: {...theme.type.titleMedium},
 
-    // ---- Scroll column ----
-    scroll: {
-      width: '100%',
-      maxWidth: COLUMN_MAX,
-      alignSelf: 'center',
-      paddingHorizontal: spacing.lg,
-    },
-        // Certification badges across the top of the screen
+    // ---- Scroll content ---- (padding: createDynamicStyles)
+    // Certification badges across the top of the screen
     topBadges: {marginBottom: spacing.md},
     intro: {...theme.type.bodyMedium, marginBottom: spacing.md},
 
@@ -45,9 +37,8 @@ export const createStyles = theme =>
     // ---- Grid ----
     // Years run newest-first in BOTH languages: the grid is not reversed
     // for Urdu, because reversing each row would put 2024 before 2025.
-    grid: {flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between',marginTop: spacing.md},
-    // StaggerIn wraps each tile, so IT is the grid item and carries the width
-    cardWrap: {width: '48.5%', marginBottom: spacing.sm},
+    // Spacing only — ResponsiveGrid sets the rows and the tile widths.
+    grid: {marginTop: spacing.md},
   });
 
 /**
@@ -144,9 +135,22 @@ export const createTileStyles = theme =>
     statusTextMuted: {color: theme.text.muted},
   });
 
+/**
+ * Space around the content. Left/right include the insets because in
+ * landscape the camera notch and the 3-button navigation bar sit at the
+ * sides — without them the tiles would slide underneath.
+ */
 export const createDynamicStyles = insets => ({
-  topBarPad: {paddingTop: insets.top + spacing.sm},
-  scrollPad: {paddingBottom: insets.bottom + spacing.xxl},
+  topBarPad: {
+    paddingTop: insets.top + spacing.sm,
+    paddingLeft: insets.left + spacing.lg,
+    paddingRight: insets.right + spacing.lg,
+  },
+  scrollPad: {
+    paddingBottom: insets.bottom + spacing.xxl,
+    paddingLeft: insets.left + spacing.lg,
+    paddingRight: insets.right + spacing.lg,
+  },
 });
 
 export const BACK_RADIUS = radii.md;

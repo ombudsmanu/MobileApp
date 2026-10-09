@@ -13,7 +13,7 @@ export const BRAND_CARD_RADIUS = radii.xl;
 export const createStyles = theme =>
   StyleSheet.create({
     card: {
-      paddingVertical: spacing.md,
+      paddingVertical: spacing.sm,
       paddingHorizontal: spacing.lg,
       alignSelf: 'stretch',
     },
