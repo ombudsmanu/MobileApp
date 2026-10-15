@@ -3,12 +3,11 @@ import {radii, spacing} from '../../theme/tokens';
 
 /**
  * TYPOGRAPHY (MD3)
- *   Title Medium — "About Us", the banner title, the Certifications heading
- *   Body Small   — certification caption
+ *   Title Medium — "About Us", the banner title
  *   Label Small  — "SPECIAL SECTION"
  * The section cards use ModuleTile's own typography.
  *
- * Top bar: [back] [title — takes the free space] [EN / اردو]
+ * Top bar: [back] [title — centred in the free space] [globe + language]
  */
 export const createStyles = theme =>
   StyleSheet.create({
@@ -21,13 +20,20 @@ export const createStyles = theme =>
       paddingBottom: spacing.md,
     },
     backBtn: {width: 52, height: 52},
-    topTextWrap: {flex: 1},
+    // alignItems:'center' shrinks the title's box to the width of its own
+    // words and centres it between the back button and the language button
+    // — in BOTH languages, because a box that is exactly as wide as its
+    // text has nothing for textAlign to push against.
+    topTextWrap: {flex: 1, alignItems: 'center'},
     topTitle: {...theme.type.titleMedium},
     textRTL: {textAlign: 'right', writingDirection: 'rtl'},
     rowRTL: {flexDirection: 'row-reverse'},
     // Left/right padding comes from createDynamicStyles (insets).
     // The section cards are laid out by ResponsiveGrid.
     scroll: {paddingTop: spacing.sm},
+    // Crest + Office name + certification badges across the top — the same
+    // spacing as Register Complaint, Downloads and Annual Reports
+    topBadges: {marginBottom: spacing.md},
 
     // ---- Special Section banner ----
     bannerPress: {marginTop: spacing.sm},
@@ -81,31 +87,6 @@ export const createStyles = theme =>
       justifyContent: 'center',
       backgroundColor: '#FFFFFF',
     },
-    // The chevron's visual weight sits on its pointed side, so it looks
-    // off-centre even though it's geometrically centred. This nudge fixes
-    // the optical centre — positive for LTR (right arrow), negative for RTL.
-    arrowNudgeLTR: {marginLeft: -4},
-    arrowNudgeRTL: {marginRight: 2},
-    // ---- Certifications & Accreditation ----
-    sectionHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      columnGap: spacing.sm,
-      marginTop: spacing.lg,
-      marginBottom: spacing.sm,
-    },
-    sectionBar: {width: 4, height: 20, borderRadius: 2, backgroundColor: theme.accent},
-    sectionTitle: {...theme.type.titleMedium, flexShrink: 1},
-    certCard: {padding: spacing.md},
-    certCaptionRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      columnGap: 6,
-    },
-    certCaption: {...theme.type.bodySmall},
-       // Spacing only — the badge row's layout lives in CertificationBadges
-    badgeRow: {marginTop: spacing.md},
   });
 
 /**

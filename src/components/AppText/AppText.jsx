@@ -36,6 +36,18 @@ const URDU_DRAW_ROOM = 0.8;
 const EDGE_SPACE = '\u00A0';
 const EDGE_SPACE_MAX_CHARS = 60;
 
+/**
+ * FONT SCALE CAP — the phone's own "Font size" setting (Settings → Display)
+ * multiplies every text size. MIUI phones such as the Redmi ship with it
+ * larger than a stock emulator, so the same screen looked bigger and the
+ * top-bar titles wrapped onto two lines on the phone only.
+ *
+ * Text may still grow with that setting (it is an accessibility feature),
+ * but never past this multiple of its designed size, so the layout holds.
+ * A screen can pass its own maxFontSizeMultiplier to override it.
+ */
+const MAX_FONT_SCALE = 1.1;
+
 /** Collects the plain text inside children (strings, numbers, arrays). */
 const textOf = children => {
   if (typeof children === 'string' || typeof children === 'number') {
@@ -50,7 +62,12 @@ const textOf = children => {
 /** A style value as a number (unset or non-numeric counts as 0). */
 const num = value => (typeof value === 'number' ? value : 0);
 
-const AppText = ({ style, children, ...rest }) => {
+const AppText = ({
+  style,
+  children,
+  maxFontSizeMultiplier = MAX_FONT_SCALE,
+  ...rest
+}) => {
   // The Urdu font follows the choice in Appearance (theme.urduFont).
   // The hook must run on every render, so it is read before the English
   // early-return below.
@@ -58,7 +75,7 @@ const AppText = ({ style, children, ...rest }) => {
 
   if (!ARABIC_SCRIPT.test(textOf(children))) {
     return (
-      <Text {...rest} style={style}>
+      <Text {...rest} maxFontSizeMultiplier={maxFontSizeMultiplier} style={style}>
         {children}
       </Text>
     );
@@ -94,6 +111,7 @@ const AppText = ({ style, children, ...rest }) => {
   return (
     <Text
       {...rest}
+      maxFontSizeMultiplier={maxFontSizeMultiplier}
       style={[
         style,
         {

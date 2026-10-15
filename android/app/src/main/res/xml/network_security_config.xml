@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  NETWORK SECURITY — release builds.
-
-  The Ombudsman Punjab server does not send its intermediate certificate,
-  so Android cannot verify it on its own ("Trust anchor for certification
-  path not found"). For that domain ONLY, the app also trusts the
-  certificate authority saved in res/raw/ombudsman_ca.pem, alongside the
-  phone's normal trusted list.
-
-  Every other website is checked exactly as before. Plain-HTTP traffic stays
-  blocked. Once the Office's server sends its full chain, this can be
-  removed.
--->
 <network-security-config>
-    <base-config cleartextTrafficPermitted="false" />
-
-    <domain-config cleartextTrafficPermitted="false">
+    <!-- The Ombudsman site sends an incomplete certificate chain, so the
+         PDF viewer can't verify it on its own. We bundle the site's
+         certificate here and trust it ALONGSIDE the normal system roots,
+         so PDFs load. Everything else still uses the system roots only. -->
+    <domain-config>
         <domain includeSubdomains="true">ombudsmanpunjab.gov.pk</domain>
         <trust-anchors>
             <certificates src="system" />
-            <certificates src="@raw/ombudsman_ca" />
+            <certificates src="@raw/ombudsman" />
         </trust-anchors>
     </domain-config>
+
+    <!-- Everything else: the normal system roots, HTTPS only -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
 </network-security-config>

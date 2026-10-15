@@ -23,18 +23,21 @@ import {
 import CertificationBadges from '../../components/CertificationBadges/CertificationBadges';
 import ResponsiveGrid from '../../components/ResponsiveGrid/ResponsiveGrid';
 /**
- * ABOUT US — the sections as cards, then a Special Section banner, then
- * the Office's certifications.
+ * ABOUT US — the crest, Office name and certification badges at the top
+ * (the same block as every other screen), then the sections as cards, then
+ * a Special Section banner.
  *
  * SPECIAL SECTION — the Commissioner for Children is shown as a wide banner
  * under the grid instead of as a card in it. It is still an ordinary About
  * section (same data, same page when tapped); only its place on this
  * screen differs. Change SPECIAL_KEY to feature a different section.
  *
- * CERTIFICATIONS — the same badges as the splash screen.
+ * CERTIFICATIONS — the shared CertificationBadges block, placed at the top
+ * exactly as on Register Complaint, Downloads, Annual Reports and the forms
+ * (no separate card or heading for it any more).
  *
  * Everything waits until the screen has finished sliding in, then cascades
- * in: the grid first, then the banner, then the certifications.
+ * in: the badges and the grid first, then the banner.
  */
 const SPECIAL_KEY = 'childrenCommissioner';
 const GRID_SECTIONS = aboutSections.filter(s => s.key !== SPECIAL_KEY);
@@ -92,6 +95,15 @@ const AboutUsScreen = ({ navigation }) => {
         contentContainerStyle={[styles.scroll, dyn.scrollPad]}
         showsVerticalScrollIndicator={false}
       >
+        {/* ---- Crest, Office name and certification badges ----
+            The same block, in the same place, as the other screens */}
+     <CertificationBadges
+          play={ready}
+          startIndex={0}
+          style={styles.topBadges}
+          showCrest={false}
+        />
+
         {/* ---- Sections ---- */}
         <ResponsiveGrid rtl={isRTL}>
           {GRID_SECTIONS.map((section, index) => (
@@ -160,14 +172,14 @@ const AboutUsScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.bannerArrow}>
-                      <View style={isRTL ? styles.arrowNudgeRTL : styles.arrowNudgeLTR}>
-                        <Icon
-                          name={isRTL ? 'chevronLeft' : 'chevronRight'}
-                          size={28}
-                          color={bannerColor}
-                          weight={3}
-                        />
-                      </View>
+                      {/* The chevron now centres itself inside its own box
+                          (see Icon.jsx), so no nudge wrapper is needed. */}
+                      <Icon
+                        name={isRTL ? 'chevronLeft' : 'chevronRight'}
+                        size={30}
+                        color={bannerColor}
+                        weight={3}
+                      />
                     </View>
                   </View>
                 </LinearGradient>
@@ -175,33 +187,6 @@ const AboutUsScreen = ({ navigation }) => {
             </Pressable>
           </StaggerIn>
         )}
-
-        {/* ---- Certifications & Accreditation ---- */}
-        <StaggerIn index={GRID_SECTIONS.length + 1} play={ready}>
-          <View style={[styles.sectionHeader, isRTL && styles.rowRTL]}>
-            <View style={styles.sectionBar} />
-            <Text style={[styles.sectionTitle, isRTL && styles.textRTL]}>
-              {t('about.certifications', 'Certifications & Accreditation')}
-            </Text>
-          </View>
-
-          <GlassSurface style={styles.certCard}>
-            <View style={[styles.certCaptionRow, isRTL && styles.rowRTL]}>
-              <Icon name="check" size={16} color={theme.accent} weight={3} />
-              <Text style={styles.certCaption}>
-                {t(
-                  'about.certCaption',
-                  'Certified to international standards.',
-                )}
-              </Text>
-            </View>
-            <CertificationBadges
-              play={ready}
-              startIndex={GRID_SECTIONS.length + 1}
-              style={styles.badgeRow}
-            />
-          </GlassSurface>
-        </StaggerIn>
       </ScrollView>
     </AppBackground>
   );

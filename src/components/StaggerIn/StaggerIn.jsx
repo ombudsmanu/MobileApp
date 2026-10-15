@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
 
 /** Delay between one item's entrance and the next, in milliseconds. */
-export const STAGGER_MS = 250;
+export const STAGGER_MS = 150;
 /**
  * Items after this position all start together. A long list (29 annual
  * reports) would otherwise make far-down rows wait seconds for their turn,

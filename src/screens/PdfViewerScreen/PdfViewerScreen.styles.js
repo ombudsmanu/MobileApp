@@ -4,8 +4,7 @@ import {sideGutters} from '../../theme/responsive';
 
 /**
  * TYPOGRAPHY (MD3)
- *   Title Large  — report title (top bar)
- *   Title Medium — status card heading
+ *   Title Medium — document title (top bar), status card heading
  *   Body Small   — page counter, status text
  *
  * The document area is a fixed neutral grey in every theme: PDF pages are
@@ -18,23 +17,38 @@ export const CACHE_DAYS = 30;
 
 export const createStyles = theme =>
   StyleSheet.create({
-    // ---- Header ----
+    // ---- Header: [back] [title + page counter] [globe + language] ----
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: spacing.md,
       paddingBottom: spacing.md,
     },
-    topBarRTL: {flexDirection: 'row-reverse'},
     backBtn: {width: 48, height: 48},
-    topTextWrap: {flex: 1},
-    topTitle: {...theme.type.titleLarge},
+    // Centred between the back button and the language button, like every
+    // other screen's title (alignItems shrinks the text box to its words)
+    topTextWrap: {flex: 1, alignItems: 'center'},
+    // Title Medium, the same as the other top bars — it now shares the bar
+    // with the language button, so Title Large would cut "Annual Report 2025"
+    topTitle: {...theme.type.titleMedium},
     topSub: {...theme.type.bodySmall},
     textRTL: {textAlign: 'right', writingDirection: 'rtl'},
 
     // ---- Document ----
     body: {flex: 1, backgroundColor: PDF_BACKDROP},
     pdf: {flex: 1, backgroundColor: PDF_BACKDROP},
+
+    // ---- Footer: the DOWNLOAD button, under the document ----
+    // Only on documents the caller gave a file name (the affidavit and the
+    // Downloads screen's forms). A frosted strip so it reads as part of the
+    // app, not part of the grey document area above it.
+    footer: {
+      paddingTop: spacing.sm,
+      borderTopWidth: 1,
+      borderTopColor: theme.glass.border,
+      backgroundColor: theme.glass.fillStrong,
+    },
+    footerBtn: {width: '100%'},
 
     // ---- Loading / error card ----
     overlay: {
@@ -72,6 +86,8 @@ export const createStyles = theme =>
  * edges, but the pages themselves stay out from under the notch and the
  * side navigation bar in landscape. react-native-pdf needs its width as a
  * number, so it is given the exact space between the two insets.
+ * Footer: when there is one, IT keeps clear of the gesture bar, so the
+ * document above it no longer needs a bottom inset of its own.
  */
 export const createDynamicStyles = (insets, width) => ({
   topBarPad: {paddingTop: insets.top + spacing.sm, ...sideGutters(width, insets)},
@@ -79,6 +95,14 @@ export const createDynamicStyles = (insets, width) => ({
     paddingBottom: insets.bottom,
     paddingLeft: insets.left,
     paddingRight: insets.right,
+  },
+  bodyPadAboveFooter: {
+    paddingLeft: insets.left,
+    paddingRight: insets.right,
+  },
+  footerPad: {
+    paddingBottom: insets.bottom + spacing.sm,
+    ...sideGutters(width, insets),
   },
   pdfSize: {width: width - insets.left - insets.right},
 });

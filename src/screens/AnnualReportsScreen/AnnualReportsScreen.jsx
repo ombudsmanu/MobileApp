@@ -23,7 +23,9 @@ import {createStyles, createDynamicStyles, BACK_RADIUS} from './AnnualReportsScr
  *
  * Tapping a year opens its PDF inside the app (PdfViewer screen): scroll,
  * pinch-zoom and a page counter, with the file kept on the phone after the
- * first open so it reopens instantly, even offline.
+ * first open so it reopens instantly, even offline. The viewer gets the
+ * title as a KEY plus the year, so it re-translates the title when the
+ * language is switched inside the viewer.
  *
  * A year with no link yet is faded and says "Not available" rather than
  * failing when tapped.
@@ -53,6 +55,8 @@ const AnnualReportsScreen = ({navigation}) => {
     }
     navigation.navigate('PdfViewer', {
       url: report.url,
+      titleKey: 'reports.report',
+      titleSuffix: String(report.year),
       title: `${t('reports.report')} ${report.year}`,
       cacheName: `annual-report-${report.year}`,
     });
@@ -77,8 +81,7 @@ const AnnualReportsScreen = ({navigation}) => {
       <ScrollView
         contentContainerStyle={dyn.scrollPad}
         showsVerticalScrollIndicator={false}>
-        <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} />
-
+        <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} showCrest={false} />
         {/* Not reversed for Urdu — years stay newest-first in both languages */}
         <ResponsiveGrid style={styles.grid}>
           {annualReports.map((report, index) => (

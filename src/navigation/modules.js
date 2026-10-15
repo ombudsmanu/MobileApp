@@ -19,10 +19,10 @@
  */
 
 export const modules = [
+  {key: 'complaints', label: 'Register a Complaint', icon: 'inbox', route: 'RegisterComplaint', enabled: true, roles: ['admin', 'user', 'guest']},
    {key: 'annualReports', label: 'Annual Reports', icon: 'chart', route: 'AnnualReports', enabled: true, roles: ['admin', 'user', 'guest']},
   {key: 'about', label: 'About Us', icon: 'doc', route: 'AboutUs', enabled: true, roles: ['admin', 'user', 'guest']},
   {key: 'dashboard', label: 'Dashboard', icon: 'grid', route: 'AdminDashboard', enabled: true, roles: ['admin']},
-  {key: 'complaints', label: 'Register Complaint', icon: 'inbox', route: 'RegisterComplaint', enabled: true, roles: ['admin', 'user', 'guest']},
     {key: 'downloads', label: 'Downloads', icon: 'folder', route: 'Downloads', enabled: true, roles: ['admin', 'user', 'guest']},
   {key: 'dms', label: 'Document Management', icon: 'doc', route: 'DmsList', enabled: false, roles: ['admin', 'user']},
   {key: 'cases', label: 'Case Files', icon: 'folder', route: 'Cases', enabled: false, roles: ['admin', 'user']},

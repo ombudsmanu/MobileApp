@@ -13,7 +13,7 @@ export const DOWNLOAD_COLORS = ['#6C8FD6', '#3B5BA5'];
 
 export const createStyles = theme =>
   StyleSheet.create({
-    // ---- Header: [back] [title] [EN / اردو] ----
+    // ---- Header: [back] [title] [globe + language] ----
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -21,7 +21,11 @@ export const createStyles = theme =>
       paddingBottom: spacing.md,
     },
     backBtn: {width: 48, height: 48},
-    topTextWrap: {flex: 1},
+    // alignItems:'center' shrinks the title's box to the width of its own
+    // words and centres it between the back button and the language button
+    // — in BOTH languages, because a box that is exactly as wide as its
+    // text has nothing for textAlign to push against.
+    topTextWrap: {flex: 1, alignItems: 'center'},
     topTitle: {...theme.type.titleMedium},
 
     // Left/right padding: createDynamicStyles (centred reading column)

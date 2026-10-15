@@ -284,7 +284,11 @@ const SplashScreen = ({navigation}) => {
         {!compact &&
           CERTIFICATIONS.map(c => (
             <View key={c.key} style={styles.certBlock}>
-              <Text style={styles.certTitle}>{c.title}</Text>
+              {/* Long title kept on ONE line — it shrinks to fit the card
+                  width rather than wrapping to two lines. */}
+              <Text style={styles.certTitle} numberOfLines={1} adjustsFontSizeToFit>
+                {c.title}
+              </Text>
               <Text style={styles.certStandard}>{c.standard}</Text>
               <Text style={styles.certNumber}>{c.number}</Text>
             </View>
@@ -309,11 +313,15 @@ const SplashScreen = ({navigation}) => {
           accessibilityRole="button"
           accessibilityLabel="Continue to OPMIS App">
           <GlassSurface strong center radius={HINT_RADIUS} style={styles.swipeCircle}>
-            <Icon name="chevronUp" size={20} color={theme.brandGreen} weight={2.5} />
+            <Icon name="chevronUp" size={22} color={theme.brandGreen} weight={3.5} />
           </GlassSurface>
         </Pressable>
-        <Text style={styles.swipeTitle}>Swipe up to proceed</Text>
-        <Text style={styles.swipeUrdu}>اوپر کی جانب سوائپ کریں</Text>
+        {/* English and Urdu on ONE line: a dot separates them */}
+        <View style={styles.swipeLine}>
+          <Text style={styles.swipeTitle}>Swipe up to proceed</Text>
+          <Text style={styles.swipeDot}>·</Text>
+          <Text style={styles.swipeUrdu}>اوپر کی جانب سوائپ کریں</Text>
+        </View>
         <Text style={styles.swipeSub}>Continue to OPMIS App</Text>
       </View>
     );

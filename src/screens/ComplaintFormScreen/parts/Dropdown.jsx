@@ -1,5 +1,6 @@
 import React, {useMemo, useState} from 'react';
-import {FlatList, Modal, Pressable, TextInput, View} from 'react-native';
+// RNText: the plain text component, for the value INSIDE the box (see below)
+import {FlatList, Modal, Pressable, Text as RNText, TextInput, View} from 'react-native';
 import Text from '../../../components/AppText/AppText';
 import GlassSurface from '../../../components/GlassSurface/GlassSurface';
 import Icon from '../../../components/Icon/Icon';
@@ -7,6 +8,10 @@ import {useTheme} from '../../../context/ThemeContext';
 import {useLanguage} from '../../../context/LanguageContext';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {createDropdownStyles, PICKER_RADIUS} from './parts.styles';
+
+/** Any Arabic-script letter — the same test AppText uses to spot Urdu. */
+const ARABIC_SCRIPT =
+  /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
 
 /**
  * DROPDOWN — a labelled select that opens a full-screen picker.
@@ -24,6 +29,18 @@ import {createDropdownStyles, PICKER_RADIUS} from './parts.styles';
  *
  * The picker is a Modal — mounted only while open — with the options as a
  * FlatList, so even a long Agency list scrolls smoothly.
+ *
+ * LOOKS LIKE A TEXT FIELD — the closed box is the same height (FIELD_HEIGHT)
+ * and its text the same font and size as a FormField's. The value uses the
+ * plain Text rather than AppText, because AppText adds its own line height
+ * and spacing that a fixed-height box cannot take.
+ *
+ * URDU FONT — when the box is showing Urdu (an Urdu option or placeholder)
+ * the value gets valueUrdu: the same Nastaleeq face as the label above it
+ * and the text boxes around it, so the whole form reads as one font.
+ *
+ * URDU LAYOUT — the whole box mirrors: the arrow moves to the left and the
+ * text starts at the right edge, like every other field.
  */
 const labelOf = (option, lang) => (option ? option[lang] ?? option.en : '');
 
@@ -50,6 +67,10 @@ const Dropdown = ({
 
   const selected = options.find(o => o.value === value) ?? null;
   const showSearch = searchable ?? options.length >= 8;
+
+  // What the closed box displays, and whether that is Urdu
+  const shown = selected ? labelOf(selected, lang) : placeholder ?? '';
+  const showsUrdu = ARABIC_SCRIPT.test(shown);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -86,20 +107,24 @@ const Dropdown = ({
 
       <Pressable
         onPress={() => setOpen(true)}
+        accessibilityRole="button"
+        accessibilityLabel={label}
         style={({pressed}) => [
           styles.field,
+          isRTL && styles.rowRTL,
           !!error && styles.fieldError,
           pressed && styles.fieldPressed,
         ]}>
-        <Text
+        <RNText
           style={[
             styles.value,
             !selected && styles.placeholder,
-            isRTL && styles.rtl,
+            showsUrdu && styles.valueUrdu,
+            isRTL ? styles.rtl : styles.valueLTR,
           ]}
           numberOfLines={1}>
-          {selected ? labelOf(selected, lang) : placeholder}
-        </Text>
+          {shown}
+        </RNText>
         <Icon name="chevronDown" size={20} color={theme.icon.muted} weight={2} />
       </Pressable>
 
@@ -116,7 +141,7 @@ const Dropdown = ({
               onPress={() => {}}>
               <GlassSurface strong radius={PICKER_RADIUS} style={styles.sheetCard} contentStyle={styles.sheetContent}>
                 <View style={[styles.sheetHeader, isRTL && styles.rowRTL]}>
-                  <Text style={styles.sheetTitle} numberOfLines={1}>
+                  <Text style={[styles.sheetTitle, isRTL && styles.rtl]} numberOfLines={1}>
                     {label}
                   </Text>
                   <Pressable onPress={close} hitSlop={10} style={styles.closeBtn}>
@@ -132,7 +157,7 @@ const Dropdown = ({
                       onChangeText={setQuery}
                       placeholder={searchPlaceholder}
                       placeholderTextColor={theme.control.placeholder}
-                      style={[styles.searchInput, isRTL && styles.rtl]}
+                      style={[styles.searchInput, isRTL ? styles.rtl : styles.valueLTR]}
                       autoCorrect={false}
                     />
                   </View>

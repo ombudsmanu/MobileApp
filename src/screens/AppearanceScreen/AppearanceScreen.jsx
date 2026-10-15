@@ -340,7 +340,11 @@ const AppearanceScreen = ({navigation}) => {
               minimumFontScale={0.75}>
               {t('ap.title')}
             </Text>
-            <Text style={styles.topSub} numberOfLines={2}>
+            <Text
+              style={styles.topSub}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}>
               {t('ap.subtitle')}
             </Text>
           </View>

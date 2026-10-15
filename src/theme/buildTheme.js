@@ -110,6 +110,8 @@ export const buildTheme = (
     fonts,
     weight: weightFor(fonts.latin),
     urduFont: urduFamilyFor(fonts.urdu),
+    // Text inside input boxes and dropdowns, in the chosen Latin font
+    inputType: typography.input,
 
     bgMode,
     bg: p.bg,

@@ -213,7 +213,8 @@ const LoginScreen = () => {
         style={twoColumns ? styles.crestCompact : styles.crest}
         resizeMode="contain"
       />
-      <BrandCard style={styles.brandCard} />
+            {/* bare: no glass card behind the heading, so the page is shorter */}
+      <BrandCard style={styles.brandCard} showOpmisPill={false} bare />
     </>
   );
 

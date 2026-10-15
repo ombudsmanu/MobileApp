@@ -33,11 +33,15 @@ export const createStyles = theme =>
     // wrapping to a second line rather than being cut off. Title Medium,
     // not Title Large: a two-line heading needs the smaller size to fit
     // beside the toggle, and long names are the normal case here.
-    topTextWrap: { flex: 1 },
+    topTextWrap: { flex: 1, alignItems: 'center' },
     topTitle: { ...theme.type.titleMedium },
 
     // Left/right padding: createDynamicStyles (centred reading column)
-    scroll: { paddingTop: spacing.xs },
+      scroll: { paddingTop: spacing.xs },
+    // On a sub-page list (Our Team → Head/Regional Office), the few rows
+    // are centred in the screen instead of sitting at the top. Long content
+    // pages keep the plain top-aligned `scroll` above.
+    scrollCentered: { flexGrow: 1, justifyContent: 'center' },
     
     // Certification badges across the top of every section page
     topBadges: {marginBottom: spacing.md},

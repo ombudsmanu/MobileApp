@@ -45,12 +45,13 @@ export const createStyles = theme =>
     },
     backText: { ...theme.type.labelLarge, color: theme.text.heading },
 
-    // ---- Crest and brand card, as on the splash screen ----
+    // ---- Crest and brand heading (the heading has no card here) ----
+    // 88 rather than 112, so crest + heading + form fit on one screen
     crest: {
-      width: 112,
-      height: 112,
+      width: 88,
+      height: 88,
       alignSelf: 'center',
-      marginBottom: spacing.sm,
+      marginBottom: spacing.xs,
     },
     // Smaller crest for the two-column (landscape) layout, where height is short
     crestCompact: {
@@ -147,7 +148,7 @@ export const createStyles = theme =>
     footer: {
       ...theme.type.bodySmall,
       textAlign: 'center',
-      marginTop: spacing.xxl,
+      marginTop: spacing.lg,
     },
     footerCompact: { marginTop: spacing.md },
   });

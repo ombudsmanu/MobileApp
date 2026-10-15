@@ -16,7 +16,7 @@ export const createStyles = theme =>
     },
     errored: {borderColor: theme.danger},
     sheen: {...StyleSheet.absoluteFillObject},
-       topHighlight: {
+    topHighlight: {
       position: 'absolute',
       top: 0,
       left: 12,
@@ -26,9 +26,13 @@ export const createStyles = theme =>
       backgroundColor: theme.glass.highlight,
     },
     input: {
-      ...typography.input,
+      // The Latin font chosen in Appearance (theme.inputType), so a field's
+      // text matches the labels around it. Urdu typed or shown here uses
+      // the phone's own Arabic font: Nastaleeq cannot work inside a typing
+      // box (its tails reach far below the line and would be cut off).
+      ...(theme.inputType ?? typography.input),
       color: theme.control.input,
-            paddingHorizontal: spacing.md,
+      paddingHorizontal: spacing.md,
       paddingVertical: Platform.OS === 'ios' ? 14 : 10,
     },
     inputWithAction: {paddingRight: 68},

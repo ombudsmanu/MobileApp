@@ -18,7 +18,7 @@ export const strings = {
 
     // ---- Modules ----
     'module.dashboard': 'Dashboard',
-    'module.complaints': 'Register Complaint',
+    'module.complaints': 'Register a Complaint',
     'module.dms': 'Document Management',
     'module.cases': 'Case Files',
     'module.reports': 'Reports & MIS',
@@ -33,9 +33,8 @@ export const strings = {
     'action.registerComplaint': 'Register Complaint',
     'screen.adminDashboard': 'Admin Dashboard',
     'screen.registerComplaint': 'Register a Complaint',
-    
+
     // Register Complaint
-    'complaint.intro': 'Choose how you would like to register your complaint.',
     'complaint.pakistan': 'Pakistan Nationals',
     'complaint.overseas': 'Overseas Nationals',
 
@@ -50,11 +49,12 @@ export const strings = {
     'cf.sec.complainant': 'Complainant Details',
     'cf.sec.info': 'Complaint Information',
     'cf.sec.attach': 'Attachment Section',
-
+    'cf.complaintNature': 'Complaint Nature',
     'cf.complaintType': 'Complaint Type',
     'cf.status': 'Status of Complaint',
     'cf.regionalOffice': 'Regional Office',
-    'cf.regionalOffice.help': 'Wherein the Complainant wants the Complaint to be processed',
+    'cf.regionalOffice.help':
+      'Wherein the Complainant wants the Complaint to be processed',
     'cf.select.regionalOffice': 'Select Regional Office',
 
     'cf.cnic': 'Complainant CNIC',
@@ -81,13 +81,15 @@ export const strings = {
     'cf.select.district': 'Select District',
 
     'cf.agency': 'Agency',
-    'cf.agency.help': 'Govt. of the Punjab Departments, Offices and Other Institutions',
+    'cf.agency.help':
+      'Govt. of the Punjab Departments, Offices and Other Institutions',
     'cf.select.agency': 'Select Agency',
     'cf.designation': 'Designation',
     'cf.designation.help': 'Designation of the Concerned Officer / Official',
     'cf.select.designation': 'Select Designation',
     'cf.subject': 'Complaint Subject',
-    'cf.subject.help': 'Subject matter of the Complaint (Facts, Grievances and Relief required)',
+    'cf.subject.help':
+      'Subject matter of the Complaint (Facts, Grievances and Relief required)',
     'cf.subject.ph': 'Subject',
 
     'cf.cnicFront': 'Attach CNIC Front',
@@ -95,9 +97,10 @@ export const strings = {
     'cf.affidavitAttach': 'Attach Affidavit',
     'cf.supporting': 'Attach Supporting Documents',
     'cf.upload.title': 'Upload Document',
-    'cf.upload.hint': 'PDF or Image files supported',
+    'cf.upload.hint': 'Files up to 5 MB are accepted',
     'cf.upload.soonTitle': 'Coming soon',
-    'cf.upload.soonMsg': 'File upload will be enabled when the service goes live.',
+    'cf.upload.soonMsg':
+      'File upload will be enabled when the service goes live.',
     'cf.upload.chooseTitle': 'Add attachment',
     'cf.upload.chooseMsg': 'Choose where to take the file from.',
     'cf.upload.camera': 'Camera',
@@ -107,7 +110,8 @@ export const strings = {
     'cf.upload.failMsg': 'Please try again.',
     'cf.downloadAffidavit': 'Download Affidavit',
     'cf.affidavitCardTitle': 'Affidavit',
-    'cf.affidavitCardDesc': 'View the affidavit or save it to your phone to sign and attach above.',
+    'cf.affidavitCardDesc':
+      'View the affidavit or save it to your phone to sign and attach above.',
 
     'cf.declare.title': 'I solemnly declare',
 
@@ -117,9 +121,11 @@ export const strings = {
     'cf.noResults': 'No matches found',
     'cf.err.required': 'This field is required',
     'cf.err.title': 'Please complete the form',
-    'cf.err.msg': 'Some required fields are missing or invalid. Please check the highlighted fields.',
+    'cf.err.msg':
+      'Some required fields are missing or invalid. Please check the highlighted fields.',
     'cf.done.title': 'Form complete',
-    'cf.done.msg': 'All required details are filled in. Submission will be enabled when the service goes live.',
+    'cf.done.msg':
+      'All required details are filled in. Submission will be enabled when the service goes live.',
     'cf.err.email': 'Enter a valid email address, like abc@gmail.com',
     'cf.err.landline': 'Landline must start with 0, like 0424637289900',
     'cf.upload.cameraDeniedTitle': 'Camera not allowed',
@@ -129,7 +135,7 @@ export const strings = {
     // ---- Complaint Form (Overseas Pakistanis) ----
     'ov.title': 'Overseas Complaints',
     'ov.note.body':
-      'Overseas Pakistanis can lodge a complaint to any of our 41 District Regional Offices using this form. Give your Pakistani mobile number where possible, as complainants are kept informed about complaint redressal via SMS and E-Mail. Attach your CNIC/NICOP and passport so your complaint can be verified without delay.',
+    'Overseas Pakistanis can lodge a complaint to any of our 41 District Regional Offices using this form. Give your Pakistani mobile number where possible, as complainants are kept informed about complaint redressal via SMS and E-Mail. Attach your CNIC/NICOP and passport so your complaint can be verified without delay.',
     'ov.sec.general': 'Overseas General Details',
     'ov.sec.complainant': 'Overseas Complainant Details',
     'ov.sec.info': 'Overseas Complaint Details',
@@ -159,15 +165,18 @@ export const strings = {
     // Downloads
     'module.downloads': 'Downloads',
     'downloads.title': 'Downloads',
-    'downloads.intro': 'Forms and documents you can view or save to your phone.',
+    'downloads.intro':
+      'Forms and documents you can view or save to your phone.',
     'downloads.affidavit': 'Affidavit',
     'downloads.affidavitDesc': 'Affidavit form to submit with your complaint.',
     'downloads.view': 'VIEW',
     'downloads.download': 'DOWNLOAD',
     'downloads.savedTitle': 'Saved to Downloads',
-    'downloads.savedMsg': 'Open it from the Downloads folder in your Files app.',
+    'downloads.savedMsg':
+      'Open it from the Downloads folder in your Files app.',
     'downloads.failedTitle': 'Download failed',
-    'downloads.failedMsg': 'Please check your internet connection and try again.',
+    'downloads.failedMsg':
+      'Please check your internet connection and try again.',
     'downloads.notReadyTitle': 'Not available yet',
     'downloads.notReadyMsg': 'This document will be available soon.',
     comingSoonTitle: 'Coming soon',
@@ -185,11 +194,12 @@ export const strings = {
       'Body text is used for descriptions and anything people read.',
     'ap.previewLabel': 'LABEL — FIELD LABELS, TAGS AND FINE PRINT',
     'ap.textColours': 'Text colours',
-        'ap.font': 'Font',
+    'ap.font': 'Font',
     'ap.fontHint': 'Choose how text looks across the app.',
     'ap.appFont': 'App font',
     'ap.urduFont': 'Urdu font',
-    'ap.fontNote': 'The app font styles English text; the Urdu font styles Urdu text.',
+    'ap.fontNote':
+      'The app font styles English text; the Urdu font styles Urdu text.',
     'font.system': 'System default',
     'font.calibri': 'Calibri (Carlito)',
     'font.poppins': 'Poppins',
@@ -306,6 +316,14 @@ export const strings = {
       'Check your internet connection and try again, or open it in the browser.',
     'pdf.retry': 'TRY AGAIN',
     'pdf.openBrowser': 'OPEN IN BROWSER',
+    'cf.upload.remove': 'Remove',
+    'cf.upload.removeTitle': 'Remove this file?',
+    'cf.upload.removeMsg': 'The file will be removed from this attachment.',
+    'cf.cancel': 'Cancel',
+    'cf.done': 'Done',
+    'cf.multi.summary': '{n} selected',
+    'cf.upload.one': '1 file attached',
+    'cf.upload.many': '{n} files attached',
   },
 
   ur: {
@@ -335,7 +353,7 @@ export const strings = {
     'action.registerComplaint': 'شکایت درج کریں',
     'screen.adminDashboard': 'ایڈمن ڈیش بورڈ',
     'screen.registerComplaint': 'شکایت درج کریں',
-    
+
     // Register Complaint
     'complaint.intro': 'اپنی شکایت درج کرانے کا طریقہ منتخب کریں۔',
     'complaint.pakistan': 'پاکستانی شہری',
@@ -352,16 +370,15 @@ export const strings = {
     'cf.sec.complainant': 'شکایت کنندہ کی تفصیلات',
     'cf.sec.info': 'شکایت کی معلومات',
     'cf.sec.attach': 'منسلکات',
-
+    'cf.complaintNature': 'شکایت کی نوعیت',
     'cf.complaintType': 'شکایت کی قسم',
     'cf.status': 'شکایت کی حیثیت',
     'cf.regionalOffice': 'ریجنل آفس',
-    'cf.regionalOffice.help': 'جہاں شکایت کنندہ شکایت پر کارروائی چاہتا ہے',
+    'cf.regionalOffice.help': 'جہاں شکایت کنندہ شکایت پر کارروائی چاہتا ہے ',
     'cf.select.regionalOffice': 'ریجنل آفس منتخب کریں',
-
     'cf.cnic': 'شکایت کنندہ کا شناختی کارڈ',
     'cf.cnic.help': 'شناختی کارڈ 13 ہندسوں کا ہونا چاہیے۔',
-    'cf.cnic.ph': 'شناختی کارڈ نمبر',
+    'cf.cnic.ph': '00000-0000000-0',
     'cf.err.cnic': 'شناختی کارڈ 13 ہندسوں کا ہونا چاہیے۔',
     'cf.titleField': 'سابقہ',
     'cf.select.title': 'سابقہ منتخب کریں',
@@ -370,13 +387,14 @@ export const strings = {
     'cf.lastName': 'آخری نام',
     'cf.guardian': 'والد / شوہر / سرپرست',
     'cf.mobile': 'موبائل نمبر',
-    'cf.mobile.help': 'موبائل نمبر اس طرح ہونا چاہیے: 03001234567',
-    'cf.err.mobile': 'موبائل نمبر اس طرح ہونا چاہیے: 03001234567',
+    'cf.mobile.help': 'موبائل نمبر اس طرح ہونا چاہیے: 03000000000 یا +923000000000',
+    'cf.err.mobile': 'موبائل نمبر اس طرح ہونا چاہیے: 03000000000 یا +923000000000',
+
     'cf.email': 'ای میل',
     'cf.landline': 'لینڈ لائن',
-    'cf.landline.help': 'لینڈ لائن نمبر اس طرح ہونا چاہیے: 0424637289900',
+    'cf.landline.help': 'لینڈ لائن نمبر 0 سے شروع ہونا چاہیے، جیسے: 0420000000',
     'cf.whatsapp': 'واٹس ایپ نمبر',
-    'cf.whatsapp.help': 'واٹس ایپ نمبر اس طرح ہونا چاہیے: 03001234567',
+    'cf.whatsapp.help': 'واٹس ایپ نمبر اس طرح ہونا چاہیے: 03000000000 یا +923000000000',
     'cf.address': 'پتہ',
     'cf.address.ph': 'زیادہ سے زیادہ 500 حروف',
     'cf.district': 'ضلع',
@@ -397,7 +415,7 @@ export const strings = {
     'cf.affidavitAttach': 'حلف نامہ منسلک کریں',
     'cf.supporting': 'معاون دستاویزات منسلک کریں',
     'cf.upload.title': 'دستاویز اپ لوڈ کریں',
-    'cf.upload.hint': 'پی ڈی ایف یا تصویری فائلیں قابل قبول ہیں',
+    'cf.upload.hint': 'صرف 5 MB تک کی فائلیں قبول ہیں',
     'cf.upload.soonTitle': 'جلد آرہا ہے',
     'cf.upload.soonMsg': 'سروس شروع ہونے پر فائل اپ لوڈ کی سہولت دستیاب ہوگی۔',
     'cf.upload.chooseTitle': 'منسلکہ شامل کریں',
@@ -409,7 +427,8 @@ export const strings = {
     'cf.upload.failMsg': 'براہ کرم دوبارہ کوشش کریں۔',
     'cf.downloadAffidavit': 'حلف نامہ ڈاؤن لوڈ کریں',
     'cf.affidavitCardTitle': 'حلف نامہ',
-    'cf.affidavitCardDesc': 'حلف نامہ دیکھیں یا اپنے فون میں محفوظ کریں تاکہ دستخط کر کے اوپر منسلک کر سکیں۔',
+    'cf.affidavitCardDesc':
+      'حلف نامہ دیکھیں یا اپنے فون میں محفوظ کریں تاکہ دستخط کر کے اوپر منسلک کر سکیں۔',
 
     'cf.declare.title': 'میں بقائمی ہوش و حواس حلفاً بیان کرتا/کرتی ہوں کہ',
 
@@ -419,11 +438,14 @@ export const strings = {
     'cf.noResults': 'کوئی نتیجہ نہیں ملا',
     'cf.err.required': 'یہ خانہ لازمی ہے',
     'cf.err.title': 'براہ کرم فارم مکمل کریں',
-    'cf.err.msg': 'کچھ لازمی خانے خالی یا غلط ہیں۔ براہ کرم نشان زدہ خانوں کو چیک کریں۔',
+    'cf.err.msg':
+      'کچھ لازمی خانے خالی یا غلط ہیں۔ براہ کرم نشان زدہ خانوں کو چیک کریں۔',
     'cf.done.title': 'فارم مکمل',
-    'cf.done.msg': 'تمام لازمی تفصیلات مکمل ہیں۔ سروس شروع ہونے پر جمع کرانے کی سہولت دستیاب ہوگی۔',
+    'cf.done.msg':
+      'تمام لازمی تفصیلات مکمل ہیں۔ سروس شروع ہونے پر جمع کرانے کی سہولت دستیاب ہوگی۔',
     'cf.err.email': 'درست ای میل درج کریں، جیسے abc@gmail.com',
-    'cf.err.landline': 'لینڈ لائن نمبر 0 سے شروع ہونا چاہیے، جیسے 0424637289900',
+    'cf.err.landline':
+      'لینڈ لائن نمبر 0 سے شروع ہونا چاہیے، جیسے 0420000000',
     'cf.upload.cameraDeniedTitle': 'کیمرے کی اجازت نہیں',
     'cf.upload.cameraDeniedMsg':
       'تصویر لینے کے لیے کیمرے کی اجازت دیں، یا گیلری منتخب کریں۔',
@@ -438,7 +460,7 @@ export const strings = {
     'ov.sec.attach': 'دستاویزات اپ لوڈ کریں',
 
     'ov.cnic': 'شناختی کارڈ / نائیکاپ نمبر',
-    'ov.cnic.ph': 'شناختی کارڈ / نائیکاپ',
+    'ov.cnic.ph': '00000-0000000-0',
     'ov.country': 'ملک',
     'ov.select.country': 'ملک منتخب کریں',
     'ov.passport': 'پاسپورٹ نمبر',
@@ -449,7 +471,6 @@ export const strings = {
     'ov.intlLandline': 'بین الاقوامی لینڈ لائن نمبر',
     'ov.intl.help': 'ملک کا کوڈ اور نمبر، شروع کے 00 کے بغیر',
     'ov.err.intl': '7 سے 15 ہندسے درج کریں، شروع کے 00 کے بغیر',
-    'ov.whatsapp.help': 'مکمل بین الاقوامی نمبر، جیسے 00928100037',
     'ov.err.whatsapp': 'واٹس ایپ نمبر 00 سے شروع ہونا چاہیے، جیسے 00928100037',
     'ov.addressPakistan': 'پاکستان میں رہائشی پتہ',
     'ov.mobilePk': 'موبائل نمبر (پاکستان میں)',
@@ -461,15 +482,18 @@ export const strings = {
     // Downloads
     'module.downloads': 'ڈاؤن لوڈز',
     'downloads.title': 'ڈاؤن لوڈز',
-    'downloads.intro': 'فارم اور دستاویزات جنہیں آپ دیکھ سکتے ہیں یا اپنے فون میں محفوظ کر سکتے ہیں۔',
+    'downloads.intro':
+      'فارم اور دستاویزات جنہیں آپ دیکھ سکتے ہیں یا اپنے فون میں محفوظ کر سکتے ہیں۔',
     'downloads.affidavit': 'حلف نامہ',
-    'downloads.affidavitDesc': 'شکایت کے ساتھ جمع کرانے کے لیے حلف نامے کا فارم۔',
+    'downloads.affidavitDesc':
+      'شکایت کے ساتھ جمع کرانے کے لیے حلف نامے کا فارم۔',
     'downloads.view': 'دیکھیں',
     'downloads.download': 'ڈاؤن لوڈ کریں',
     'downloads.savedTitle': 'ڈاؤن لوڈز میں محفوظ ہو گیا',
     'downloads.savedMsg': 'اسے اپنی فائلز ایپ کے ڈاؤن لوڈز فولڈر سے کھولیں۔',
     'downloads.failedTitle': 'ڈاؤن لوڈ ناکام رہا',
-    'downloads.failedMsg': 'براہ کرم اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں۔',
+    'downloads.failedMsg':
+      'براہ کرم اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں۔',
     'downloads.notReadyTitle': 'ابھی دستیاب نہیں',
     'downloads.notReadyMsg': 'یہ دستاویز جلد دستیاب ہوگی۔',
     comingSoonTitle: 'جلد دستیاب ہوگا',
@@ -491,7 +515,8 @@ export const strings = {
     'ap.fontHint': 'ایپ میں تحریر کی شکل منتخب کریں۔',
     'ap.appFont': 'ایپ کا فونٹ',
     'ap.urduFont': 'اردو فونٹ',
-    'ap.fontNote': 'ایپ کا فونٹ انگریزی تحریر پر لاگو ہوتا ہے اور اردو فونٹ اردو تحریر پر۔',
+    'ap.fontNote':
+      'ایپ کا فونٹ انگریزی تحریر پر لاگو ہوتا ہے اور اردو فونٹ اردو تحریر پر۔',
     'font.system': 'سسٹم ڈیفالٹ',
     'font.calibri': 'کیلبری (کارلیٹو)',
     'font.poppins': 'پاپنز',
@@ -607,5 +632,13 @@ export const strings = {
     'photo.view': 'تصویر دیکھیں',
     'photo.close': 'بند کریں',
     'photo.hint': 'بند کرنے کے لیے کہیں بھی ٹیپ کریں',
+    'cf.upload.remove': 'ہٹائیں',
+    'cf.upload.removeTitle': 'یہ فائل ہٹائیں؟',
+    'cf.upload.removeMsg': 'فائل اس منسلکہ سے ہٹا دی جائے گی۔',
+    'cf.cancel': 'منسوخ',
+    'cf.done': 'مکمل',
+    'cf.multi.summary': '{n} منتخب',
+    'cf.upload.one': '1 فائل منسلک',
+    'cf.upload.many': '{n} فائلیں منسلک',
   },
 };

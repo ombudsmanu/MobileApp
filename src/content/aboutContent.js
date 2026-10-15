@@ -110,9 +110,6 @@ export const aboutContent = {
   // -------------------------------------------------------------------------
   formerOmbudsman: {
     en: [
-      paragraph(
-        `Since the establishment of the Office of the Ombudsman Punjab, following eminent personalities have served as Provincial Ombudsman Punjab:`,
-      ),
       // bio: null until the biography text is supplied
       people([
         {

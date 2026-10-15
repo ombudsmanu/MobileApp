@@ -23,7 +23,11 @@ export const createStyles = theme =>
       paddingBottom: spacing.md,
     },
     backBtn: {width: 48, height: 48},
-    topTextWrap: {flex: 1},
+    // alignItems:'center' shrinks the title's box to the width of its own
+    // words and centres it between the back button and the language button
+    // — in BOTH languages, because a box that is exactly as wide as its
+    // text has nothing for textAlign to push against.
+    topTextWrap: {flex: 1, alignItems: 'center'},
     topTitle: {...theme.type.titleMedium},
 
     // ---- Scroll content ---- (padding: createDynamicStyles)

@@ -27,6 +27,13 @@ import {
 } from './DashboardScreen.styles';
 
 /**
+ * The English organisation name, split where it reads naturally, so the
+ * top bar shows it on two complete lines. (strings.js `orgName` is the same
+ * text on one line; Urdu uses that one.)
+ */
+const ORG_LINES_EN = ['Ombudsman Punjab Management', 'Information System'];
+
+/**
  * DASHBOARD — top bar, photo slider, then the modules as cards.
  *
  * RESPONSIVE
@@ -78,11 +85,29 @@ const DashboardScreen = ({navigation}) => {
 
         <View style={styles.topTextWrap}>
           <Text style={styles.topTitle}>OPMIS</Text>
-          <Text
-            style={[styles.topSub, isRTL ? styles.topSubUr : styles.topSubEn]}
-            numberOfLines={2}>
-            {t('orgName')}
-          </Text>
+          {isRTL ? (
+            // Urdu: the whole name on ONE line, shrunk to fit the space
+            <Text
+              style={[styles.topSub, styles.topSubUr]}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.6}>
+              {t('orgName')}
+            </Text>
+          ) : (
+            // English: always exactly two full lines — never cut with "…".
+            // Each line shrinks a little on a very narrow phone instead.
+            ORG_LINES_EN.map(line => (
+              <Text
+                key={line}
+                style={[styles.topSub, styles.topSubEn]}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.75}>
+                {line}
+              </Text>
+            ))
+          )}
         </View>
 
         <LanguageToggle />

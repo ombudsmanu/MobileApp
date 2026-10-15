@@ -48,6 +48,18 @@ export const LAYOUT = {
   crestCompact: 72,
 };
 
+/**
+ * SWIPE LINE — English and Urdu sit side by side, so they must look the
+ * same size AND the same weight.
+ *   Size   — Nastaleeq draws much taller than Latin at the same font size,
+ *            so the Urdu gets a smaller number (AppText then adds ×1.1).
+ *   Weight — Nastaleeq has only a regular weight (AppText never bolds it),
+ *            so the English uses the regular weight too.
+ */
+export const SWIPE_EN_SIZE = 17;
+export const SWIPE_UR_SIZE = 13;
+export const SWIPE_EN_WEIGHT = 350;
+
 export const FIT = {
   tolerance: 1, // dp — ignore sub-pixel differences
   // Scaling only happens on very small screens or the largest system font
@@ -161,13 +173,43 @@ export const createStyles = theme =>
       alignItems: 'center',
       marginTop: spacing.sm + Math.abs(animationConfig.hintTravel),
     },
-    swipeCircle: {width: 48, height: 48},
-    swipeTitle: {...theme.type.titleMedium, marginTop: 2},
-    // Urdu invitation under the English one. AppText gives it the
-    // Nastaleeq font and the taller line that script needs.
-    swipeUrdu: {...theme.type.bodySmall, textAlign: 'center'},
-    swipeSub: {...theme.type.labelMedium, color: theme.accent, textAlign: 'center'},
-
+    swipeCircle: {width:50, height: 50},
+    // English and Urdu sit side by side on one line
+    swipeLine: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      marginTop: 4,
+    },
+    // English invitation — regular weight (not Title Medium's semi-bold) so
+    // it looks as light as the Urdu beside it, which is always regular
+    swipeTitle: {
+      ...theme.type.titleMedium,
+      fontSize: SWIPE_EN_SIZE,
+      ...theme.weight(SWIPE_EN_WEIGHT),
+    },
+    // The dot between the English and Urdu invitations
+    swipeDot: {...theme.type.titleMedium, color: theme.accent, marginHorizontal: spacing.xs},
+    // Urdu invitation beside the English one. AppText gives it the
+    // Nastaleeq font and enlarges it ×1.1, and Nastaleeq letters are much
+    // taller than Latin ones at the same size — so at the English size the
+    // Urdu looked far bigger. A smaller base size makes the two read as
+    // one line of equal weight.
+    swipeUrdu: {
+      ...theme.type.titleMedium,
+      fontSize: SWIPE_UR_SIZE,
+      lineHeight: SWIPE_UR_SIZE + 6,
+      textAlign: 'center',
+    },
+    // "Continue to OPMIS App" — a small gap below the English/Urdu line so
+    // the two lines don't touch (the Nastaleeq line is tall and sits close)
+    swipeSub: {
+      ...theme.type.labelMedium,
+      color: theme.accent,
+      textAlign: 'center',
+      marginTop: spacing.sm,
+    },
     // ---- Footer: copyright + version stay together ----
     footer: {alignItems: 'center'},
     copyrightPill: {
@@ -224,8 +266,12 @@ export const animationConfig = {
   exitDamping: 20,
   snapStiffness: 180,
   snapDamping: 22,
-  fadeInDuration: 750,
-  fadeInOffset: 24,
+    // Quick, gentle entrance — the intro hands off while its crest is still
+  // on screen, so this screen must be PRESENT on arrival, not fading up from
+  // a blank background. 260 ms reads as a soft settle, not an empty gap.
+  // (Was 750 ms, which left the screen looking blank right after the intro.)
+  fadeInDuration: 260,
+  fadeInOffset: 14,
   hintLoopDuration: 900,
   hintTravel: -10,
   hintOpacityRange: [0.55, 1],

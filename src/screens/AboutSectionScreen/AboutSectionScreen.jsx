@@ -51,7 +51,11 @@ const groupBlocks = blocks => {
 
     card.blocks.push(block);
   });
-  return groups;
+  // A card that holds NOTHING but its heading is dropped: a lone title with
+  // no text under it is not a card, it is a stray heading.
+  return groups.filter(
+    g => g.kind !== 'card' || g.blocks.some(b => b.type !== 'heading'),
+  );
 };
 
 /**
@@ -161,7 +165,7 @@ const TextCard = ({ blocks, accent, colors, accentStyles, rtl, styles }) => (
           <View key={i}>
             {b.items.map((item, j) => (
               <View key={j} style={[styles.bulletRow, rtl && styles.rowRTL]}>
-                                <View style={[styles.bulletDot, accentStyles.fill]} />
+                <View style={[styles.bulletDot, accentStyles.fill]} />
                 <Text style={[styles.bulletText, rtl && styles.textRTL]}>
                   {item}
                 </Text>
@@ -365,7 +369,6 @@ const AboutSectionScreen = ({ navigation, route }) => {
   const cardName = section
     ? t(`about.${section.key}`, section.label)
     : t('about.title');
-  const title = section ? t(`aboutTitle.${section.key}`, cardName) : cardName;
 
   // ONE counter for the whole page, so every card — title, text, people,
   // rows — animates in the order it appears, top to bottom. Separate
@@ -392,18 +395,29 @@ const AboutSectionScreen = ({ navigation, route }) => {
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
+          {/* The section's own name ("Ombudsman Profile", "Our Team"…), not
+              "About Us" — the user sees which page they are on. This bar is
+              now the ONLY place the page is named: the title card that used
+              to repeat it underneath has been removed. It stays on ONE
+              line, shrunk to fit a narrow phone. */}
           <Text
             style={[styles.topTitle, isRTL && styles.textRTL]}
-            numberOfLines={2}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.7}
           >
-            {t('about.title')}
+            {cardName}
           </Text>
         </View>
         <LanguageToggle />
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, dyn.scrollPad]}
+        contentContainerStyle={[
+          styles.scroll,
+          hasSubSections && styles.scrollCentered,
+          dyn.scrollPad,
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* ---- Office crest and name (pages with sub-sections) ---- */}
@@ -418,40 +432,17 @@ const AboutSectionScreen = ({ navigation, route }) => {
           </View>
         )}
 
-        {/* ---- Certification badges ---- */}
+        {/* ---- Certification badges ----
+            NEVER the crest here. A page with sub-sections (Our Team) draws
+            its own crest and Office name just above this, and a content
+            page (History, Membership...) shows no crest at all — only
+            Register Complaint and Our Team carry the crest and heading. */}
         <CertificationBadges
           play={ready}
           startIndex={0}
           style={styles.topBadges}
+          showCrest={false}
         />
-
-        {/* ---- Header card: section badge + full title, in one row ---- */}
-        <StaggerIn index={cardIndex++} play={ready}>
-          <GlassSurface style={styles.heroCard}>
-            <View style={[styles.heroRow, isRTL && styles.heroRowRTL]}>
-              {section && (
-                <View style={[styles.badgeShell, accentStyles.badgeShell]}>
-                  <LinearGradient
-                    colors={section.colors}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.badge}
-                  >
-                    <Icon
-                      name={section.icon}
-                      size={26}
-                      color="#FFFFFF"
-                      weight={2.5}
-                    />
-                  </LinearGradient>
-                </View>
-              )}
-              <Text style={[styles.heroTitle, isRTL && styles.heroTitleRTL]}>
-                {title}
-              </Text>
-            </View>
-          </GlassSurface>
-        </StaggerIn>
 
         {showEnglishNote && (
           <Text style={styles.langNote}>{t('about.englishOnly')}</Text>

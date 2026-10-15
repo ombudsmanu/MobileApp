@@ -10,7 +10,9 @@ import AppBackground from '../../components/AppBackground/AppBackground';
 import GlassSurface from '../../components/GlassSurface/GlassSurface';
 import GlassButton from '../../components/GlassButton/GlassButton';
 import Icon from '../../components/Icon/Icon';
+import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
 import {notify} from '../../utils/notify';
+import {downloadToDevice, saveLocalFileToDevice} from '../../utils/downloadFile';
 import {
   createStyles,
   createDynamicStyles,
@@ -22,16 +24,41 @@ import {
  * PDF VIEWER — shows a PDF from the web inside the app.
  *
  * Route params:
- *   url        the PDF's web address
- *   title      shown in the top bar ("Annual Report 2025")
- *   cacheName  file name for the saved copy ("annual-report-2025")
+ *   url          the PDF's web address
+ *   titleKey     the strings.js key for the title ("reports.report"). When
+ *                given, the title is translated HERE, so it follows the
+ *                language toggle in this screen's own top bar.
+ *   titleSuffix  text after the translated title (the year: "2025")
+ *   title        a ready-made title, used only when there is no titleKey
+ *   cacheName    file name for the saved copy ("annual-report-2025")
+ *   fileName     optional — the name to save it under in the phone's
+ *                Downloads folder ("Ombudsman-Punjab-Affidavit.pdf"). When
+ *                given, a DOWNLOAD button appears in a footer UNDER the
+ *                document. Screens that pass none (Annual Reports) show no
+ *                footer, and the document runs to the bottom of the screen.
+ *
+ * TOP BAR — back, the title, and the app's language button. Switching the
+ * language here re-translates the title and the status texts at once.
+ *
+ * PAGE COUNTER — "Page 2 / 14" under the title, shown only for documents
+ * with more than one page. A one-page document (the affidavit) has nothing
+ * to count, so the line is left out rather than reading "Page 1 / 1".
  *
  * CACHING — the first open downloads the file and keeps a copy on the phone
  * for CACHE_DAYS. Every later open reads that copy: instant, and it works
  * with no internet.
  *
- * STATES — loading (progress card) → ready (page counter in the top bar),
- * or error (retry, or hand the link to the browser as a fallback).
+ * DOWNLOAD — once the document is on screen, its cached copy is copied
+ * straight into Downloads: instant, and it works offline. If that copy
+ * can't be used (still loading, or the cache was cleared), the file is
+ * fetched from the web instead.
+ *
+ * STATES — loading (progress card) → ready, or error (retry, or hand the
+ * link to the browser as a fallback).
+ *
+ * RESPONSIVE — the document uses the full width of the screen in every
+ * orientation (minus the notch and side navigation bar in landscape), and
+ * re-fits its pages when the phone is rotated.
  *
  * SECURITY — trustAllCerts={false}: the download only succeeds over a valid
  * HTTPS certificate. The library's default would accept any certificate,
@@ -43,7 +70,7 @@ import {
 const cleanUrl = url => (url || '').split('#')[0];
 
 const PdfViewerScreen = ({navigation, route}) => {
-  const {url, title, cacheName} = route.params ?? {};
+  const {url, title, titleKey, titleSuffix, cacheName, fileName} = route.params ?? {};
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const insets = useSafeAreaInsets();
@@ -59,6 +86,15 @@ const PdfViewerScreen = ({navigation, route}) => {
   const [attempt, setAttempt] = useState(0);
   // Technical reason for the last failure — shown only in development builds
   const [detail, setDetail] = useState('');
+  // Where the viewer keeps the document on the phone (set once it loads)
+  const [localPath, setLocalPath] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  // Translated on every render, so the language button re-titles the page
+  const shownTitle = titleKey
+    ? [t(titleKey, title), titleSuffix].filter(Boolean).join(' ')
+    : title;
+
   const source = useMemo(
     () => ({
       uri: cleanUrl(url),
@@ -69,7 +105,7 @@ const PdfViewerScreen = ({navigation, route}) => {
     [url, cacheName],
   );
 
-    const retry = useCallback(() => {
+  const retry = useCallback(() => {
     setDetail('');
     setProgress(0);
     setStatus('loading');
@@ -84,32 +120,70 @@ const PdfViewerScreen = ({navigation, route}) => {
     }
   }, [url, t]);
 
+  /** Save the document on screen into the phone's Downloads folder. */
+  const save = useCallback(async () => {
+    if (!fileName || saving) {
+      return;
+    }
+    setSaving(true);
+    try {
+      try {
+        // Fast path: the copy the viewer already has
+        await saveLocalFileToDevice({path: localPath, fileName});
+      } catch {
+        // Not loaded yet, or the cache was cleared — fetch it from the web
+        await downloadToDevice({url, fileName});
+      }
+      notify.success(t('downloads.savedTitle'), t('downloads.savedMsg'));
+    } catch (e) {
+      if (__DEV__) {
+        console.warn('[PdfViewer] could not save', fileName, e?.message ?? e);
+      }
+      notify.error(t('downloads.failedTitle'), t('downloads.failedMsg'));
+    } finally {
+      setSaving(false);
+    }
+  }, [fileName, saving, localPath, url, t]);
+
+  // The line under the title. Empty for a ready ONE-page document, so the
+  // affidavit shows no "Page 1 / 1".
   const subtitle =
-    status === 'ready'
-      ? `${t('pdf.page', 'Page')} ${page} / ${pages}`
-      : status === 'error'
+    status === 'error'
       ? t('pdf.errorTitle', "Couldn't open this report")
-      : t('pdf.loading', 'Loading report…');
+      : status === 'loading'
+      ? t('pdf.loading', 'Loading report…')
+      : pages > 1
+      ? `${t('pdf.page', 'Page')} ${page} / ${pages}`
+      : '';
+
+  const hasFooter = !!fileName;
 
   return (
     <AppBackground>
-            <View style={[styles.topBar, dyn.topBarPad]}>
+      <View style={[styles.topBar, dyn.topBarPad]}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={10}>
           <GlassSurface strong center radius={BACK_RADIUS} style={styles.backBtn}>
             <Icon name="chevronLeft" size={30} color={theme.icon.heading} weight={3} />
           </GlassSurface>
         </Pressable>
         <View style={styles.topTextWrap}>
-          <Text style={[styles.topTitle, isRTL && styles.textRTL]} numberOfLines={1}>
-            {title}
+          <Text
+            style={[styles.topTitle, isRTL && styles.textRTL]}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.8}>
+            {shownTitle}
           </Text>
-          <Text style={[styles.topSub, isRTL && styles.textRTL]} numberOfLines={1}>
-            {subtitle}
-          </Text>
+          {!!subtitle && (
+            <Text style={[styles.topSub, isRTL && styles.textRTL]} numberOfLines={1}>
+              {subtitle}
+            </Text>
+          )}
         </View>
+        <LanguageToggle />
       </View>
 
-      <View style={[styles.body, dyn.bodyPad]}>
+      <View style={[styles.body, hasFooter ? dyn.bodyPadAboveFooter : dyn.bodyPad]}>
         {status !== 'error' && (
           <Pdf
             key={attempt}
@@ -119,8 +193,10 @@ const PdfViewerScreen = ({navigation, route}) => {
             spacing={8}
             renderActivityIndicator={() => null}
             onLoadProgress={p => setProgress(p)}
-            onLoadComplete={numberOfPages => {
+            onLoadComplete={(numberOfPages, filePath) => {
               setPages(numberOfPages);
+              // The cached copy on the phone — DOWNLOAD copies this one
+              setLocalPath(filePath ?? '');
               setStatus('ready');
             }}
             onPageChanged={(current, total) => {
@@ -173,7 +249,7 @@ const PdfViewerScreen = ({navigation, route}) => {
                   'Check your internet connection and try again, or open it in the browser.',
                 )}
               </Text>
-             {__DEV__ && !!detail && (
+              {__DEV__ && !!detail && (
                 <Text style={styles.statusDetail} selectable>
                   {detail}
                 </Text>
@@ -196,6 +272,22 @@ const PdfViewerScreen = ({navigation, route}) => {
           </View>
         )}
       </View>
+
+      {/* DOWNLOAD — in a footer under the document, only for documents
+          the caller gave a file name */}
+      {hasFooter && (
+        <View style={[styles.footer, dyn.footerPad]}>
+          <GlassButton
+            label={t('downloads.download')}
+            variant="confirm"
+            onPress={save}
+            loading={saving}
+            disabled={saving}
+            icon={<Icon name="download" size={18} color="#FFFFFF" weight={2.5} />}
+            style={styles.footerBtn}
+          />
+        </View>
+      )}
     </AppBackground>
   );
 };

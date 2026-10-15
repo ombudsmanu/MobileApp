@@ -5,9 +5,9 @@ import { createStyles } from './Icon.styles';
 /**
  * Geometric icon set built from Views.
  * Names: menu, grid, doc, folder, chart, users, inbox, calendar,
- *        search, settings, palette, logout, login, chevronLeft,
- *        chevronUp, chevronDown, close, plus, upload, user, lock, mail, bell,
- *        check, eye, eyeOff */
+ *        search, settings, palette, globe, logout, login, chevronLeft,
+ *        chevronUp, chevronDown, close, plus, upload, download, user, lock,
+ *        mail, bell, check, eye, eyeOff */
 const Icon = ({ name, size = 22, color = '#FFFFFF', weight = 2 }) => {
   const s = useMemo(
     () => createStyles(size, color, weight),
@@ -304,6 +304,66 @@ const Icon = ({ name, size = 22, color = '#FFFFFF', weight = 2 }) => {
         </View>
       );
 
+    // Globe — the language mark. A sphere with its equator across the
+    // middle and one meridian down the face. The meridian is a tall
+    // capsule (radius = half its width), which at icon sizes reads as the
+    // ellipse you see on a globe seen head-on.
+    case 'globe': {
+      const d = size * 0.86; // sphere diameter
+      const o = size * 0.07; // inset that centres it in the box
+      const meridian = size * 0.44;
+      return (
+        <View style={s.box}>
+          {/* the sphere */}
+          <View style={[s.circle, { width: d, height: d, top: o, left: o }]} />
+          {/* equator */}
+          {bar(d, weight, size * 0.5 - weight / 2, o)}
+          {/* meridian */}
+          <View
+            style={[
+              s.circle,
+              {
+                width: meridian,
+                height: d,
+                top: o,
+                left: size * 0.5 - meridian / 2,
+                borderRadius: meridian / 2,
+              },
+            ]}
+          />
+        </View>
+      );
+    }
+    // Trash can — the delete mark for attached files. A short handle on
+    // top, the lid under it, then the can (open at the top, where the lid
+    // sits) with two ribs down its middle.
+    case 'trash': {
+      const can = size * 0.56;
+      return (
+        <View style={s.box}>
+          {/* handle */}
+          {bar(size * 0.28, weight, size * 0.06, size * 0.36)}
+          {/* lid */}
+          {bar(size * 0.8, weight, size * 0.18, size * 0.1)}
+          {/* can — no top edge, the lid closes it */}
+          <View
+            style={[
+              s.square,
+              {
+                width: can,
+                height: size * 0.62,
+                top: size * 0.3,
+                left: (size - can) / 2,
+                borderTopWidth: 0,
+              },
+            ]}
+          />
+          {/* ribs */}
+          {bar(weight, size * 0.3, size * 0.43, size * 0.41 - weight / 2)}
+          {bar(weight, size * 0.3, size * 0.43, size * 0.59 - weight / 2)}
+        </View>
+      );
+    }
     case 'logout':
     case 'login':
       return (
@@ -333,26 +393,23 @@ const Icon = ({ name, size = 22, color = '#FFFFFF', weight = 2 }) => {
     case 'chevronRight': {
       const arm = size * 0.3;
       const shift = name === 'chevronRight' ? 1 : -1;
+      // Both arms share one `left`, and the 45-degree rotations push the whole
+      // ">" / "<" glyph to the RIGHT of the box centre — by 0.24*size for
+      // chevronRight and 0.06*size for chevronLeft (the two directions lean by
+      // different amounts). Subtracting that per-direction offset centres the
+      // glyph INSIDE its own box, so a round button no longer needs a nudge to
+      // stop the arrow looking pushed to one side. These ratios hold at every
+      // size.
+      const offset = (name === 'chevronRight' ? 0.24 : 0.06) * size;
+      const left = size * 0.5 + shift * arm * 0.3 - offset;
       return (
         <View style={s.box}>
-          {bar(
-            arm,
-            weight,
-            size * 0.5 - arm * 0.35,
-            size * 0.5 + shift * arm * 0.3,
-            {
-              transform: [{ rotate: `${shift * 45}deg` }],
-            },
-          )}
-          {bar(
-            arm,
-            weight,
-            size * 0.5 + arm * 0.35,
-            size * 0.5 + shift * arm * 0.3,
-            {
-              transform: [{ rotate: `${-shift * 45}deg` }],
-            },
-          )}
+          {bar(arm, weight, size * 0.5 - arm * 0.35, left, {
+            transform: [{ rotate: `${shift * 45}deg` }],
+          })}
+          {bar(arm, weight, size * 0.5 + arm * 0.35, left, {
+            transform: [{ rotate: `${-shift * 45}deg` }],
+          })}
         </View>
       );
     }
@@ -437,6 +494,39 @@ const Icon = ({ name, size = 22, color = '#FFFFFF', weight = 2 }) => {
               borderLeftWidth: weight,
               borderColor: color,
               borderTopLeftRadius: weight,
+              transform: [{ rotate: '45deg' }],
+            }}
+          />
+          {/* open tray: a bottom line with two short uprights */}
+          {bar(size * 0.6, weight, size * 0.78, size * 0.2)}
+          {bar(weight, size * 0.16, size * 0.64, size * 0.2)}
+          {bar(weight, size * 0.16, size * 0.64, size * 0.8 - weight)}
+        </View>
+      );
+    }
+
+    // The upload icon's mirror: the arrow points DOWN into the tray
+    case 'download': {
+      const headSize = size * 0.3;
+      // The rotated square's lower corner is the arrow tip, at ~62% height
+      const headTop = size * 0.258;
+      const headLeft = size * 0.5 - headSize / 2;
+      return (
+        <View style={s.box}>
+          {/* arrow stem */}
+          {bar(weight, size * 0.5, size * 0.08, size * 0.5 - weight / 2)}
+          {/* arrow head (two short bars forming a v) */}
+          <View
+            style={{
+              position: 'absolute',
+              top: headTop,
+              left: headLeft,
+              width: headSize,
+              height: headSize,
+              borderBottomWidth: weight,
+              borderRightWidth: weight,
+              borderColor: color,
+              borderBottomRightRadius: weight,
               transform: [{ rotate: '45deg' }],
             }}
           />

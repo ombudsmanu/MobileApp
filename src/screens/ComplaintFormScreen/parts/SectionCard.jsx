@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import Text from '../../../components/AppText/AppText';
 import GlassSurface from '../../../components/GlassSurface/GlassSurface';
 import {useTheme} from '../../../context/ThemeContext';
+import {useLanguage} from '../../../context/LanguageContext';
 import {createSectionStyles} from './parts.styles';
 
 /**
@@ -13,15 +14,19 @@ import {createSectionStyles} from './parts.styles';
  *
  *   <SectionCard title={t('cf.sec.general')} />
  *
+ * The leading side follows the language: the dot is on the left in
+ * English and on the right in Urdu.
+ *
  * It only labels a section; the fields themselves sit below it, not inside.
  */
 const SectionCard = ({title}) => {
   const {theme} = useTheme();
   const styles = useMemo(() => createSectionStyles(theme), [theme]);
+  const {isRTL} = useLanguage();
 
   return (
     <GlassSurface style={styles.card} contentStyle={styles.content}>
-      <View style={styles.dotOuter}>
+      <View style={[styles.dotOuter, isRTL ? styles.dotEnd : styles.dotStart]}>
         <View style={styles.dotInner} />
       </View>
       <Text style={styles.title} numberOfLines={2}>

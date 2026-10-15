@@ -16,7 +16,7 @@ import {sideGutters, READING_WIDTH} from '../../theme/responsive';
  */
 export const createStyles = theme =>
   StyleSheet.create({
-    // ---- Header: [back] [title] [EN / اردو] ----
+    // ---- Header: [back] [title] [globe + language] ----
     topBar: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -24,14 +24,16 @@ export const createStyles = theme =>
       paddingBottom: spacing.md,
     },
     backBtn: {width: 48, height: 48},
-    topTextWrap: {flex: 1},
+    // alignItems:'center' shrinks the title's box to the width of its own
+    // words and centres it between the back button and the language button
+    // — in BOTH languages, because a box that is exactly as wide as its
+    // text has nothing for textAlign to push against.
+    topTextWrap: {flex: 1, alignItems: 'center'},
     topTitle: {...theme.type.titleMedium},
     textRTL: {textAlign: 'right', writingDirection: 'rtl'},
     rowRTL: {flexDirection: 'row-reverse'},
 
-    // ---- Intro: crest, certification badges, system name ----
-    crestWrap: {alignItems: 'center', marginBottom: spacing.sm},
-    crest: {width: 96, height: 96, resizeMode: 'contain'},
+    // ---- Intro: system name (the crest comes with CertificationBadges) ----
     cmisLine: {
       ...theme.type.titleMedium,
       color: theme.text.title,

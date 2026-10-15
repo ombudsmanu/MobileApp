@@ -19,7 +19,6 @@ export const TITLES = [
   {value: 'mrs', en: 'Mrs.', ur: 'مسز'},
   {value: 'ms', en: 'Ms.', ur: 'محترمہ'},
   {value: 'miss', en: 'Miss', ur: 'مس'},
-  {value: 'dr', en: 'Dr.', ur: 'ڈاکٹر'},
 ];
 
 export const REGIONAL_OFFICES = [
@@ -104,38 +103,12 @@ export const AGENCIES = [
 ];
 
 /**
- * COUNTRIES — for the Overseas form's Country field (searchable).
- * The countries with the largest Pakistani communities first, then the rest
- * alphabetically; "Other" last. Replace with the Office's official list.
+ * COUNTRIES — the full world list for the Overseas form's Country field,
+ * with English and Urdu names and dialling codes. Built in countries.js
+ * from two libraries instead of being typed in here; re-exported so the
+ * screens keep importing it from this file, unchanged.
  */
-export const COUNTRIES = [
-  {value: 'sa', en: 'Saudi Arabia', ur: 'سعودی عرب'},
-  {value: 'ae', en: 'United Arab Emirates', ur: 'متحدہ عرب امارات'},
-  {value: 'uk', en: 'United Kingdom', ur: 'برطانیہ'},
-  {value: 'us', en: 'United States of America', ur: 'امریکہ'},
-  {value: 'ca', en: 'Canada', ur: 'کینیڈا'},
-  {value: 'au', en: 'Australia', ur: 'آسٹریلیا'},
-  {value: 'om', en: 'Oman', ur: 'عمان'},
-  {value: 'qa', en: 'Qatar', ur: 'قطر'},
-  {value: 'kw', en: 'Kuwait', ur: 'کویت'},
-  {value: 'bh', en: 'Bahrain', ur: 'بحرین'},
-  {value: 'my', en: 'Malaysia', ur: 'ملائیشیا'},
-  {value: 'de', en: 'Germany', ur: 'جرمنی'},
-  {value: 'fr', en: 'France', ur: 'فرانس'},
-  {value: 'it', en: 'Italy', ur: 'اطالیہ'},
-  {value: 'es', en: 'Spain', ur: 'اسپین'},
-  {value: 'no', en: 'Norway', ur: 'ناروے'},
-  {value: 'dk', en: 'Denmark', ur: 'ڈنمارک'},
-  {value: 'se', en: 'Sweden', ur: 'سویڈن'},
-  {value: 'nl', en: 'Netherlands', ur: 'نیدرلینڈز'},
-  {value: 'gr', en: 'Greece', ur: 'یونان'},
-  {value: 'tr', en: 'Turkiye', ur: 'ترکیہ'},
-  {value: 'cn', en: 'China', ur: 'چین'},
-  {value: 'jp', en: 'Japan', ur: 'جاپان'},
-  {value: 'kr', en: 'South Korea', ur: 'جنوبی کوریا'},
-  {value: 'za', en: 'South Africa', ur: 'جنوبی افریقہ'},
-  {value: 'other', en: 'Other', ur: 'دیگر'},
-];
+export {COUNTRIES} from './countries';
 
 export const DESIGNATIONS = [
   {value: 'secretary', en: 'Secretary', ur: 'سیکرٹری'},

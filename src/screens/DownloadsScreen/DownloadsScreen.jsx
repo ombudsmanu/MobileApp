@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {Pressable, ScrollView, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -7,7 +7,6 @@ import {useTheme} from '../../context/ThemeContext';
 import {useLanguage} from '../../context/LanguageContext';
 import {useLayout} from '../../theme/responsive';
 import {downloads} from '../../content/downloads';
-import {downloadToDevice} from '../../utils/downloadFile';
 import {useScreenReady} from '../../navigation/useScreenReady';
 import {notify} from '../../utils/notify';
 import AppBackground from '../../components/AppBackground/AppBackground';
@@ -25,13 +24,15 @@ import {
 } from './DownloadsScreen.styles';
 
 /**
- * One document: badge, title, description, and two actions —
- *   VIEW      opens it in the app's PDF viewer (from the link)
- *   DOWNLOAD  saves it into the phone's Downloads folder
+ * One document: badge, title, description, and one action —
+ *   VIEW  opens it in the app's PDF viewer. Saving it to the phone is done
+ *         from INSIDE the viewer (the DOWNLOAD button in the footer under
+ *         the document), so the user sees the document before keeping it.
+ * The viewer gets the title as a KEY, so it follows the language button
+ * inside the viewer too.
  * A document with no link yet says "Not available yet" instead of failing.
  */
 const DownloadCard = ({item, styles, t, isRTL, navigation}) => {
-  const [busy, setBusy] = useState(false);
   const title = t(item.titleKey, item.fallbackTitle);
 
   const notReady = () =>
@@ -49,28 +50,12 @@ const DownloadCard = ({item, styles, t, isRTL, navigation}) => {
     }
     navigation.navigate('PdfViewer', {
       url: item.url,
+      titleKey: item.titleKey,
       title,
       cacheName: `download-${item.key}`,
+      // Shows the DOWNLOAD footer inside the viewer
+      fileName: item.fileName,
     });
-  };
-
-  const download = async () => {
-    if (!item.url) {
-      notReady();
-      return;
-    }
-    setBusy(true);
-    try {
-      await downloadToDevice({url: item.url, fileName: item.fileName});
-      notify.success(t('downloads.savedTitle'), t('downloads.savedMsg'));
-    } catch (e) {
-      if (__DEV__) {
-        console.warn('[Downloads] could not save', item.key, e?.message ?? e);
-      }
-      notify.error(t('downloads.failedTitle'), t('downloads.failedMsg'));
-    } finally {
-      setBusy(false);
-    }
   };
 
   return (
@@ -96,14 +81,6 @@ const DownloadCard = ({item, styles, t, isRTL, navigation}) => {
           label={t('downloads.view')}
           variant="info"
           onPress={view}
-          disabled={busy}
-          style={styles.action}
-        />
-        <GlassButton
-          label={t('downloads.download')}
-          variant="confirm"
-          onPress={download}
-          loading={busy}
           style={styles.action}
         />
       </View>
@@ -144,7 +121,7 @@ const DownloadsScreen = ({navigation}) => {
       <ScrollView
         contentContainerStyle={dyn.scrollPad}
         showsVerticalScrollIndicator={false}>
-                    <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} />
+        <CertificationBadges play={ready} startIndex={0} style={styles.topBadges} />
         <Text style={[styles.intro, isRTL && styles.textRTL]}>{t('downloads.intro')}</Text>
 
         {downloads.map((item, index) => (

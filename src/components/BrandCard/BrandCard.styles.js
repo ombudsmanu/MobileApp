@@ -17,8 +17,15 @@ export const createStyles = theme =>
       paddingHorizontal: spacing.lg,
       alignSelf: 'stretch',
     },
-    // Centres every piece, including the fixed-width divider and pill
+       // Centres every piece, including the fixed-width divider and pill
     content: {alignItems: 'center'},
+    // No-card version (login): full width so the one-line titles can shrink
+    // to fit it, centred, with a little side room instead of card padding
+    bare: {
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      paddingHorizontal: spacing.sm,
+    },
 
        officeLine: {
       ...theme.type.titleSmall,
@@ -57,6 +64,8 @@ export const createStyles = theme =>
       // Fixed brand green — theme.brandGreen turns pale on dark backgrounds
       backgroundColor: '#326B38',
     },
+    // Urdu: no letter-spacing (it breaks Nastaleeq's joined letters apart)
+    urdu: {letterSpacing: 0},
     opmisPillText: {
       ...theme.type.labelLarge,
       color: '#FFFFFF',

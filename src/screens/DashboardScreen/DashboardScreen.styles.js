@@ -62,17 +62,13 @@ export const createStyles = theme =>
     topTextWrap: {flex: 1, marginHorizontal: spacing.sm},
     topTitle: {...theme.type.titleLarge, letterSpacing: 0.5},
     topSub: {...theme.type.bodySmall},
-    // The full name is 45 characters but the title block is only ~140px
-    // wide (between the menu button and the toggle), so at Body Small it
-    // needed 2.1 lines and the last word was cut. Label Small fits it in
-    // two. Urdu keeps its own size — AppText has a minimum below which
-    // Nastaleeq dots blur — and fits two lines comfortably.
-    topSubEn: {...theme.type.labelSmall, lineHeight: 15},
-    // Urdu wraps onto a second line, and without textAlign Android starts
-    // each line at the LEFT edge — so the second line began on the wrong
-    // side. (Writing direction alone orders the letters; it does not
-    // position the line.)
-    topSubUr: {textAlign: 'right'},
+    // English: the name is drawn as two lines ("Ombudsman Punjab" /
+    // "Management Information System"), each one line long, so neither is
+    // ever cut with "…". The block between the menu button and the toggle
+    // is narrow, so a line may shrink slightly (adjustsFontSizeToFit).
+    topSubEn: {...theme.type.labelMedium, lineHeight: 15, textAlign: 'left'},
+    // Urdu: one line, shrunk to fit, starting at the center
+    topSubUr: {...theme.type.labelMedium,textAlign: 'center'},
 
     // ---- Slider overlay (on a photo → fixed white) ----
     sliderOverlay: {
