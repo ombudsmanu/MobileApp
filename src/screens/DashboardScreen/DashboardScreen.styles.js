@@ -29,6 +29,8 @@ export const MODULE_COLORS = {
   settings: ['#6B7C8F', '#3E4C5C'], // grey    — configuration
   about: ['#5FA98C', '#2E6B56'], // sage    — institutional, informative
   annualReports: ['#2FB5A8', '#157A71'], // teal — records, analysis
+  jurisdiction: ['#5B7FD6', '#2E4FA0'], // indigo — law, authority
+  track: ['#5FA98C', '#2E6B56'], // green — status, progress
 };
 export const MODULE_FALLBACK = ['#43A35A', '#1F6B33'];
 

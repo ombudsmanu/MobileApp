@@ -53,6 +53,7 @@ import {
   createDynamicStyles,
   BACK_RADIUS,
 } from '../ComplaintFormScreen/ComplaintFormScreen.styles';
+import NoteText from '../ComplaintFormScreen/parts/NoteText';
 
 
 
@@ -270,7 +271,7 @@ const OverseasComplaintFormScreen = ({navigation}) => {
         <View style={styles.noteBar} />
         <Text style={[styles.noteTitle, isRTL && styles.textRTL]}>{t('cf.note.title')}</Text>
       </View>
-      <Text style={[styles.noteText, isRTL && styles.textRTL]}>{t('ov.note.body')}</Text>
+      <NoteText text={t('ov.note.body')} style={styles.noteText} rtl={isRTL} />
     </GlassSurface>,
 
     // ---- Overseas General Details ----

@@ -43,7 +43,7 @@ export const strings = {
     'cf.cmis': 'Complaint Management Information System',
     'cf.note.title': 'Important Note:',
     'cf.note.body':
-      'You can lodge your complaint to any of our 41 District Regional Offices by using this form. If you want to attach multiple supporting documents, you can use "Attach Supporting Documents". As complainants are kept informed about complaint redressal via SMS and E-Mail, a valid cell number is mandatory. Where a mobile network is ported, SMS cannot be sent. If you do not have a mobile, you can provide the number of a family member or close relative.',
+      'You can lodge your complaint to any of our [[41 District Regional Offices]] by using this form. If you want to attach multiple supporting documents, you can use (("Attach Supporting Documents")). As complainants are kept informed about complaint redressal via SMS and E-Mail, a valid cell number is mandatory. Where a mobile network is ported, SMS cannot be sent. If you do not have a mobile, you can provide the number of a family member or close relative.',
 
     'cf.sec.general': 'General Details',
     'cf.sec.complainant': 'Complainant Details',
@@ -135,7 +135,7 @@ export const strings = {
     // ---- Complaint Form (Overseas Pakistanis) ----
     'ov.title': 'Overseas Complaints',
     'ov.note.body':
-    'Overseas Pakistanis can lodge a complaint to any of our 41 District Regional Offices using this form. Give your Pakistani mobile number where possible, as complainants are kept informed about complaint redressal via SMS and E-Mail. Attach your CNIC/NICOP and passport so your complaint can be verified without delay.',
+    'Overseas Pakistanis can lodge a complaint to any of our [[41 District Regional Offices]] using this form. Give your Pakistani mobile number where possible, as complainants are kept informed about complaint redressal via SMS and E-Mail. (("Attach your CNIC/NICOP and passport".)) so your complaint can be verified without delay.',
     'ov.sec.general': 'Overseas General Details',
     'ov.sec.complainant': 'Overseas Complainant Details',
     'ov.sec.info': 'Overseas Complaint Details',
@@ -287,6 +287,25 @@ export const strings = {
     'about.openLink': 'Visit website',
     'about.teamHeadOffice': 'Head Office Team',
     'about.teamRegionalOffice': 'Regional Office Team',
+    // ---- Jurisdiction ----
+    'module.jurisdiction': 'Jurisdiction',
+    'jur.title': 'Jurisdiction',
+    'jur.mandate': 'Mandate',
+    'jur.whatWeCanDo': 'What We Can Do',
+    'jur.howWeDo': 'How We Do',
+    'jur.whatWeCanNotDo': 'What We Can Not Do',
+    // ---- Track a Complaint ----
+    'module.track': 'Track a Complaint',
+    'track.title': 'Track Complaint',
+    'track.rowTitle': 'Track Status of Complaint',
+    'track.pakistan.title': 'Track Status of Pakistani National Complaints',
+    'track.overseas.title': 'Track Status of Overseas Pakistani Complaints',
+    'track.enterHint': 'Please enter your 15 digit Complaint Number below to track the status:',
+    'track.placeholder': 'Enter Complaint Number',
+    'track.button': 'Track',
+    'track.err': 'Please enter a valid 15-digit complaint number.',
+    'track.soonTitle': 'Coming soon',
+    'track.soonMsg': 'Online complaint tracking will be available soon.',
     // ---- Annual Reports ----
     'module.annualReports': 'Annual Reports',
     'reports.title': 'Annual Reports',
@@ -364,7 +383,7 @@ export const strings = {
     'cf.cmis': 'شکایات مینجمنٹ انفارمیشن سسٹم',
     'cf.note.title': 'اہم نوٹ:',
     'cf.note.body':
-      'آپ اس فارم کے ذریعے ہمارے 41 ضلعی ریجنل دفاتر میں سے کسی کو بھی اپنی شکایت درج کرا سکتے ہیں۔ اگر آپ متعدد معاون دستاویزات منسلک کرنا چاہتے ہیں تو "معاون دستاویزات منسلک کریں" کا استعمال کریں۔ چونکہ شکایت کنندگان کو شکایت کے ازالے کے بارے میں ایس ایم ایس اور ای میل کے ذریعے مطلع رکھا جاتا ہے، اس لیے درست موبائل نمبر دینا لازمی ہے۔ جہاں موبائل نیٹ ورک پورٹ ہو، وہاں ایس ایم ایس نہیں بھیجا جا سکتا۔ اگر آپ کے پاس موبائل نہیں تو آپ کسی فیملی ممبر یا قریبی عزیز کا نمبر دے سکتے ہیں۔',
+      'آپ اس فارم کے ذریعے ہمارے [[41 ضلعی ریجنل دفاتر]] میں سے کسی کو بھی اپنی شکایت درج کرا سکتے ہیں۔ اگر آپ متعدد معاون دستاویزات منسلک کرنا چاہتے ہیں تو (("معاون دستاویزات منسلک کریں"))۔ چونکہ شکایت کنندگان کو شکایت کے ازالے کے بارے میں ایس ایم ایس اور ای میل کے ذریعے مطلع رکھا جاتا ہے، اس لیے درست موبائل نمبر دینا لازمی ہے۔ جہاں موبائل نیٹ ورک پورٹ ہو، وہاں ایس ایم ایس نہیں بھیجا جا سکتا۔ اگر آپ کے پاس موبائل نہیں تو آپ کسی فیملی ممبر یا قریبی عزیز کا نمبر دے سکتے ہیں۔',
 
     'cf.sec.general': 'عمومی تفصیلات',
     'cf.sec.complainant': 'شکایت کنندہ کی تفصیلات',
@@ -453,7 +472,7 @@ export const strings = {
     // ---- Complaint Form (Overseas Pakistanis) ----
     'ov.title': 'سمندر پار شکایات',
     'ov.note.body':
-      'سمندر پار پاکستانی اس فارم کے ذریعے ہمارے 41 ضلعی ریجنل دفاتر میں سے کسی کو بھی شکایت درج کرا سکتے ہیں۔ جہاں ممکن ہو اپنا پاکستانی موبائل نمبر دیں، کیونکہ شکایت کنندگان کو ایس ایم ایس اور ای میل کے ذریعے پیش رفت سے مطلع رکھا جاتا ہے۔ تصدیق میں تاخیر سے بچنے کے لیے اپنا شناختی کارڈ/نائیکاپ اور پاسپورٹ منسلک کریں۔',
+      'سمندر پار پاکستانی اس فارم کے ذریعے ہمارے[[41 ضلعی ریجنل دفاتر]] میں سے کسی کو بھی شکایت درج کرا سکتے ہیں۔ جہاں ممکن ہو اپنا پاکستانی موبائل نمبر دیں، کیونکہ شکایت کنندگان کو ایس ایم ایس اور ای میل کے ذریعے پیش رفت سے مطلع رکھا جاتا ہے۔ تصدیق میں تاخیر سے بچنے کے لیے ((اپنا شناختی کارڈ/نائیکاپ اور پاسپورٹ منسلک کریں))۔',
     'ov.sec.general': 'سمندر پار پاکستانی کی عمومی تفصیلات',
     'ov.sec.complainant': 'سمندر پار شکایت کنندہ کی تفصیلات',
     'ov.sec.info': 'سمندر پار شکایت کی تفصیلات',
@@ -604,6 +623,25 @@ export const strings = {
     'about.openLink': 'ویب سائٹ دیکھیں',
     'about.teamHeadOffice': 'ہیڈ آفس ٹیم',
     'about.teamRegionalOffice': 'ریجنل آفس ٹیم',
+    // ---- Jurisdiction ----
+    'module.jurisdiction': 'دائرہ اختیار',
+    'jur.title': 'دائرہ اختیار',
+    'jur.mandate': 'مینڈیٹ',
+    'jur.whatWeCanDo': 'ہم کیا کر سکتے ہیں',
+    'jur.howWeDo': 'ہم کیسے کام کرتے ہیں',
+    'jur.whatWeCanNotDo': 'ہم کیا نہیں کر سکتے',
+    // ---- Track a Complaint ----
+    'module.track': 'شکایت کو ٹریک کریں',
+    'track.title': 'شکایت کو ٹریک کریں',
+    'track.rowTitle': 'شکایت کی صورتحال ٹریک کریں',
+    'track.pakistan.title': 'پاکستانی شکایات کو ٹریک کریں',
+    'track.overseas.title': 'سمندر پار پاکستانی شکایات کو ٹریک کریں',
+    'track.enterHint': 'برائے مہربانی اپنی شکایت کا 15 ہندسوں کا نمبر درج کریں تاکہ اس کی صورتحال معلوم کی جا سکے۔',
+    'track.placeholder': 'شکایت نمبر درج کریں',
+    'track.button': 'ٹریک',
+    'track.err': 'براہِ کرم 15 ہندسوں کا درست شکایت نمبر درج کریں۔',
+    'track.soonTitle': 'جلد آ رہا ہے',
+    'track.soonMsg': 'شکایت کی آن لائن ٹریکنگ جلد دستیاب ہوگی۔',
     // ---- Annual Reports ----
     'module.annualReports': 'سالانہ رپورٹس',
     'reports.title': 'سالانہ رپورٹس',

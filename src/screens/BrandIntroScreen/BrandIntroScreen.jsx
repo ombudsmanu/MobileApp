@@ -10,33 +10,37 @@ import {createStyles, createDynamicStyles, INTRO} from './BrandIntroScreen.style
 const CREST = require('../../assets/images/crest.png');
 
 /**
- * BRAND INTRO — the first thing the app shows.
+ * Has the brand intro already played in THIS app run? A module-level flag,
+ * so it is false when the app process first starts and true ever after,
+ * until the app is fully closed and reopened (a real cold start resets it).
  *
- * The crest alone on the app's own background: it grows into place, holds
- * for a moment, then the app moves to the swipe-up screen. No heading under
- * it — the swipe-up screen that follows carries the Office name, so
- * repeating it here only delayed the app.
+ * It is NOT React state and NOT storage on purpose: it must survive this
+ * screen unmounting (it replaces itself with SwipeUp) but must NOT survive
+ * the app being killed — "first time we open the app" means per launch.
+ */
+let introHasPlayed = false;
+
+/**
+ * BRAND INTRO — the opening screen.
  *
- * It replaces itself (navigation.replace), so Back from the swipe screen
- * never returns here.
+ * FIRST LAUNCH ONLY — the crest animation plays once, the first time the app
+ * is opened. After that, whenever the app returns to this opening screen
+ * (Logout from the sidebar, or Back from Login, both of which reset the
+ * stack to "Splash"), the intro is SKIPPED: this screen hands straight over
+ * to the swipe-up screen with no crest and no delay. So the branded intro is
+ * a launch moment, not something the user sits through every time they log
+ * out. Closing and reopening the app shows it again.
  *
- * NO BLANK GAP ON COLD START — the hand-off to the swipe-up screen fires the
- * MOMENT the hold ends, while the crest is still fully on screen. The crest's
- * own fade-out runs at the same time, only to soften the hand-off; the app
- * does NOT wait for it. The old version navigated only after the crest had
- * faded to nothing, so on a fresh launch the screen went blank, then the
- * swipe-up screen faded in from nothing on top of it — a visible empty gap.
- * It looked fine when returning to an already-mounted swipe-up screen, which
- * is why it only showed on first open. Both screens share the same
- * AppBackground, so swapping behind a visible crest never flickers.
+ * NO BLANK GAP — on the first launch the hand-off to the swipe-up screen
+ * fires the MOMENT the hold ends, while the crest is still fully on screen;
+ * the crest's fade-out only softens it and is not waited on. Both screens
+ * share the same AppBackground, and the Splash/SwipeUp navigator transition
+ * is 'none', so nothing blank ever shows between them.
  *
- * ONLY WHILE FOCUSED — this screen can be MOUNTED without being the screen
- * the user is looking at. The sidebar's "Sign in" for a guest resets the
- * stack to [Splash, Login], which puts this screen underneath the Login
- * screen. Without the isFocused guard its timer would run behind Login and
- * then navigate on its own, throwing the user off the Login screen a couple
- * of seconds after they arrived. The guard also means that pressing Back
- * from Login plays the intro properly, because the screen is focused then.
+ * ONLY WHILE FOCUSED — this screen can be MOUNTED under Login (the guest
+ * "Sign in" resets the stack to [Splash, Login]). The isFocused guard and
+ * the navigation.isFocused() check stop it from navigating while the user is
+ * actually on Login.
  */
 const BrandIntroScreen = ({navigation}) => {
   const {theme} = useTheme();
@@ -57,7 +61,24 @@ const BrandIntroScreen = ({navigation}) => {
       return undefined;
     }
 
-    // Start from the beginning every time the screen is shown.
+    const goNext = () => {
+      // Never move a user who has since left this screen.
+      if (!moved.current && navigation.isFocused()) {
+        moved.current = true;
+        introHasPlayed = true;
+        navigation.replace('SwipeUp');
+      }
+    };
+
+    // ALREADY PLAYED THIS RUN — skip the animation and hand over at once, so
+    // returning to the opening screen (Logout, Back from Login) goes straight
+    // to the swipe-up screen with no intro.
+    if (introHasPlayed) {
+      goNext();
+      return undefined;
+    }
+
+    // FIRST LAUNCH — play the crest animation once.
     fade.setValue(0);
     grow.setValue(INTRO.scaleFrom);
     moved.current = false;
@@ -84,33 +105,15 @@ const BrandIntroScreen = ({navigation}) => {
       useNativeDriver: true,
     });
 
-    // appear -> hold. Navigation is NOT the last step of the sequence: it
-    // fires in the callback at the end of the HOLD, while the crest is still
-    // fully on screen. The crest's fade-out (leave) runs AT THE SAME TIME,
-    // only to soften the hand-off — the app does not wait for it.
-    //
-    // The old sequence was appear -> hold -> fade-to-nothing -> navigate, so
-    // on a COLD START the crest faded to an empty background, THEN the app
-    // navigated, THEN the swipe-up screen faded in from nothing: a visible
-    // blank gap on first open. (It looked fine returning to an
-    // already-mounted swipe-up screen, which is why it only showed on a
-    // fresh launch.) Handing off while the crest is visible removes it.
+    // appear -> hold, THEN hand off (while the crest is still visible); the
+    // fade-out runs alongside only to soften the hand-off, not before it.
     const run = Animated.sequence([appear, Animated.delay(INTRO.holdMs)]);
-
-    const goNext = () => {
-      // Never move a user who has since left this screen (app backgrounded,
-      // focus lost, or the stack reset to show Login).
-      if (!moved.current && navigation.isFocused()) {
-        moved.current = true;
-        navigation.replace('SwipeUp');
-      }
-    };
 
     run.start(({finished}) => {
       if (!finished) {
         return;
       }
-      leave.start(); // soften the crest, but do not wait for it
+      leave.start();
       goNext();
     });
 

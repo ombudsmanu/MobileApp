@@ -17,6 +17,11 @@ import DownloadsScreen from '../screens/DownloadsScreen/DownloadsScreen';
 import RegisterComplaintScreen from '../screens/RegisterComplaintScreen/RegisterComplaintScreen';
 import ComplaintFormScreen from '../screens/ComplaintFormScreen/ComplaintFormScreen';
 import OverseasComplaintFormScreen from '../screens/OverseasComplaintFormScreen/OverseasComplaintFormScreen';
+import JurisdictionScreen from '../screens/JurisdictionScreen/JurisdictionScreen';
+import JurisdictionDetailScreen from '../screens/JurisdictionDetailScreen/JurisdictionDetailScreen';
+import TrackComplaintScreen from '../screens/TrackComplaintScreen/TrackComplaintScreen';
+import TrackPakistanScreen from '../screens/TrackPakistanScreen/TrackPakistanScreen';
+import TrackOverseasScreen from '../screens/TrackOverseasScreen/TrackOverseasScreen';
 
 import {
   resolveBaseColor,
@@ -143,6 +148,31 @@ const RootNavigator = () => {
         <Stack.Screen
           name="Downloads"
           component={DownloadsScreen}
+          options={placeholderScreenOptions}
+        />
+        <Stack.Screen
+          name="Jurisdiction"
+          component={JurisdictionScreen}
+          options={placeholderScreenOptions}
+        />
+        <Stack.Screen
+          name="JurisdictionDetail"
+          component={JurisdictionDetailScreen}
+          options={placeholderScreenOptions}
+        />
+        <Stack.Screen
+          name="TrackComplaint"
+          component={TrackComplaintScreen}
+          options={placeholderScreenOptions}
+        />
+        <Stack.Screen
+          name="TrackPakistan"
+          component={TrackPakistanScreen}
+          options={placeholderScreenOptions}
+        />
+        <Stack.Screen
+          name="TrackOverseas"
+          component={TrackOverseasScreen}
           options={placeholderScreenOptions}
         />
         {/* Future module screens go here */}

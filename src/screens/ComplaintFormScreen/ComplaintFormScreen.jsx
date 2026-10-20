@@ -7,6 +7,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useLayout } from '../../theme/responsive';
 import { notify } from '../../utils/notify';
 import MultiSelect from './parts/MultiSelect';
+import NoteText from './parts/NoteText';
 import {
   CNIC_PATTERN,
   EMAIL_PATTERN,
@@ -254,9 +255,7 @@ const ComplaintFormScreen = ({ navigation }) => {
           {t('cf.note.title')}
         </Text>
       </View>
-      <Text style={[styles.noteText, isRTL && styles.textRTL]}>
-        {t('cf.note.body')}
-      </Text>
+      <NoteText text={t('cf.note.body')} style={styles.noteText} rtl={isRTL} />
     </GlassSurface>,
 
     // ---- General Details ----
